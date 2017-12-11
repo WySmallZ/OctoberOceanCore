@@ -39,6 +39,7 @@ namespace OctOcean.Management.WebSite
 
             app.UseStaticFiles();
 
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
