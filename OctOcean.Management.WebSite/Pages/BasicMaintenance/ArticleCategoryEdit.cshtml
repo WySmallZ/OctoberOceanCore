@@ -1,0 +1,18 @@
+﻿@page
+@model OctOcean.Management.WebSite.Pages.BasicMaintenance.ArticleCategoryEditModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "编辑文章类别";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2>文章类别编辑</h2>
+<p>
+    Enter your name.
+</p>
+<div asp-validation-summary="All"></div>
+<form method="POST">
+    <div>Code: <input asp-for="ArticleCategoryEntity.ArticleCategoryCode" /></div>
+    <div>Name: <input asp-for="ArticleCategoryEntity.ArticleCategoryName" /></div>
+    <input type="submit" />
+</form>

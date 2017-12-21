@@ -9,9 +9,13 @@ namespace OctOcean.Management.WebSite.Pages
 {
     public class IndexModel : PageModel
     {
+
+        public string Message { get; private set; } = $"这是什么写法？{DateTime.Now}";
+
         public void OnGet()
         {
-
+           
+               
         }
     }
 }

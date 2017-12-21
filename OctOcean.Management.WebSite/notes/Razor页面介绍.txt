@@ -1,0 +1,8 @@
+﻿Razor 页面是 ASP.NET Core MVC 的一个新功能，因此可以在ASP.NET Core MVC项目中直接使用Razor页面功能，而不需要特意的去写启用Razor页面的代码。
+
+Razor 视图文件中的@page 指令的作用：@page 使文件转换为一个 MVC 操作 ，这意味着它将直接处理请求，而无需通过控制器处理。注意：@page 必须是页面上的第一个 Razor 指令。
+ 
+Razor页面的URL 路径的关联由页面在文件系统中的位置决定。url路径不带有.cshtml后缀，但是系统会自动的查找对应的Razor页面。
+注意：
+默认情况下，运行时在“Pages”文件夹中查找 Razor 页面文件。
+URL 未包含页面时，Index 为默认页面。

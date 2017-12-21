@@ -1,0 +1,39 @@
+﻿@page
+@model OctOcean.Management.WebSite.Pages.BasicMaintenance.ArticleCategoryManagementModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "文章类别管理";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2><a href="/BasicMaintenance/ArticleCategoryEdit">编辑</a>文章类别管理</h2>
+
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>文章类别主码</th>
+                <th>文章类别</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ac in Model.ArticleCategorys)
+            {
+                <tr>
+                    <td>@ac.ArticleCategoryCode</td>
+                    <td>@ac.ArticleCategoryName</td>
+                    <td>
+                        <a asp-page="./ArticleCategoryEdit" asp-route-id="@ac.Id">edit</a>
+                        <button type="submit" asp-page-handler="delete"
+                                asp-route-id="@ac.Id">
+                            delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-page="./ArticleCategoryEdit">Create</a>
+</form>

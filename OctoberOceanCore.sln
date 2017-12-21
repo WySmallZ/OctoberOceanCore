@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctOcean.WebSite", "OctOcean.WebSite\OctOcean.WebSite.csproj", "{942DD0E6-7D25-44CC-A070-75F873D5D4F7}"
 EndProject
@@ -13,6 +13,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctOcean.DataService", "OctOcean.DataService\OctOcean.DataService.csproj", "{47A84872-B483-4005-856A-69B2C51FB60D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctOcean.Management.WebSite", "OctOcean.Management.WebSite\OctOcean.Management.WebSite.csproj", "{C61774F2-2D7F-48E9-B158-74D334FD4A62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctOcean.Entity", "OctOcean.Entity\OctOcean.Entity.csproj", "{21DA0760-9081-406D-85B5-DD0A18FA2CAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{C61774F2-2D7F-48E9-B158-74D334FD4A62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C61774F2-2D7F-48E9-B158-74D334FD4A62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C61774F2-2D7F-48E9-B158-74D334FD4A62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21DA0760-9081-406D-85B5-DD0A18FA2CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21DA0760-9081-406D-85B5-DD0A18FA2CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21DA0760-9081-406D-85B5-DD0A18FA2CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21DA0760-9081-406D-85B5-DD0A18FA2CAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
