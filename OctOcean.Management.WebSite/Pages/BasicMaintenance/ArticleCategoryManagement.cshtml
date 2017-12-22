@@ -7,13 +7,15 @@
     Layout = "~/Pages/_Layout.cshtml";
 }
 
+<h3>Msg: @Model.Message</h3>
+
 <h2><a href="/BasicMaintenance/ArticleCategoryEdit">编辑</a>文章类别管理</h2>
 
 <form method="post">
     <table class="table">
         <thead>
             <tr>
-                <th>文章类别主码</th>
+                <th>文章类别编码</th>
                 <th>文章类别</th>
             </tr>
         </thead>
@@ -24,10 +26,11 @@
                     <td>@ac.ArticleCategoryCode</td>
                     <td>@ac.ArticleCategoryName</td>
                     <td>
-                        <a asp-page="./ArticleCategoryEdit" asp-route-id="@ac.Id">edit</a>
+                        @*定位点标记帮助程序 使用 asp-route-{value} 属性生成“编辑”页面的链接，此处id必须和获取的参数name一致*@
+                        <a asp-page="./ArticleCategoryEdit" asp-route-id="@ac.Id">编辑</a>
                         <button type="submit" asp-page-handler="delete"
                                 asp-route-id="@ac.Id">
-                            delete
+                            删除
                         </button>
                     </td>
                 </tr>
@@ -35,5 +38,5 @@
         </tbody>
     </table>
 
-    <a asp-page="./ArticleCategoryEdit">Create</a>
+    <a asp-page="./ArticleCategoryEdit">新增</a>
 </form>

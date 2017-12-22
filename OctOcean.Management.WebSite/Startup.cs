@@ -23,9 +23,13 @@ namespace OctOcean.Management.WebSite
         {
             services.AddMvc();
             //.AddRazorPagesOptions(options=> { options.RootDirectory = "/wy"; });配置其他文件夹作为根目录
+            //.AddRazorPagesOptions(options =>
+            // {
+            //     options.RootDirectory = "/MyPages"; 设置页面的根目录
+            //     options.Conventions.AuthorizeFolder("/MyPages/Admin");或者为页面添加应用程序模型约定。
+            // });
 
 
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

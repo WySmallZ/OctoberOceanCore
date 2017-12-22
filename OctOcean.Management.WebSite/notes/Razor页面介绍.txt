@@ -6,3 +6,30 @@ Razor页面的URL 路径的关联由页面在文件系统中的位置决定。ur
 注意：
 默认情况下，运行时在“Pages”文件夹中查找 Razor 页面文件。
 URL 未包含页面时，Index 为默认页面。
+
+
+asp-page-handler="delete" :
+按照惯例，根据方案 OnPost[handler]Async 基于 handler 参数的值来选择处理程序方法的名称。
+因为本示例中 handler 是 delete，因此 OnPostDeleteAsync 处理程序方法用于处理 POST 请求。 如果 asp-page-handler 设置为不同值（如 remove），则选择名称为 OnPostRemoveAsync 的页面处理程序方法
+
+ASP.NET 在控制器上公开了 TempData 属性。 此属性可存储数据，直至数据被读取，一旦读取数据就会丢失。默认情况下启用基于 cookie 的 TempData 提供程序。如果需要基于会话的TempData提供程序，具体见 https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/app-state?tabs=aspnetcore2x#temp
+
+asp-page-handler 是 asp-page 的配套属性。 asp-page-handler 生成提交到页面定义的各个处理程序方法的 URL。 未指定 asp-page，链接到当前页面。
+
+指定 Razor 页面位于内容根目录中:默认情况下，Razor 页面位于 /Pages 目录的根位置。 向 AddMvc 添加 WithRazorPagesAtContentRoot，以指定 Razor 页面位于应用的内容根目录 (ContentRootPath) 中,
+services.AddMvc()
+    .AddRazorPagesOptions(options =>
+    {
+        ...
+    })
+    .WithRazorPagesAtContentRoot();
+
+
+
+指定 Razor 页面位于自定义根目录中,向 AddMvc 添加 WithRazorPagesRoot，以指定 Razor 页面位于应用中自定义根目录位置（提供相对路径）:
+services.AddMvc()
+    .AddRazorPagesOptions(options =>
+    {
+        ...
+    })
+    .WithRazorPagesRoot("/path/to/razor/pages");

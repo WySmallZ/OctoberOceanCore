@@ -1,18 +1,29 @@
 ﻿@page
-@model OctOcean.Management.WebSite.Pages.BasicMaintenance.ArticleCategoryEditModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@* "{id:int}"  路由约束 "{id:int}" 告诉页面接受包含 int 路由数据的页面请求，如果加入了此约束，那么所有包含该页面的链接都必须传入id ，否则无法生成链接。
+    本页面的新增和修改合在了一起，因此此处不需要显示的进行路由约束
+    *@
+@model BasicMaintenance.ArticleCategoryEditModel
 @{
     ViewData["Title"] = "编辑文章类别";
     Layout = "~/Pages/_Layout.cshtml";
 }
 
-<h2>文章类别编辑</h2>
-<p>
-    Enter your name.
-</p>
+<h2>编辑文章类别</h2>
+
 <div asp-validation-summary="All"></div>
-<form method="POST">
-    <div>Code: <input asp-for="ArticleCategoryEntity.ArticleCategoryCode" /></div>
-    <div>Name: <input asp-for="ArticleCategoryEntity.ArticleCategoryName" /></div>
-    <input type="submit" />
+@*默认情况下，Razor 页面只绑定带有非 GET 谓词的属性*@
+<form method="post">
+    <input asp-for="ArticleCategoryEntity.Id" type="hidden" />
+    <div>
+        文章类别编码:
+        <input asp-for="ArticleCategoryEntity.ArticleCategoryCode" />
+        <span asp-validation-for="ArticleCategoryEntity.ArticleCategoryCode"></span>
+    </div>
+    <div>
+        文章类别名称: <input asp-for="ArticleCategoryEntity.ArticleCategoryName" />
+        <span asp-validation-for="ArticleCategoryEntity.ArticleCategoryName"></span>
+    </div>
+    <input type="submit" value="保存" />
+   
 </form>
