@@ -21,6 +21,8 @@ namespace OctOcean.Management.WebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
             services.AddMvc();
             //.AddRazorPagesOptions(options=> { options.RootDirectory = "/wy"; });配置其他文件夹作为根目录
             //.AddRazorPagesOptions(options =>

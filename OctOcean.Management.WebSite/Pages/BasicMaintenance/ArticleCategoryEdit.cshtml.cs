@@ -38,7 +38,7 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
         //当点击了submit时，执行了post动作调用OnPost**方法
         public async Task<IActionResult> OnPostAsync() //页面包含 OnPostAsync 处理程序方法，它在 POST 请求上运行（当用户发布窗体时）
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) //验证模型状态是否无效
             {
                 //提交的窗体存在（已传递到服务器的）验证错误时，OnPostAsyncData 处理程序方法调用 Page 帮助程序方法
                 return Page(); //如果有错误，则再次显示页面并附带验证消息

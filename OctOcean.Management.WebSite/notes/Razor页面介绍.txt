@@ -33,3 +33,12 @@ services.AddMvc()
         ...
     })
     .WithRazorPagesRoot("/path/to/razor/pages");
+
+
+
+使用 Configuration.GetConnectionString("MovieContext")获取 appsettings.json中的配置项
+
+
+如何在页面添加下拉框的绑定：见 https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/razor-pages/search 最下面示例
+
+DataType特性的使用见：https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/razor-pages/validation
