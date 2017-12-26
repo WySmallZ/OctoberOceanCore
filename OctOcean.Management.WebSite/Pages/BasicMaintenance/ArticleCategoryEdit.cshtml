@@ -11,18 +11,18 @@
 
 <h2>编辑文章类别</h2>
 
-<div asp-validation-summary="All"></div>
+@*<div asp-validation-summary="All"></div>*@
 @*默认情况下，Razor 页面只绑定带有非 GET 谓词的属性*@
 <form method="post">
     <input asp-for="ArticleCategoryEntity.Id" type="hidden" />
     <div>
         文章类别编码:
         <input asp-for="ArticleCategoryEntity.ArticleCategoryCode" />
-        <span asp-validation-for="ArticleCategoryEntity.ArticleCategoryCode"></span>
+        @*<span asp-validation-for="ArticleCategoryEntity.ArticleCategoryCode"></span>*@
     </div>
     <div>
         文章类别名称: <input asp-for="ArticleCategoryEntity.ArticleCategoryName" />
-        <span asp-validation-for="ArticleCategoryEntity.ArticleCategoryName"></span>
+        @*<span asp-validation-for="ArticleCategoryEntity.ArticleCategoryName"></span>*@
     </div>
     <input type="submit" value="保存" />
    

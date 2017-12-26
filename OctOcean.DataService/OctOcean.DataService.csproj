@@ -8,4 +8,9 @@
     <PackageReference Include="Dapper" Version="1.50.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OctOcean.Entity\OctOcean.Entity.csproj" />
+    <ProjectReference Include="..\OctOcean.Utils\OctOcean.Utils.csproj" />
+  </ItemGroup>
+
 </Project>

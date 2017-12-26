@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OctOcean.DataService;
 using OctOcean.Entity;
 namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
     public class ArticleCategoryManagementModel : PageModel
     {
-        
+        ArticleCategoryDal dal = new ArticleCategoryDal();
+
         public IList<ArticleCategory> ArticleCategorys { get; private set; }
 
         [TempData]
@@ -21,25 +23,10 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
         public async Task OnGetAsync()
         {
             //此处模拟获取数据
-            await Task.Run(() => {
-                this.ArticleCategorys = new List<ArticleCategory>();
-                this.ArticleCategorys.Add(new ArticleCategory()
-                {
-                    ArticleCategoryCode = "W01",
-                    ArticleCategoryName = "Python",
-                    Id = 1
-
-                });
-
-                this.ArticleCategorys.Add(new ArticleCategory()
-                {
-                    ArticleCategoryCode = "W02",
-                    ArticleCategoryName = "Go",
-                    Id = 2
-
-                });
-
-            }); 
+            await Task.Run(() =>
+            {
+                this.ArticleCategorys = dal.GetAllArticleCategory();
+            });
 
 
         }
@@ -47,14 +34,11 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
         //点击删除时进行的操作，此处的命名需要按照页面上设置的handler决定
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            await Task.Run(()=> {
-                var ac= this.ArticleCategorys.FirstOrDefault(a => a.Id == id);
-                if (ac != null)
-                {
-                    this.ArticleCategorys.Remove(ac);
-                }
+            await Task.Run(() =>
+            {
+                dal.DeleteArticleCategory(id);
             });
-             
+
             return RedirectToPage();
         }
 

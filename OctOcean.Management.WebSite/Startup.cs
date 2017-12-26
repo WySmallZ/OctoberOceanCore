@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OctOcean.Utils;
 
 namespace OctOcean.Management.WebSite
 {
@@ -21,9 +22,10 @@ namespace OctOcean.Management.WebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            InitLoad();
 
             services.AddMvc();
+           
             //.AddRazorPagesOptions(options=> { options.RootDirectory = "/wy"; });配置其他文件夹作为根目录
             //.AddRazorPagesOptions(options =>
             // {
@@ -47,7 +49,7 @@ namespace OctOcean.Management.WebSite
             //    app.UseExceptionHandler("/Error");
             //}
 
-            //app.UseStaticFiles();
+            app.UseStaticFiles();//不可去掉，否则会出现css、js无法加载的情况
             app.UseMvc();
 
 
@@ -58,6 +60,15 @@ namespace OctOcean.Management.WebSite
             //        name: "default",
             //        template: "{controller}/{action=Index}/{id?}");
             //});
+        }
+
+
+        private void InitLoad()
+        {
+            //获取连接字符串
+            ConfigHelper.DefaultConnectionString= Configuration.GetConnectionString("defaultConnStr");
+
+
         }
     }
 }
