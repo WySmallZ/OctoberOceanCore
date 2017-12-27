@@ -1,0 +1,58 @@
+﻿@page
+@model Article.ArticleManagementModel
+@{
+    ViewData["Title"] = "文章管理";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+
+
+<h2>文章管理列表</h2>
+
+<form method="post">
+
+    <table lay-filter="amtable" id="amtable">
+        <thead>
+            <tr>
+                <th lay-data="{field:'SerialNumber', width:80}">序号</th>
+                <th lay-data="{field:'ArticleCategory' }">文章类别</th>
+                <th lay-data="{field:'ArticleTitle' }">文章标题</th>
+                <th lay-data="{field:'ArticleKey' }">Guid</th>
+                <th lay-data="{field:'operate' }">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                int i = 0;
+                foreach (var ad in Model.ArticleDrafts)
+                {
+
+                    <tr>
+                        <td>@(++i)</td>
+                        <td>@ad.ArticleCategory</td>
+                        <td>@ad.ArticleTitle</td>
+                        <td>@ad.ArticleKey</td>
+                        <td>
+                            <a target="_blank" asp-page="./ArticleEdit" asp-route-ArticleKey="@ad.ArticleKey" class="layui-btn layui-btn-xs layui-btn-normal">编辑</a>
+                            <input type="submit" value="删除" asp-page-handler="delete" class="layui-btn layui-btn-xs layui-btn-danger"
+                                   asp-route-id="@ad.ArticleKey" />
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</form>
+<script>
+    var table = layui.table;
+
+    //转换静态表格
+    table.init('amtable', {
+        limit: 10 //注意：请务必确保 limit 参数（默认：10）是与你服务端限定的数据条数一致
+        , page: true  //支持所有基础参数
+    });
+
+</script>

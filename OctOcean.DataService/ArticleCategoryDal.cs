@@ -44,8 +44,6 @@ namespace OctOcean.DataService
         {
             string sql = "UPDATE ArticleCategory SET ArticleCategoryCode=@ArticleCategoryCode, ArticleCategoryName=@ArticleCategoryName, DelStatus=@DelStatus WHERE Id=@Id;";
             return connection.Execute(sql, new { ArticleCategoryName = entity.ArticleCategoryName, ArticleCategoryCode = entity.ArticleCategoryCode, DelStatus = entity.DelStatus, Id = entity.Id });
-
-
         }
 
         public IList<ArticleCategory> GetAllArticleCategory(string where ,object obj)

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>@ViewBag.Title</title>
     <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    
 
     <!--<script src="../wwwroot/lib/layui/layui.js"></script>-->
     <!--一次性加载所有的-->
@@ -16,18 +18,18 @@
             <div class="layui-logo" style="color:#1E9FFF;">坚持不要放弃！</div>
             <!-- 头部区域（可配合layui已有的水平导航） -->
             <!--<ul class="layui-nav layui-layout-left">
-                <li class="layui-nav-item"><a href="">控制台</a></li>
-                <li class="layui-nav-item"><a href="">商品管理</a></li>
-                <li class="layui-nav-item"><a href="">用户</a></li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">其它系统</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">邮件管理</a></dd>
-                        <dd><a href="">消息管理</a></dd>
-                        <dd><a href="">授权管理</a></dd>
-                    </dl>
-                </li>
-            </ul>-->
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>-->
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
@@ -50,8 +52,8 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="javascript:;">博客管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">文章管理</a></dd>
-                            <dd><a href="javascript:;">列表二</a></dd>
+                            <dd><a asp-page="/Article/ArticleManagement">文章管理</a></dd>
+                            <dd><a asp-page="/Article/ArticleEdit">文章编辑</a></dd>
                             <dd><a href="javascript:;">列表三</a></dd>
 
                         </dl>
@@ -69,6 +71,8 @@
                 </ul>
             </div>
         </div>
+        <script src="~/lib/layui/layui.all.js"></script>
+
 
         <div class="layui-body">
             <!-- 内容主体区域 -->
@@ -82,7 +86,7 @@
             © layui.com - 底部固定区域
         </div>
     </div>
-    <script src="~/lib/layui/layui.all.js"></script>
+
 
     <!--<script>
         ; !function () {
@@ -97,6 +101,6 @@
     </script>-->
 
 
-
+   
 </body>
 </html>

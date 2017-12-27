@@ -27,9 +27,8 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
             {
                 this.ArticleCategorys = dal.GetAllArticleCategory();
             });
-
-
         }
+
 
         //点击删除时进行的操作，此处的命名需要按照页面上设置的handler决定
         public async Task<IActionResult> OnPostDeleteAsync(int id)

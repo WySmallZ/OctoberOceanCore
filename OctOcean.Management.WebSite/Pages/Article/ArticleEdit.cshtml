@@ -1,0 +1,121 @@
+﻿@page "{ArticleKey?}"
+@model Article.ArticleEditModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>文章编辑</title>
+    <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <form method="post" class="layui-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章标题：</label>
+            <div class="layui-input-block">
+                <input type="text" name="articletitle" required lay-verify="required" placeholder="请输入文章标题" autocomplete="off" class="layui-input" maxlength="100" style="width:90%">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">文章类别：</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="aihao">
+                    <option value="0">Java</option>
+                    <option value="1">NET</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">复选框</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="like[write]" title="写作">
+                <input type="checkbox" name="like[read]" title="阅读">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">开关关</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-skin="switch">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开关开</label>
+            <div class="layui-input-block">
+                <input type="checkbox" checked lay-skin="switch">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单选框</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="0" title="男">
+                <input type="radio" name="sex" value="1" title="女" checked>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">请填写描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+
+
+
+        @*<div class="layui-form-item">
+
+
+            <div class="ae-top-row">
+                <label></label>
+                <input type="text" />
+
+                <label>文章标签：</label>
+                <input type="text" />
+
+                <input type="button" value="保存" />
+                <input type="button" value="发布" />
+            </div>
+
+        </div>*@
+
+        <!--用父容器来控制宽度-->
+        <div>
+            <!--用当前元素来控制高度-->
+            <div id="div1" style="height:600px;max-height:600px;">
+                <p>请输入内容...</p>
+            </div>
+        </div>
+
+
+    </form>
+
+
+    <script src="~/lib/wangEditor/wangEditor.min.js"></script>
+
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#div1')
+       
+        // 或者 var editor = new E( document.getElementById('editor') )
+        editor.create();
+    </script>
+
+    <script src="~/lib/layui/layui.all.js"></script>
+</body>
+</html>
