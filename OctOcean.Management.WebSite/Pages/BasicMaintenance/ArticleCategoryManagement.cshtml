@@ -1,42 +1,54 @@
 ﻿@page
 @model OctOcean.Management.WebSite.Pages.BasicMaintenance.ArticleCategoryManagementModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "文章类别管理";
+    ViewData["Title"] = "文章分类";
     Layout = "~/Pages/_Layout.cshtml";
 }
 
-<h3>Msg: @Model.Message</h3>
-
-<h2><a href="/BasicMaintenance/ArticleCategoryEdit">编辑</a>文章类别管理</h2>
+<h2>文章分类管理</h2>
 
 <form method="post">
-    <table class="table">
+    <table class="layui-table" lay-filter="actable" id="actable">
         <thead>
             <tr>
-                <th>文章类别编码</th>
-                <th>文章类别</th>
+                <th>序号</th>
+                <th>分类编码</th>
+                <th>分类名称</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var ac in Model.ArticleCategorys)
-            {
-                <tr>
-                    <td>@ac.ArticleCategoryCode</td>
-                    <td>@ac.ArticleCategoryName</td>
-                    <td>
-                        @*定位点标记帮助程序 使用 asp-route-{value} 属性生成“编辑”页面的链接，此处id必须和获取的参数name一致*@
-                        <a asp-page="./ArticleCategoryEdit" asp-route-id="@ac.Id">编辑</a>
-                        <button type="submit" asp-page-handler="delete"
-                                asp-route-id="@ac.Id">
-                            删除
-                        </button>
-                    </td>
-                </tr>
-            }
+            @{
+                int i = 0;
+                foreach (var ac in Model.ArticleCategorys)
+                {
+            <tr>
+                <td>@(++i)</td>
+                <td>@ac.ArticleCategoryCode</td>
+                <td>@ac.ArticleCategoryName</td>
+                <td>
+                    @*定位点标记帮助程序 使用 asp-route-{value} 属性生成“编辑”页面的链接，此处id必须和获取的参数name一致*@
+                    <a asp-page="./ArticleCategoryEdit" asp-route-id="@ac.Id" class="layui-btn layui-btn-xs layui-btn-normal">编辑</a>
+                    <input type="submit" asp-page-handler="delete"
+                            asp-route-id="@ac.Id" value="删除" class="layui-btn layui-btn-xs layui-btn-danger" />
+                </td>
+            </tr>
+                    }
+                }
         </tbody>
     </table>
 
-    <a asp-page="./ArticleCategoryEdit">新增</a>
+    <a asp-page="./ArticleCategoryEdit" class="layui-btn layui-btn-sm">新增</a>
 </form>
+
+<script>
+    //var table = layui.table;
+
+    ////转换静态表格
+    //table.init('actable', {
+    //    //limit: 10 //注意：请务必确保 limit 参数（默认：10）是与你服务端限定的数据条数一致
+    //   page: false//支持所有基础参数
+    //});
+
+</script>

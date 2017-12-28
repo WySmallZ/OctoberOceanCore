@@ -16,7 +16,8 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public void OnGet(string ArticleKey)
         {
-
+            
+           
         }
     }
 }

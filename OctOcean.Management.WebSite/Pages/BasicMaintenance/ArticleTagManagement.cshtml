@@ -1,0 +1,43 @@
+﻿@page
+@model BasicMaintenance.ArticleTagManagementModel
+@{
+    ViewData["Title"] = "文章标签";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2>文章标签管理</h2>
+
+<form method="post">
+    <table class="layui-table" lay-filter="attable" id="attable">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>标签编码</th>
+                <th>标签名称</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 0;
+                foreach (var ac in Model.ArticleTags)
+                {
+                    <tr>
+                        <td>@(++i)</td>
+                        <td>@ac.ArticleTagCode</td>
+                        <td>@ac.ArticleTagName</td>
+                        <td>
+                            @*定位点标记帮助程序 使用 asp-route-{value} 属性生成“编辑”页面的链接，此处id必须和获取的参数name一致*@
+                            <a asp-page="./ArticleTagEdit" asp-route-id="@ac.Id" class="layui-btn layui-btn-xs layui-btn-normal">编辑</a>
+                            <input type="submit" asp-page-handler="delete"
+                                   asp-route-id="@ac.Id" value="删除" class="layui-btn layui-btn-xs layui-btn-danger" />
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <a asp-page="./ArticleTagEdit" class="layui-btn layui-btn-sm">新增</a>
+</form>
+

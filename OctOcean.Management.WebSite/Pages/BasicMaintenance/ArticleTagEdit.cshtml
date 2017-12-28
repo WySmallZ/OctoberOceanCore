@@ -1,0 +1,39 @@
+﻿@page
+@model OctOcean.Management.WebSite.Pages.BasicMaintenance.ArticleTagEditModel
+@{
+    ViewData["Title"] = "编辑文章标签";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2>编辑文章标签</h2>
+<div style="padding:10px 0;">
+    @*<div asp-validation-summary="All"></div>*@
+    @*默认情况下，Razor 页面只绑定带有非 GET 谓词的属性*@
+    <form method="post" class="layui-form layui-form-pane" action="">
+        <input asp-for="ArticleTagEntity.Id" type="hidden" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签编码:</label>
+            <div class="layui-input-block">
+                <input asp-for="ArticleTagEntity.ArticleTagCode" type="text" required lay-verify="required" maxlength="20" placeholder="请输入标签编码" autocomplete="off" class="layui-input">
+
+                @*<input asp-for="ArticleTagEntity.ArticleTagCode"/>*@
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签名称:</label>
+            <div class="layui-input-block">
+                <input asp-for="ArticleTagEntity.ArticleTagName" type="text" required lay-verify="required" maxlength="20" placeholder="请输入标签名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input class="layui-btn" type="submit" value="保存" />
+                <input type="reset" class="layui-btn layui-btn-primary" value="重置" />
+            </div>
+        </div>
+
+
+    </form>
+</div>
+

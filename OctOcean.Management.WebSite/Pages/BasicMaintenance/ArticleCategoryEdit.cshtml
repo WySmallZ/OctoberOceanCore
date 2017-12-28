@@ -1,8 +1,7 @@
 ﻿@page "{id:int?}"
-
 @* "{id:int}"  路由约束 "{id:int}" 告诉页面接受包含 int 路由数据的页面请求，如果加入了此约束，那么所有包含该页面的链接都必须传入id ，否则无法生成链接。
     本页面的新增和修改合在了一起，因此此处不需要显示的进行路由约束
-    *@
+*@
 @model BasicMaintenance.ArticleCategoryEditModel
 @{
     ViewData["Title"] = "编辑文章类别";
@@ -10,20 +9,33 @@
 }
 
 <h2>编辑文章类别</h2>
+<div style="padding:10px 0;">
+    @*<div asp-validation-summary="All"></div>*@
+    @*默认情况下，Razor 页面只绑定带有非 GET 谓词的属性*@
+    <form method="post" class="layui-form layui-form-pane" action="">
+        <input asp-for="ArticleCategoryEntity.Id" type="hidden" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">分类编码:</label>
+            <div class="layui-input-block">
+                <input asp-for="ArticleCategoryEntity.ArticleCategoryCode" type="text" maxlength="10"  required lay-verify="required" placeholder="请输入分类编码" autocomplete="off" class="layui-input">
 
-@*<div asp-validation-summary="All"></div>*@
-@*默认情况下，Razor 页面只绑定带有非 GET 谓词的属性*@
-<form method="post">
-    <input asp-for="ArticleCategoryEntity.Id" type="hidden" />
-    <div>
-        文章类别编码:
-        <input asp-for="ArticleCategoryEntity.ArticleCategoryCode" />
-        @*<span asp-validation-for="ArticleCategoryEntity.ArticleCategoryCode"></span>*@
-    </div>
-    <div>
-        文章类别名称: <input asp-for="ArticleCategoryEntity.ArticleCategoryName" />
-        @*<span asp-validation-for="ArticleCategoryEntity.ArticleCategoryName"></span>*@
-    </div>
-    <input type="submit" value="保存" />
-   
-</form>
+                @*<input asp-for="ArticleCategoryEntity.ArticleCategoryCode"/>*@
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分类名称:</label>
+            <div class="layui-input-block">
+                <input asp-for="ArticleCategoryEntity.ArticleCategoryName" type="text" maxlength="10"  required lay-verify="required" placeholder="请输入文章分类" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input class="layui-btn" type="submit" value="保存" />
+                <input type="reset" class="layui-btn layui-btn-primary" value="重置" />
+            </div>
+        </div>
+
+
+    </form>
+</div>

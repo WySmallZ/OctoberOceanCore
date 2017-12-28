@@ -6,16 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OctOcean.DataService;
 using OctOcean.Entity;
-
 namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
-    public class ArticleCategoryEditModel : PageModel
+    public class ArticleTagEditModel : PageModel
     {
-        ArticleCategoryDal dal = new ArticleCategoryDal();
+        ArticleTagDal dal = new ArticleTagDal();
 
 
         [BindProperty] //使用 [BindProperty] 特性来选择加入模型绑定
-        public ArticleCategory ArticleCategoryEntity { get; set; }
+        public ArticleTag ArticleTagEntity { get; set; }
 
 
 
@@ -29,13 +28,13 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
                 await Task.Run(() =>
                 {
                     //获取信息
-                    this.ArticleCategoryEntity = dal.GetArticleCategory(id);
+                    this.ArticleTagEntity = dal.GetArticleTag(id);
 
 
                 });
-                if (ArticleCategoryEntity == null)
+                if (ArticleTagEntity == null)
                 {
-                    return RedirectToPage("ArticleCategoryManagement");
+                    return RedirectToPage("ArticleTagManagement");
                 }
 
             }
@@ -55,31 +54,31 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
             //    //提交的窗体存在（已传递到服务器的）验证错误时，OnPostAsyncData 处理程序方法调用 Page 帮助程序方法
             //    return Page(); //如果有错误，则再次显示页面并附带验证消息
             //}
-             
-            //获取ArticleCategoryEntity的值
-            //写入ArticleCategoryEntity
+
+            //获取ArticleTagEntity的值
+            //写入ArticleTagEntity
             //await _db.SaveChangesAsync();
-            await Task.Run(()=> {
-                if (this.ArticleCategoryEntity.Id > 0)
+            await Task.Run(() => {
+                if (this.ArticleTagEntity.Id > 0)
                 {
-                    dal.UpdateArticleCategory(ArticleCategoryEntity);
+                    dal.UpdateArticleTag(ArticleTagEntity);
                 }
                 else
                 {
-                    dal.InsertArticleCategory(this.ArticleCategoryEntity);
+                    dal.InsertArticleTag(this.ArticleTagEntity);
                 }
             }); //此处模拟写入
 
             //Message = $"Customer wysmallz added"; //可以通过TempData传递参数
             ////跳转到列表界面
-            return RedirectToPage("ArticleCategoryManagement"); //返回当前目录下的
+            return RedirectToPage("ArticleTagManagement"); //返回当前目录下的
         }
 
 
         //public void OnGet()
         //{
         //    //获取信息
-        //    // this.ArticleCategoryEntity = new ArticleCategory() { ArticleCategoryCode = "A01", ArticleCategoryName = "Java", Id = 1 };
+        //    // this.ArticleTagEntity = new ArticleTag() { ArticleTagCode = "A01", ArticleTagName = "Java", Id = 1 };
         //}
 
 

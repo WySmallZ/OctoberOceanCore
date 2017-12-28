@@ -8,11 +8,11 @@ using OctOcean.DataService;
 using OctOcean.Entity;
 namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
-    public class ArticleCategoryManagementModel : PageModel
+    public class ArticleTagManagementModel : PageModel
     {
-        ArticleCategoryDal dal = new ArticleCategoryDal();
+        ArticleTagDal dal = new ArticleTagDal();
 
-        public IList<ArticleCategory> ArticleCategorys { get; private set; }
+        public IList<ArticleTag> ArticleTags { get; private set; }
 
         //[TempData]
         //public string Message { get; set; } //用于参数传递
@@ -25,7 +25,7 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
             //此处模拟获取数据
             await Task.Run(() =>
             {
-                this.ArticleCategorys = dal.GetAllArticleCategory();
+                this.ArticleTags = dal.GetAllArticleTag();
             });
         }
 
@@ -35,7 +35,7 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
         {
             await Task.Run(() =>
             {
-                dal.DeleteArticleCategory(id);
+                dal.DeleteArticleTag(id);
             });
 
             return RedirectToPage();
