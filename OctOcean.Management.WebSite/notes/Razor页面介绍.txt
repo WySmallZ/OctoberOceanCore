@@ -60,3 +60,14 @@ services.AddMvc()
 如何在页面添加下拉框的绑定：见 https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/razor-pages/search 最下面示例
 
 DataType特性的使用见：https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/razor-pages/validation
+
+Razor页面派生于PageModel类，通过在构造函数中使用依赖关系注入将 MovieContext 添加到Razor页面中。注：在控制器中，也可以在控制器的构造函数中使用依赖注入将dbcontext引用到控制器中，从而进行访问。
+
+@page 可以定义路由模板，例如：@page "{id:int?}"，该模板直接影响着使用了“asp-page”标签指令生成的url路径。如果不指定模板，可以通过对应的方法的参数进行匹配。一旦设置了模板，就优先按照模板来匹配。
+
+
+搜索的应用，提交搜索信息，使用input的name设置，：https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/razor-pages/search
+
+使用特性添加验证：https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/razor-pages/validation
+
+上传文件简单示例：https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/razor-pages/uploading-files
