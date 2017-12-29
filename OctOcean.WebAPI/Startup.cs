@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OctOcean.WebAPI.DAL;
 
 namespace OctOcean.WebAPI
 {
@@ -23,18 +24,29 @@ namespace OctOcean.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            InitLoad();
+            
+
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
             app.UseMvc();
+        }
+
+        private void InitLoad()
+        {
+            //获取连接字符串
+            ConfigHelper.DefaultConnectionString = Configuration.GetConnectionString("defaultConnStr");
+
+
         }
     }
 }

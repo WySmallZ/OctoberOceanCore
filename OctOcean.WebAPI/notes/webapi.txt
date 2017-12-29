@@ -1,0 +1,1 @@
+﻿从控制器的构造方法，直接获取EF中的dbcontext对象，是如何实现的？https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/first-web-api ，注册数据库上下文
