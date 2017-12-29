@@ -11,11 +11,11 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
     public class ArticleCategoryEditModel : PageModel
     {
-        ArticleCategoryDal dal = new ArticleCategoryDal();
+        Base_ArticleCategoryDal dal = new Base_ArticleCategoryDal();
 
 
         [BindProperty] //使用 [BindProperty] 特性来选择加入模型绑定
-        public ArticleCategory ArticleCategoryEntity { get; set; }
+        public Base_ArticleCategory ArticleCategoryEntity { get; set; }
 
 
 

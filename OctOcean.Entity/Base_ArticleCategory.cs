@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OctOcean.Entity
 {
-    public class ArticleCategory
+    public class Base_ArticleCategory
     {
         public int Id { get; set; }
         //[Required,StringLength(10)]

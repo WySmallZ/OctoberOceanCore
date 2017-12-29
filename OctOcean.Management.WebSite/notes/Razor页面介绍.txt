@@ -8,9 +8,27 @@ Razor页面的URL 路径的关联由页面在文件系统中的位置决定。ur
 URL 未包含页面时，Index 为默认页面。
 
 
+由于 模型绑定、标记帮助程序和 HTML 帮助程序，只能作用于 Razor 页面类中定义的属性，因此需要特别注意：页面类中必须定义属性而不是变量。
+
+
+如果需要应用EF，可以在Startup.cs中，对Dbcontext进行初始化：https://docs.microsoft.com/zh-cn/aspnet/core/mvc/razor-pages/?tabs=visual-studio
+ public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<AppDbContext>(options =>
+                              options.UseInMemoryDatabase("name"));
+            services.AddMvc();
+        }
+
+
+
+
+
+
 asp-page-handler="delete" :
 按照惯例，根据方案 OnPost[handler]Async 基于 handler 参数的值来选择处理程序方法的名称。
 因为本示例中 handler 是 delete，因此 OnPostDeleteAsync 处理程序方法用于处理 POST 请求。 如果 asp-page-handler 设置为不同值（如 remove），则选择名称为 OnPostRemoveAsync 的页面处理程序方法
+
+
 
 ASP.NET 在控制器上公开了 TempData 属性。 此属性可存储数据，直至数据被读取，一旦读取数据就会丢失。默认情况下启用基于 cookie 的 TempData 提供程序。如果需要基于会话的TempData提供程序，具体见 https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/app-state?tabs=aspnetcore2x#temp
 

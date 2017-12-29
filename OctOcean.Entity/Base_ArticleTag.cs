@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OctOcean.Entity
 {
-   public class ArticleTag
+   public class Base_ArticleTag
     {
         public int Id { get; set; }
         //[Required,StringLength(10)]
