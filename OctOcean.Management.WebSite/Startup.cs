@@ -50,16 +50,16 @@ namespace OctOcean.Management.WebSite
             //}
 
             app.UseStaticFiles();//不可去掉，否则会出现css、js无法加载的情况
-            app.UseMvc();
+            //app.UseMvc();
 
 
 
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller}/{action=Index}/{id?}");
-            //});
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            });
         }
 
 

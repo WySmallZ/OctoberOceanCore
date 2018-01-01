@@ -1,0 +1,1 @@
+﻿控制器中的每个 public 方法均可作为 HTTP 终结点调用。HTTP 终结点是 Web 应用程序中可定向的 URL（例如 http://localhost:1234/HelloWorld），其中结合了所用的协议 HTTP、TCP 端口等 Web 服务器的网络位置 localhost:1234，以及目标 URI HelloWorld。

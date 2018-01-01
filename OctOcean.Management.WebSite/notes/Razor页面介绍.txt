@@ -50,7 +50,7 @@ services.AddMvc()
     {
         ...
     })
-    .WithRazorPagesRoot("/path/to/razor/pages");
+    .WithRazorPagesRoot("/path/to/razor/pages");	`
 
 
 

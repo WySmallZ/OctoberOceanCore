@@ -1,10 +1,11 @@
 ﻿@page
-    
+
 @model OctOcean.Management.WebSite.Pages.IndexModel
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Pages/_Layout.cshtml";
+    Layout = "~/_Layout.cshtml";
 }
 
 <h2>@Model.Message</h2>
 
+<a asp-area="" asp-controller="SmallZ" asp-action="Index" class="navbar-brand">使用MVC的方式生成链接 smallz index</a>
