@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace OctOcean.Entity
@@ -7,6 +8,9 @@ namespace OctOcean.Entity
    public  class Pub_Article_Entity
     {
         public int Id { get; set; }
+       
+        
+        // [DatabaseGenerated(DatabaseGeneratedOption.None)] //DatabaseGenerated属性允许应用程序以指定为主键，而不是具有数据库生成它。
         /// <summary>
         /// 文章的Guid值，同一篇文章，该值唯一
         /// </summary>
