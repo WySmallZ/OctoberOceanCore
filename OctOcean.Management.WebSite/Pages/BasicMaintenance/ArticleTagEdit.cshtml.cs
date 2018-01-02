@@ -10,11 +10,11 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
     public class ArticleTagEditModel : PageModel
     {
-        Base_ArticleTagDal dal = new Base_ArticleTagDal();
+        Base_ArticleTag_Dal dal = new Base_ArticleTag_Dal();
 
 
         [BindProperty] //使用 [BindProperty] 特性来选择加入模型绑定
-        public Base_ArticleTag ArticleTagEntity { get; set; }
+        public Base_ArticleTag_Entity ArticleTagEntity { get; set; }
 
 
 

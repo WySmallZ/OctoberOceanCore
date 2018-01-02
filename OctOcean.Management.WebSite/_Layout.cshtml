@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,7 +8,7 @@
     <title>@ViewBag.Title</title>
     <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    
+
 
     <!--<script src="../wwwroot/lib/layui/layui.js"></script>-->
     <!--一次性加载所有的-->
@@ -18,18 +20,18 @@
             <div class="layui-logo" style="color:#fff;font-size:22px;">Oct Ocean</div>
             <!-- 头部区域（可配合layui已有的水平导航） -->
             <!--<ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">控制台</a></li>
-            <li class="layui-nav-item"><a href="">商品管理</a></li>
-            <li class="layui-nav-item"><a href="">用户</a></li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">其它系统</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">邮件管理</a></dd>
-                    <dd><a href="">消息管理</a></dd>
-                    <dd><a href="">授权管理</a></dd>
-                </dl>
-            </li>
-        </ul>-->
+                <li class="layui-nav-item"><a href="">控制台</a></li>
+                <li class="layui-nav-item"><a href="">商品管理</a></li>
+                <li class="layui-nav-item"><a href="">用户</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">其它系统</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">邮件管理</a></dd>
+                        <dd><a href="">消息管理</a></dd>
+                        <dd><a href="">授权管理</a></dd>
+                    </dl>
+                </li>
+            </ul>-->
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
@@ -60,7 +62,7 @@
                     <li class="layui-nav-item  layui-nav-itemed">
                         <a href="javascript:;">基础数据维护</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="/BasicMaintenance/ArticleCategoryManagement">文章分类</a></dd>
+                            <dd><a asp-page="/BasicMaintenance/ArticleCategoryManagement">文章分类</a></dd>
                             <dd><a href="/BasicMaintenance/ArticleTagManagement">文章标签</a></dd>
 
                         </dl>
@@ -100,6 +102,6 @@
     </script>-->
 
 
-   
+
 </body>
 </html>

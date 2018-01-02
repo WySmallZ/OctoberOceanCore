@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace OctOcean.Entity
+namespace OctOcean.Management.WebSite.Models
 {
-   public  class ArticlePublish
+    public class ArticleDraft_M
     {
         public int Id { get; set; }
         /// <summary>
@@ -19,18 +20,12 @@ namespace OctOcean.Entity
         /// 文章类别
         /// </summary>
         public string ArticleCategory { get; set; }
-        /// <summary>
-        /// 文章内容
-        /// </summary>
-        public string ContentText { get; set; }
+
         /// <summary>
         /// 文章标签
         /// </summary>
         public string ArticleTag { get; set; }
-        /// <summary>
-        /// 辅助样式脚本
-        /// </summary>
-        public string AidStyle { get; set; }
+
         /// <summary>
         /// 更新时间
         /// </summary>

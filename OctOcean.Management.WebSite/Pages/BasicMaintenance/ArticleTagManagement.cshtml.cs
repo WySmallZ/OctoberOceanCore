@@ -10,9 +10,9 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
     public class ArticleTagManagementModel : PageModel
     {
-        Base_ArticleTagDal dal = new Base_ArticleTagDal();
+        Base_ArticleTag_Dal dal = new Base_ArticleTag_Dal();
 
-        public IList<Base_ArticleTag> ArticleTags { get; private set; }
+        public IList<Base_ArticleTag_Entity> ArticleTags { get; private set; }
 
         //[TempData]
         //public string Message { get; set; } //用于参数传递

@@ -8,15 +8,15 @@ using OctOcean.Utils;
 
 namespace OctOcean.DataService
 {
-   public  class Base_ArticleTagDal
+   public  class Base_ArticleTag_Dal
     {
         IDbConnection connection = null;
-        public Base_ArticleTagDal()
+        public Base_ArticleTag_Dal()
         {
             this.connection = new SqlConnection(ConfigHelper.DefaultConnectionString);
         }
 
-        public int InsertArticleTag(Base_ArticleTag entity)
+        public int InsertArticleTag(Base_ArticleTag_Entity entity)
         {
             string sql = "INSERT INTO Base_ArticleTag(ArticleTagName, ArticleTagCode,DelStatus ) VALUES(@ArticleTagName,@ArticleTagCode,@DelStatus)";
             return connection.Execute(sql, new { ArticleTagName = entity.ArticleTagName, ArticleTagCode = entity.ArticleTagCode, DelStatus = entity.DelStatus });
@@ -39,37 +39,37 @@ namespace OctOcean.DataService
         }
 
 
-        public int UpdateArticleTag(Base_ArticleTag entity)
+        public int UpdateArticleTag(Base_ArticleTag_Entity entity)
         {
             string sql = "UPDATE Base_ArticleTag SET ArticleTagCode=@ArticleTagCode, ArticleTagName=@ArticleTagName, DelStatus=@DelStatus WHERE Id=@Id;";
             return connection.Execute(sql, new { ArticleTagName = entity.ArticleTagName, ArticleTagCode = entity.ArticleTagCode, DelStatus = entity.DelStatus, Id = entity.Id });
         }
 
-        public IList<Base_ArticleTag> GetAllArticleTag(string where, object obj)
+        public IList<Base_ArticleTag_Entity> GetAllArticleTag(string where, object obj)
         {
             string sql = "select  Id , ArticleTagName, ArticleTagCode, DelStatus from Base_ArticleTag where DelStatus=0 ";
             if (where != null && where.Trim().Length > 0)
             {
                 sql += where;
             }
-            var query = connection.Query<Base_ArticleTag>(sql, obj).AsList();
+            var query = connection.Query<Base_ArticleTag_Entity>(sql, obj).AsList();
             return query;
         }
 
-        public IList<Base_ArticleTag> GetAllArticleTag()
+        public IList<Base_ArticleTag_Entity> GetAllArticleTag()
         {
             string sql = "select  Id , ArticleTagName, ArticleTagCode, DelStatus from Base_ArticleTag where DelStatus=0 ";
 
-            var query = connection.Query<Base_ArticleTag>(sql).AsList();
+            var query = connection.Query<Base_ArticleTag_Entity>(sql).AsList();
             return query;
         }
 
 
-        public Base_ArticleTag GetArticleTag(int Id)
+        public Base_ArticleTag_Entity GetArticleTag(int Id)
         {
             string sql = "select  Id , ArticleTagName, ArticleTagCode, DelStatus from Base_ArticleTag where DelStatus=0 and Id=@Id";
 
-            var query = connection.Query<Base_ArticleTag>(sql, new { Id = Id }).AsList();
+            var query = connection.Query<Base_ArticleTag_Entity>(sql, new { Id = Id }).AsList();
             if (query != null && query.Count > 0)
                 return query[0];
             return null;

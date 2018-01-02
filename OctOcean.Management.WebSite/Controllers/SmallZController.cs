@@ -11,8 +11,12 @@ namespace OctOcean.Management.WebSite.Controllers
     {
         public IActionResult Index()
         {
+            this.ViewBag.abc = "sd";
             return View();
         }
+
+
+
 
 
         /*

@@ -11,16 +11,16 @@ namespace OctOcean.Management.WebSite.Pages.Article
 {
     public class ArticleManagementModel : PageModel
     {
-        ArticleDraftDal dal = new ArticleDraftDal();
+        Pri_ArticleDraft_Dal dal = new Pri_ArticleDraft_Dal();
 
-        public IList<ArticleDraft> ArticleDrafts { get; private set; }
+        public IList<Pri_ArticleDraft_Entity> ArticleDrafts { get; private set; }
 
         public async Task OnGetAsync()
         {
             //此处模拟获取数据
             await Task.Run(() =>
             {
-                this.ArticleDrafts = dal.GetAllArticleDraft();
+                this.ArticleDrafts = dal.GetAllPri_ArticleDraft();
                 ViewData["ArticCount"] = ArticleDrafts.Count;
             });
 

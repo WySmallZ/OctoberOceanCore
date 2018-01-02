@@ -1,0 +1,20 @@
+﻿@model OctOcean.Entity.Pub_Feedback_Entity
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<h2>新增问题反馈</h2>
+<form asp-action="Create">
+    <div>
+        <label>邮箱:</label>
+        <input asp-for="Mail" />
+    </div>
+    <div>
+        <label>问题描述：</label>
+        <input asp-for="ProblemDesc"/>
+    </div>
+    <div>
+        <input type="submit" value="提交"/>
+    </div>
+</form>

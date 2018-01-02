@@ -1,1 +1,22 @@
 ﻿控制器中的每个 public 方法均可作为 HTTP 终结点调用。HTTP 终结点是 Web 应用程序中可定向的 URL（例如 http://localhost:1234/HelloWorld），其中结合了所用的协议 HTTP、TCP 端口等 Web 服务器的网络位置 localhost:1234，以及目标 URI HelloWorld。
+
+MVC 根据入站 URL 调用控制器类（及其中的操作方法）。 MVC 所用的默认 URL 路由逻辑使用如下格式来确定调用的代码：
+/[Controller]/[ActionName]/[Parameters]，在“Startup.cs”文件中设置路由格式
+
+
+可以使用 HtmlEncoder.Default.Encode 防止恶意输入（即 JavaScript）损害应用。
+
+RenderBody 是显示创建的所有特定于视图的页面的占位符，已包装在布局页面中。 ws/_ViewStart.cshtml 文件将 Views/Shared/_Layout.cshtml 文件引入到每个视图中。 可以使用 Layout 属性设置不同的布局视图，或将它设置为 null，这样将不会使用任何布局文件。
+
+关于ViewModel 、ViewData、ViewBag、TempData、Session 在MVC中的比较：http://www.mytecbits.com/microsoft/dot-net/viewmodel-viewdata-viewbag-tempdata-mvc
+
+如何通过创建一个类，来获取连接字符串或者DbContext对象。https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/first-mvc-app/working-with-sql?tabs=aspnetcore2x
+
+
+在控制器方法中，使用[Bind] 特性是防止过度发布的一种方法。 只应在 [Bind] 特性中包含想要更改的属性，https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/first-mvc-app/controller-methods-views
+ValidateAntiForgeryToken 特性用于防止请求伪造，并与编辑视图文件 (Views/Movies/Edit.cshtml) 中生成的防伪标记相配对。
+
+mvc中绑定下拉框的值：https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/first-mvc-app/search
+
+DataType的使用和使用特性添加验证：https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/first-mvc-app/validation
+优先使用DataType

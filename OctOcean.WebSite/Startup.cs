@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OctOcean.Utils;
 
 namespace OctOcean.WebSite
 {
@@ -21,7 +22,7 @@ namespace OctOcean.WebSite
         public void ConfigureServices(IServiceCollection services)
         {
             //此处可以注册数据库上下文
-            
+            InitLoad();
 
             //将MVC服务添加到服务容器中
             services.AddMvc();
@@ -32,15 +33,15 @@ namespace OctOcean.WebSite
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment()) //检查当前的托管环境名称是否为“ 开发”。
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error"); //发生错误显示页
-            }
+            //if (env.IsDevelopment()) //检查当前的托管环境名称是否为“ 开发”。
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseBrowserLink();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Home/Error"); //发生错误显示页
+            //}
 
             app.UseStaticFiles();
 
@@ -56,6 +57,14 @@ namespace OctOcean.WebSite
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+        }
+
+        private void InitLoad()
+        {
+            //获取连接字符串
+            ConfigHelper.DefaultConnectionString = Configuration.GetConnectionString("defaultConnStr");
 
 
         }

@@ -12,7 +12,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
     public class ArticleEditModel : PageModel
     {
         [BindProperty]
-        public ArticleDraft ArticleDraftEntity { get; set; }
+        public Pri_ArticleDraft_Entity ArticleDraftEntity { get; set; }
 
 
         public SelectList Base_ArticleCategoryList { get; set; }
@@ -20,7 +20,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public void OnGet(string ArticleKey,string sacv)
         {
-            Base_ArticleCategoryDal bac = new Base_ArticleCategoryDal();
+            Base_ArticleCategory_Dal bac = new Base_ArticleCategory_Dal();
 
             this.Base_ArticleCategoryList = new SelectList(bac.GetAllArticleCategory(), "ArticleCategoryCode", "ArticleCategoryName","");
         }

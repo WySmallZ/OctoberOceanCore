@@ -10,9 +10,9 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
     public class ArticleCategoryManagementModel : PageModel
     {
-        Base_ArticleCategoryDal dal = new Base_ArticleCategoryDal();
+        Base_ArticleCategory_Dal dal = new Base_ArticleCategory_Dal();
 
-        public IList<Base_ArticleCategory> ArticleCategorys { get; private set; }
+        public IList<Base_ArticleCategory_Entity> ArticleCategorys { get; private set; }
 
         //[TempData]
         //public string Message { get; set; } //用于参数传递

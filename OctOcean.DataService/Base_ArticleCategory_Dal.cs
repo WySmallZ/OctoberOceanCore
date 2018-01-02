@@ -9,15 +9,15 @@ using OctOcean.Utils;
 
 namespace OctOcean.DataService
 {
-    public class Base_ArticleCategoryDal
+    public class Base_ArticleCategory_Dal
     {
         IDbConnection connection = null;
-        public Base_ArticleCategoryDal()
+        public Base_ArticleCategory_Dal()
         {
             this.connection = new SqlConnection(ConfigHelper.DefaultConnectionString);
         }
 
-        public int InsertArticleCategory(Base_ArticleCategory entity)
+        public int InsertArticleCategory(Base_ArticleCategory_Entity entity)
         {   
             string sql = "INSERT INTO Base_ArticleCategory(ArticleCategoryName, ArticleCategoryCode,DelStatus ) VALUES(@ArticleCategoryName,@ArticleCategoryCode,@DelStatus)";
             return connection.Execute(sql, new { ArticleCategoryName = entity.ArticleCategoryName, ArticleCategoryCode = entity.ArticleCategoryCode, DelStatus = entity.DelStatus });
@@ -40,37 +40,37 @@ namespace OctOcean.DataService
         }
 
 
-        public int UpdateArticleCategory(Base_ArticleCategory entity)
+        public int UpdateArticleCategory(Base_ArticleCategory_Entity entity)
         {
             string sql = "UPDATE Base_ArticleCategory SET ArticleCategoryCode=@ArticleCategoryCode, ArticleCategoryName=@ArticleCategoryName, DelStatus=@DelStatus WHERE Id=@Id;";
             return connection.Execute(sql, new { ArticleCategoryName = entity.ArticleCategoryName, ArticleCategoryCode = entity.ArticleCategoryCode, DelStatus = entity.DelStatus, Id = entity.Id });
         }
 
-        public IList<Base_ArticleCategory> GetAllArticleCategory(string where ,object obj)
+        public IList<Base_ArticleCategory_Entity> GetAllArticleCategory(string where ,object obj)
         {
             string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus from Base_ArticleCategory where DelStatus=0 ";
             if (where != null && where.Trim().Length > 0)
             {
                 sql += where;
             }
-            var query = connection.Query<Base_ArticleCategory>(sql, obj).AsList();
+            var query = connection.Query<Base_ArticleCategory_Entity>(sql, obj).AsList();
             return  query;
         }
 
-        public IList<Base_ArticleCategory> GetAllArticleCategory()
+        public IList<Base_ArticleCategory_Entity> GetAllArticleCategory()
         {
             string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus from Base_ArticleCategory where DelStatus=0 ";
              
-            var query = connection.Query<Base_ArticleCategory>(sql).AsList();
+            var query = connection.Query<Base_ArticleCategory_Entity>(sql).AsList();
             return query;
         }
 
 
-        public Base_ArticleCategory GetArticleCategory(int Id)
+        public Base_ArticleCategory_Entity GetArticleCategory(int Id)
         {
             string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus from Base_ArticleCategory where DelStatus=0 and Id=@Id";
 
-            var query = connection.Query<Base_ArticleCategory>(sql, new { Id = Id }).AsList();
+            var query = connection.Query<Base_ArticleCategory_Entity>(sql, new { Id = Id }).AsList();
             if (query != null && query.Count > 0)
                 return query[0];
             return null;
