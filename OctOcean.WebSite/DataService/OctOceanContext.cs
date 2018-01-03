@@ -24,7 +24,7 @@ namespace OctOcean.WebSite.DataService
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            //指定数据库中的表名和实体相关联
             modelBuilder.Entity<Pub_Article_Entity>().ToTable("Pri_ArticleDraft");
            
         }

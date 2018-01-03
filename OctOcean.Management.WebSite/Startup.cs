@@ -17,9 +17,11 @@ namespace OctOcean.Management.WebSite
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; } //没有set，只能在构造函数中进行赋值
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
+
+        //ConfigureServices 定义应用所使用的服务（如 ASP.NET Core MVC、Entity Framework Core 和标识）
         public void ConfigureServices(IServiceCollection services)
         {
             InitLoad();
@@ -36,9 +38,11 @@ namespace OctOcean.Management.WebSite
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //Configure 定义请求管道的中间件。
+
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OctOcean.Utils;
 
 namespace OctOcean.WebSite
 {
@@ -22,8 +23,9 @@ namespace OctOcean.WebSite
         public void ConfigureServices(IServiceCollection services)
         {
             //此处可以注册数据库上下文
-            services.AddDbContext<DataService.OctOceanContext>(options =>
-     options.UseSqlServer(Configuration.GetConnectionString("defaultConnStr")));
+            InitLoad();
+     //       services.AddDbContext<DataService.OctOceanContext>(options =>
+     //options.UseSqlServer(Configuration.GetConnectionString("defaultConnStr")));
 
 
             //将MVC服务添加到服务容器中
@@ -66,7 +68,7 @@ namespace OctOcean.WebSite
         private void InitLoad()
         {
             //获取连接字符串
-       //     ConfigHelper.DefaultConnectionString = Configuration.GetConnectionString("defaultConnStr");
+           ConfigHelper.DefaultConnectionString = Configuration.GetConnectionString("defaultConnStr");
 
 
         }

@@ -22,6 +22,8 @@ namespace OctOcean.WebSite
 
             //    try
             //    {
+            //        //可以通过这种方法获取DB上下文实例
+            //        var context = services.GetRequiredService<DataService.OctOceanContext>();
             //        // Requires using RazorPagesMovie.Models;
             //        //SeedData.Initialize(services);
             //    }
@@ -38,7 +40,7 @@ namespace OctOcean.WebSite
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            
+           
                 .UseStartup<Startup>()
                 .Build();
     }

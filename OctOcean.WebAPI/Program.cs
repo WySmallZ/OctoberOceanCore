@@ -19,6 +19,7 @@ namespace OctOcean.WebAPI
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://*:6262")
                 .UseStartup<Startup>()
                 .Build();
     }
