@@ -15,14 +15,58 @@ namespace OctOcean.Management.WebSite.Pages.Article
         public Pri_ArticleDraft_Entity ArticleDraftEntity { get; set; }
 
 
-        public SelectList Base_ArticleCategoryList { get; set; }
-        public string SelectArticleCategoryValue { get; set; }
+        public SelectList Base_ArticleCategoryddl { get; set; }
 
-        public void OnGet(string ArticleKey,string sacv)
+        public IList<Base_ArticleTag_Entity> Base_ArticleTagList { get; set; }
+
+
+        //public string SelectArticleCategoryValue { get; set; }
+
+        Pri_ArticleDraft_Dal dal = new Pri_ArticleDraft_Dal();
+
+        public async Task<IActionResult> OnGetAsync(string ArticleKey)
         {
-            Base_ArticleCategory_Dal bac = new Base_ArticleCategory_Dal();
+            if (!string.IsNullOrEmpty(ArticleKey))
+            {
 
-            this.Base_ArticleCategoryList = new SelectList(bac.GetAllArticleCategory(), "ArticleCategoryCode", "ArticleCategoryName","");
+                await Task.Run(() =>
+                {
+                    //获取信息
+                    this.ArticleDraftEntity = dal.GetPri_ArticleDraft(ArticleKey);
+                });
+
+                if (ArticleDraftEntity == null)
+                {
+                    return RedirectToPage("ArticleManagement");
+                }
+            }
+            BindControll();
+            return Page();
+
+        }
+
+
+        //public void OnGet(string ArticleKey)
+        //{
+        //    BindControll();
+        //}
+
+
+        public void OnPost()
+        {
+            var a = this.ArticleDraftEntity;
+        }
+
+        private void BindControll()
+        {
+            //获取文章分类
+            Base_ArticleCategory_Dal bacdal = new Base_ArticleCategory_Dal();
+            this.Base_ArticleCategoryddl = new SelectList(bacdal.GetAllArticleCategory(), "ArticleCategoryCode", "ArticleCategoryName", ""); //默认选择空值
+
+            Base_ArticleTag_Dal batdal = new Base_ArticleTag_Dal();
+            Base_ArticleTagList = batdal.GetAllArticleTag();
+
+
         }
     }
 }

@@ -37,15 +37,15 @@ namespace OctOcean.WebSite
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //if (env.IsDevelopment()) //检查当前的托管环境名称是否为“ 开发”。
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseBrowserLink();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error"); //发生错误显示页
-            //}
+            if (env.IsDevelopment()) //检查当前的托管环境名称是否为“ 开发”。
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error"); //发生错误显示页
+            }
 
             app.UseStaticFiles();
 

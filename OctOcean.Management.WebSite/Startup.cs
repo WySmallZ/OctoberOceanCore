@@ -27,7 +27,9 @@ namespace OctOcean.Management.WebSite
             InitLoad();
 
             services.AddMvc();
-           
+
+            //services.AddSingleton(Configuration);
+
             //.AddRazorPagesOptions(options=> { options.RootDirectory = "/wy"; });配置其他文件夹作为根目录
             //.AddRazorPagesOptions(options =>
             // {
@@ -43,15 +45,15 @@ namespace OctOcean.Management.WebSite
         {
             //Configure 定义请求管道的中间件。
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseBrowserLink();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Error");
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
 
             app.UseStaticFiles();//不可去掉，否则会出现css、js无法加载的情况
             //app.UseMvc();
