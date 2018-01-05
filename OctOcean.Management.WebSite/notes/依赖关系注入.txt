@@ -1,0 +1,4 @@
+﻿ASP.NET 核心包括简单的内置容器 (由IServiceProvider接口表示)，默认情况下，支持构造函数注入和 ASP.NET 使某些服务可通过 DI。
+ASP.NET 的容器引用的类型将作为管理服务。 本文中，其余服务将引用由 ASP.NET Core IoC 容器的类型。 配置中的内置容器的服务ConfigureServices方法在应用程序的Startup类。
+
+
