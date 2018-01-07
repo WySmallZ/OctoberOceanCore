@@ -52,9 +52,39 @@ namespace OctOcean.Management.WebSite.Pages.Article
         //}
 
 
-        public void OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            var a = this.ArticleDraftEntity;
+            if( this.ArticleDraftEntity.ArticleTag == null)
+            {
+                this.ArticleDraftEntity.ArticleTag = string.Empty;
+            }
+            this.ArticleDraftEntity.UpdateTime = DateTime.Now;
+           //if (!string.IsNullOrEmpty(this.ArticleDraftEntity.ArticleTag.Trim()))
+           // {
+           //     this.ArticleDraftEntity.ArticleTag = '[' + this.ArticleDraftEntity.ArticleTag.Replace(":", "][") + ']';
+           // }
+            
+            await Task.Run(() => {
+                if (string.IsNullOrEmpty(this.ArticleDraftEntity.ArticleKey))
+                {
+                    this.ArticleDraftEntity.ArticleKey = Guid.NewGuid().ToString().Replace("-", "");
+                    dal.InsertPri_ArticleDraft(this.ArticleDraftEntity);
+                }
+
+                else
+                {
+                    dal.UpdatePri_ArticleDraft(ArticleDraftEntity);
+                }
+                
+            });
+            return RedirectToPage( new { ArticleKey = ArticleDraftEntity.ArticleKey });
+
+
+            BindControll();
+            
+            return Page();
+
+
         }
 
         private void BindControll()

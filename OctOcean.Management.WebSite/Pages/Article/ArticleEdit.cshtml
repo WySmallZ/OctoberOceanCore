@@ -17,19 +17,19 @@
         .layui-form-item{margin-bottom:8px;}
     </style>
 
-    
+   
 </head>
 <body>
-    <form method="post" class="layui-form layui-form-pane">
+    <form method="post" class="layui-form layui-form-pane" onsubmit="return checkForm()">
 
-        <div id="editpanel" style="padding:10px 0;">
+        <div id="editpanel" style="padding:10px 0 0 0;">
             <div class="layui-container">
                 <div class="layui-row">
                     <div class="layui-col-md12">
                         <div class="layui-form-item pane">
                             <label class="layui-form-label">文章标题：</label>
                             <div class="layui-input-block">
-                                <input type="text" asp-for="ArticleDraftEntity.ArticleTitle" required lay-verify="required" placeholder="请输入文章标题" autocomplete="off" class="layui-input" maxlength="100">
+                                <input type="text" asp-for="ArticleDraftEntity.ArticleTitle" id="txtArticleTitle" required lay-verify="required" placeholder="请输入文章标题" autocomplete="off" class="layui-input" maxlength="100">
                             </div>
                         </div>
                     </div>
@@ -40,10 +40,10 @@
                         <div class="layui-form-item pane">
                             <label class="layui-form-label">文章分类：</label>
                             <div class="layui-input-block">
-                                <select lay-filter="ArticleCategory" asp-for="ArticleDraftEntity.ArticleCategory" asp-items="Model.Base_ArticleCategoryddl">
+                                <select lay-filter="ArticleCategory" asp-for="ArticleDraftEntity.ArticleCategory" asp-items="Model.Base_ArticleCategoryddl" id="ddlArticleCategory">
                                     <option value="">请选择分类</option>
                                     @*<option value="0">Java</option>
-                                    <option value="1">NET</option>*@
+                                        <option value="1">NET</option>*@
                                 </select>
                             </div>
                         </div>
@@ -55,13 +55,19 @@
                     <div class="layui-col-md12">
                         <div class="layui-form-item pane">
                             <label class="layui-form-label">标签设置：</label>
-                            <div class="layui-input-block">
+                            <div class="layui-input-block" id="chkTagList">
                                 @foreach (var at in Model.Base_ArticleTagList)
                                 {
-                                    <input type="checkbox" name="like[@at.ArticleTagCode]" title="@at.ArticleTagName">
+                                    
+                                        bool chked= (Model.ArticleDraftEntity != null) && Model.ArticleDraftEntity.ArticleTag.Contains('[' + at.ArticleTagCode.Trim() + ']');
+                                        
+
+                                    
+
+                                    <input type="checkbox" @( chked ? "checked=\"checked\"" : "") lay-filter="checkwy" name="like[@at.ArticleTagCode]" value="@at.ArticleTagCode.Trim()" title="@at.ArticleTagName">
                                 }
-                                
-                               <input type="hidden" asp-for="ArticleDraftEntity.ArticleTag" />
+
+                                <input type="hidden" asp-for="ArticleDraftEntity.ArticleTag" id="hfArticleTag" />
                             </div>
                         </div>
                     </div>
@@ -72,20 +78,19 @@
                         <div class="layui-form-item layui-form-text pane">
                             <label class="layui-form-label">附属样式：</label>
                             <div class="layui-input-block">
-                                <textarea placeholder="请输入内容" asp-for="ArticleDraftEntity.AidStyle" class="layui-textarea"></textarea>
+                                <textarea placeholder="请输入内容" asp-for="ArticleDraftEntity.AidStyle" id="txtAidStyle" class="layui-textarea"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                <input type="hidden" asp-for="ArticleDraftEntity.ArticleKey"/>
-                <input type="hidden" asp-for="ArticleDraftEntity.Id"/>
+                <input type="hidden" asp-for="ArticleDraftEntity.ArticleKey" id="hfArticleKey" />
+                <input type="hidden" asp-for="ArticleDraftEntity.Id" />
 
                 <div class="layui-row">
                     <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button type="submit" class="layui-btn layui-btn-normal" lay-submit lay-filter="*">保存</button>
-                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
                     </div>
@@ -111,20 +116,20 @@
 
 
             @*<div class="layui-form-item">
-            <label class="layui-form-label">开关关</label>
-            <div class="layui-input-block">
-                <input type="checkbox" lay-skin="switch">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">开关开</label>
-            <div class="layui-input-block">
-                <input type="checkbox" checked lay-skin="switch">
-            </div>
-        </div>
-        <div class="layui-form-item">
+                    <label class="layui-form-label">开关关</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-skin="switch">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开关开</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" checked lay-skin="switch">
+                    </div>
+                </div>
+                <div class="layui-form-item">
 
-        </div>*@
+                </div>*@
 
 
 
@@ -134,25 +139,25 @@
             @*<div class="layui-form-item">
 
 
-            <div class="ae-top-row">
-                <label></label>
-                <input type="text" />
+                    <div class="ae-top-row">
+                        <label></label>
+                        <input type="text" />
 
-                <label>文章标签：</label>
-                <input type="text" />
+                        <label>文章标签：</label>
+                        <input type="text" />
 
-                <input type="button" value="保存" />
-                <input type="button" value="发布" />
-            </div>
+                        <input type="button" value="保存" />
+                        <input type="button" value="发布" />
+                    </div>
 
-        </div>*@
+                </div>*@
 
             <!--用父容器来控制宽度-->
             <div>
-                <input type="hidden" asp-for="ArticleDraftEntity.ContentText"/>
+                <input type="hidden" id="hfContentText" asp-for="ArticleDraftEntity.ContentText" />
                 <!--用当前元素来控制高度-->
                 <div id="myEditor">
-                    <p>请输入内容...</p>
+                    @Html.Raw(Model.ArticleDraftEntity==null?"":Model.ArticleDraftEntity.ContentText)
                 </div>
             </div>
 
@@ -161,32 +166,123 @@
 
 
     <script src="~/lib/wangEditor/wangEditor.min.js"></script>
-
-    <script type="text/javascript">
-        var E = window.wangEditor
-        var editor = new E('#myEditor')
-
-        // 或者 var editor = new E( document.getElementById('editor') )
-        editor.create();
-    </script>
-
     <script src="~/lib/layui/layui.all.js"></script>
 
     <script>
+        //放在最外面
+        var E = window.wangEditor
+        var editor = new E('#myEditor');
+        editor.create();
+
+
+        //获取数据
+        function checkForm() {
+
+            //获取多选框的值
+            var newarr = [];
+            $('#chkTagList input:checked').each(function () {
+                newarr.push($.trim($(this).val()));
+            });
+            if (newarr.length > 0) {
+                $('#hfArticleTag').val('[' + newarr.sort().join('][') + ']');
+            }
+            else {
+                $('#hfArticleTag').val('');
+            }
+           
+            //设置富文本编辑器的值
+            $('#hfContentText').val(editor.txt.html());
+             
+            return true;
+
+        }
+
+
+        function autoSubmitData() {
+
+            checkForm();
+            alert('s');
+            $.post("/ArticleDraft/Save", {
+                "ArticleKey": $('#hfArticleKey').val(),
+                "ArticleTitle": $('#txtArticleTitle').val(),
+                "ArticleCategory": $('#ddlArticleCategory').val(),
+                "ContentText": $('#hfContentText').val(),
+                "ArticleTag": $('#hfArticleTag').val(),
+                "AidStyle": $('#txtAidStyle').val()
+            }, function (data) {
+                if (data == true) {
+                    var curr = parseInt($('#lblsavecount').text());
+                    $('#lblsavecount').text(++curr);
+                    $('#lblmsg').show();
+                    $('#lblmsg').fadeOut(3000);
+                }
+                else {
+                    clearInterval(autoTimer);
+                    $('#lblmsg').css({ "background-color": "red" }).text("数据提交失败，" + data);
+                    $('#lblmsg').show();
+
+
+                }
+
+
+             }, "json");
+
+
+        }
+
+        var autoTimer= window.setInterval(autoSubmitData, 5000);
 
         $(function () {
-            $('#myEditor>div:eq(1)').height($(window).height() - 90);
+            $('#myEditor>div:eq(1)').height($(window).height() - 110);
             $(window).resize(function () {
                 //设置编辑器的高度
-                $('#myEditor>div:eq(1)').height($(window).height() - 90);
+                $('#myEditor>div:eq(1)').height($(window).height() - 110);
             });
 
 
 
-         });
-         
-       
+              // 或者 var editor = new E( document.getElementById('editor') )
+
+        });
+
+        var form = layui.form;
+
+                //form.on('checkbox(checkwy)', function (data) {
+                //    var oldvalue = $('#hfArticleTag').val();
+                //    var oldarr = oldvalue.split(":");
+                //    var _index = $.inArray(data.value, oldarr);
+                //    if (data.elem.checked) {
+                //        //如果没有，就添加
+                //        if (_index== -1) {
+                //            oldarr.push(data.value);
+                //        }
+                //    }
+                //    else {
+
+                //        if (_index>=0) {
+                //            //移除
+                //            oldarr.splice(_index, 1);
+                //        }
+
+                //    }
+                //    $('#hfArticleTag').val(oldarr.join(':'));
+                //    console.log($('#hfArticleTag').val());
+
+
+
+
+
+
+                //    //console.log(data.elem); //得到checkbox原始DOM对象
+                //    //console.log(data.elem.checked); //是否被选中，true或者false
+                //    //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+                //    //console.log(data.othis); //得到美化后的DOM对象
+                //});
+
 
     </script>
+    <div style="height:30px;">
+        <p id="lblmsg" style="line-height:30px; font-size:16px; display:none; text-align:center; background-color:#4fbe4f;">第 <span id="lblsavecount" style="font-weight:600;">0</span> 次保存成功</p>
+    </div>
 </body>
 </html>

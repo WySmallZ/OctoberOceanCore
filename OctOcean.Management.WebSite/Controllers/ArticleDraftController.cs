@@ -22,5 +22,11 @@ namespace OctOcean.Management.WebSite.Controllers
         }
 
         
+
+        public bool Save(string ArticleKey,string ArticleTitle,string ArticleCategory,string ContentText,string ArticleTag,string AidStyle)
+        {
+            return true;
+
+        }
     }
 }
