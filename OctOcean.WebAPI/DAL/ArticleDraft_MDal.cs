@@ -20,7 +20,7 @@ namespace OctOcean.WebAPI.DAL
 
         public IList<ArticleDraft_M> GetAllArticleDraft()
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ArticleTag,UpdateTime,DelStatus from ArticleDraft where DelStatus=0 order by Id ";
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ArticleTag,UpdateTime,DelStatus from Pri_ArticleDraft where DelStatus=0 order by Id ";
 
             var query = connection.Query<ArticleDraft_M>(sql).AsList();
             return query;

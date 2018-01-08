@@ -14,6 +14,10 @@ namespace OctOcean.Management.WebSite.Pages.Article
         [BindProperty]
         public Pri_ArticleDraft_Entity ArticleDraftEntity { get; set; }
 
+        [BindProperty]
+        public string ArticleGuidKey { get; set; }
+
+        public bool IsPublish { get; set; }
 
         public SelectList Base_ArticleCategoryddl { get; set; }
 
@@ -26,13 +30,25 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public async Task<IActionResult> OnGetAsync(string ArticleKey)
         {
-            if (!string.IsNullOrEmpty(ArticleKey))
+            //如果没有key，生成key
+            if (string.IsNullOrEmpty(ArticleKey))
             {
+                this.ArticleGuidKey = Guid.NewGuid().ToString().Replace("-", "");
+                IsPublish = false;
 
+            }
+            else
+            {
+                this.ArticleGuidKey = ArticleKey;
                 await Task.Run(() =>
                 {
                     //获取信息
                     this.ArticleDraftEntity = dal.GetPri_ArticleDraft(ArticleKey);
+                    this.ArticleDraftEntity.ArticleTag =  this.ArticleDraftEntity.ArticleTag ?? "";
+                   
+                    //判断是否已经发布
+                    IsPublish = !(new OctOcean.DataService.Pub_Article_Dal().GetPub_Article_Entity(ArticleKey) == null);
+                    
                 });
 
                 if (ArticleDraftEntity == null)
@@ -54,34 +70,38 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if( this.ArticleDraftEntity.ArticleTag == null)
-            {
-                this.ArticleDraftEntity.ArticleTag = string.Empty;
-            }
-            this.ArticleDraftEntity.UpdateTime = DateTime.Now;
-           //if (!string.IsNullOrEmpty(this.ArticleDraftEntity.ArticleTag.Trim()))
-           // {
-           //     this.ArticleDraftEntity.ArticleTag = '[' + this.ArticleDraftEntity.ArticleTag.Replace(":", "][") + ']';
-           // }
             
-            await Task.Run(() => {
-                if (string.IsNullOrEmpty(this.ArticleDraftEntity.ArticleKey))
-                {
-                    this.ArticleDraftEntity.ArticleKey = Guid.NewGuid().ToString().Replace("-", "");
-                    dal.InsertPri_ArticleDraft(this.ArticleDraftEntity);
-                }
+            this.ArticleDraftEntity.UpdateTime = DateTime.Now;
+            this.ArticleDraftEntity.ArticleKey = this.ArticleGuidKey;// Guid.NewGuid().ToString().Replace("-", "");
+            this.ArticleDraftEntity.ArticleTag = this.ArticleDraftEntity.ArticleTag ?? "";
+            this.ArticleDraftEntity.ArticleCategory = this.ArticleDraftEntity.ArticleCategory ?? "";
+            this.ArticleDraftEntity.AidStyle = this.ArticleDraftEntity.AidStyle ?? "";
 
-                else
+            //if (!string.IsNullOrEmpty(this.ArticleDraftEntity.ArticleTag.Trim()))
+            // {
+            //     this.ArticleDraftEntity.ArticleTag = '[' + this.ArticleDraftEntity.ArticleTag.Replace(":", "][") + ']';
+            // }
+
+            await Task.Run(() =>
+            {
+                if (this.ArticleDraftEntity.Id > 0)
                 {
                     dal.UpdatePri_ArticleDraft(ArticleDraftEntity);
                 }
-                
+                else
+                {
+                   
+                    dal.InsertPri_ArticleDraft(this.ArticleDraftEntity);
+                }
+
+
+
             });
-            return RedirectToPage( new { ArticleKey = ArticleDraftEntity.ArticleKey });
+            return RedirectToPage(new { ArticleKey = ArticleDraftEntity.ArticleKey });
 
 
             BindControll();
-            
+
             return Page();
 
 

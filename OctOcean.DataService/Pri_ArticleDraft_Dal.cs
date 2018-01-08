@@ -21,7 +21,7 @@ namespace OctOcean.DataService
         public int InsertPri_ArticleDraft(Pri_ArticleDraft_Entity entity)
         {
             string sql = "INSERT INTO Pri_ArticleDraft(ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,DelStatus,UpdateTime ) VALUES(@ArticleKey,@ArticleTitle,@ArticleCategory,@ContentText,@ArticleTag,@AidStyle,@DelStatus,GETDATE())";
-            return connection.Execute(sql, new {  entity.ArticleKey,  entity.ArticleTitle, entity.ArticleCategory,entity.ContentText,entity.ArticleTag, entity.AidStyle ,entity.DelStatus });
+            return connection.Execute(sql, new { entity.ArticleKey, entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag, entity.AidStyle, entity.DelStatus });
 
         }
 
@@ -45,7 +45,7 @@ namespace OctOcean.DataService
         public int UpdatePri_ArticleDraft(Pri_ArticleDraft_Entity entity)
         {
             string sql = "UPDATE Pri_ArticleDraft SET ArticleTitle=@ArticleTitle, ArticleCategory=@ArticleCategory,ContentText=@ContentText,ArticleTag=@ArticleTag,AidStyle=@AidStyle, DelStatus=@DelStatus,UpdateTime=@UpdateTime WHERE ArticleKey=@ArticleKey;";
-            return connection.Execute(sql, new { entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag, entity.AidStyle, entity.DelStatus,entity.UpdateTime,entity.ArticleKey });
+            return connection.Execute(sql, new { entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag, entity.AidStyle, entity.DelStatus, entity.UpdateTime, entity.ArticleKey });
         }
 
 
@@ -89,6 +89,34 @@ namespace OctOcean.DataService
             if (query != null && query.Count > 0)
                 return query[0];
             return null;
+        }
+
+
+        public IList<Pri_ArticleDraftPager_Entity> GetPri_ArticleDraftPagerList(string where, int PageIndex, int PageSize, object whereObjPar, out int SumCount)
+        {
+            int start = (PageIndex - 1) * PageSize + 1;
+            int end = PageIndex * PageSize;
+
+            string sqlcount = string.Format(@"
+ SELECT count(1) FROM Pri_ArticleDraft d LEFT JOIN Base_ArticleCategory c ON d.ArticleCategory = c.ArticleCategoryCode
+ WHERE d.DelStatus=0 {0};", where);
+            SumCount = ConvertHelper.ToInt32(connection.ExecuteScalar(sqlcount, whereObjPar));
+
+            string sql = string.Format(@"
+with wt as 
+(
+    select ROW_NUMBER() OVER(ORDER BY d.Id ASC) AS SNumber, d.Id, d.ArticleKey, c.ArticleCategoryName
+    FROM Pri_ArticleDraft d LEFT JOIN Base_ArticleCategory c ON d.ArticleCategory = c.ArticleCategoryCode
+    WHERE d.DelStatus=0 {0}
+)
+select wt.SNumber,wt.ArticleKey,d.ArticleTitle,wt.ArticleCategoryName,d.ArticleTag,d.UpdateTime,u.ArticleKey as PubArticleKey
+from wt left join Pri_ArticleDraft d on wt.ArticleKey = d.ArticleKey
+LEFT JOIN Pub_Article AS u ON u.ArticleKey=wt.ArticleKey
+where wt.SNumber BETWEEN {1} AND {2} order by wt.Id ASC; ", where, start, end);
+
+            var query = connection.Query<Pri_ArticleDraftPager_Entity>(sql, whereObjPar).AsList();
+            return query;
+
         }
 
     }

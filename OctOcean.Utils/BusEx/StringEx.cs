@@ -9,6 +9,8 @@ namespace OctOcean.Utils.BusEx
     {
         public static int testlength(this string str) {
             return str.Length;
+
+            
         }
     }
 }

@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" asp-for="ArticleDraftEntity.ArticleKey" id="hfArticleKey" />
+                <input type="hidden" asp-for="ArticleGuidKey" id="hfArticleKey" />
                 <input type="hidden" asp-for="ArticleDraftEntity.Id" />
 
                 <div class="layui-row">
@@ -91,6 +91,7 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button type="submit" class="layui-btn layui-btn-normal" lay-submit lay-filter="*">保存</button>
+                                <a href="" class="layui-btn layui-btn-warm" >预览</a>
                             </div>
                         </div>
                     </div>
@@ -99,7 +100,7 @@
 
                             <label class="layui-form-label">发布：</label>
                             <div class="layui-input-block">
-                                <input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked>
+                                <input type="checkbox" lay-skin="switch" lay-text="ON|OFF" @(Model.IsPublish?"checked=\"checked\"":"") lay-filter="chkpublish"  @((Model.ArticleDraftEntity==null||Model.ArticleDraftEntity.Id==0)? "disabled=\"disabled\"" :"")>
                             </div>
                         </div>
                     </div>
@@ -201,7 +202,7 @@
         function autoSubmitData() {
 
             checkForm();
-            alert('s');
+             
             $.post("/ArticleDraft/Save", {
                 "ArticleKey": $('#hfArticleKey').val(),
                 "ArticleTitle": $('#txtArticleTitle').val(),
@@ -210,18 +211,29 @@
                 "ArticleTag": $('#hfArticleTag').val(),
                 "AidStyle": $('#txtAidStyle').val()
             }, function (data) {
-                if (data == true) {
-                    var curr = parseInt($('#lblsavecount').text());
-                    $('#lblsavecount').text(++curr);
-                    $('#lblmsg').show();
-                    $('#lblmsg').fadeOut(3000);
+                console.log(data);
+                $('#lblArticleKey').text(data.ak);
+                $('#lblsavecount').text(data.sc);
+                
+
+                
+                if (data.status == 1) {
+
+                    $('#lblmsg').text('数据自动保存成功！');
+                    $('#lblmsgpanel').css('background-color', '#4fbe4f').show();
+                    $('#lblmsgpanel').fadeOut(5000);
+                }
+                else if (data.status == 3) {
+                    $('#lblmsg').text('未提交数据！');
+                    $('#lblmsgpanel').css('background-color', '#f9a542').show();
+                    $('#lblmsgpanel').fadeOut(5000);
+
                 }
                 else {
                     clearInterval(autoTimer);
-                    $('#lblmsg').css({ "background-color": "red" }).text("数据提交失败，" + data);
-                    $('#lblmsg').show();
-
-
+                    $('#lblmsgpanel').css({ "background-color": "#f35c5c" });
+                    $('#lblmsg').text('数据提交失败！' + data.msg);
+                    $('#lblmsgpanel').show();
                 }
 
 
@@ -229,8 +241,8 @@
 
 
         }
-
-        var autoTimer= window.setInterval(autoSubmitData, 5000);
+        //每隔30秒触发一次
+        var autoTimer= window.setInterval(autoSubmitData, 1000*30);
 
         $(function () {
             $('#myEditor>div:eq(1)').height($(window).height() - 110);
@@ -239,13 +251,50 @@
                 $('#myEditor>div:eq(1)').height($(window).height() - 110);
             });
 
-
+           
 
               // 或者 var editor = new E( document.getElementById('editor') )
 
         });
 
+        window.onbeforeunload = function () {
+            autoSubmitData();
+        }  
+
         var form = layui.form;
+        //发布
+        form.on('switch(chkpublish)', function (data) {
+            var _ispublish = data.elem.checked;
+
+            $.post('/ArticleDraft/Publish', {
+                ArticleKey: $('#hfArticleKey').val(),
+                IsPublish: _ispublish
+            }, function (rd) {
+                if (rd.status == 2) {
+                    //未提交数据
+                    layer.alert('请先保存数据，才能够执行发布操作！', { icon: 5 });
+                    return false;
+                }
+                else if (rd.status == 1) {
+                    layer.alert('操作完成！', { icon: 1 });
+                    return true;
+                }
+                else {
+                    layer.alert('数据异常：' + rd.msg, { icon: 5 });
+                    return false;
+                }
+
+
+             });
+
+
+            
+            //console.log(data.elem); //得到checkbox原始DOM对象
+            //console.log(data.elem.checked); //开关是否开启，true或者false
+            //console.log(data.value); //开关value值，也可以通过data.elem.value得到
+            //console.log(data.othis); //得到美化后的DOM对象
+        });  
+
 
                 //form.on('checkbox(checkwy)', function (data) {
                 //    var oldvalue = $('#hfArticleTag').val();
@@ -279,10 +328,18 @@
                 //    //console.log(data.othis); //得到美化后的DOM对象
                 //});
 
-
+       
     </script>
     <div style="height:30px;">
-        <p id="lblmsg" style="line-height:30px; font-size:16px; display:none; text-align:center; background-color:#4fbe4f;">第 <span id="lblsavecount" style="font-weight:600;">0</span> 次保存成功</p>
+ 
+        
+        <p id="lblmsgpanel" style="line-height:30px; font-size:16px; display:none; text-align:center; ">
+            <span id="lblArticleKey"></span>
+            -
+            <b id="lblsavecount"></b>
+            -
+            <span id="lblmsg"></span>
+        </p>
     </div>
 </body>
 </html>
