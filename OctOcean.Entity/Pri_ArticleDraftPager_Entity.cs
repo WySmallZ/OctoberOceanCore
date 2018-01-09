@@ -18,5 +18,7 @@ namespace OctOcean.Entity
 
         public string PubArticleKey { get; set; }
 
+        public int DelStatus { get; set; }
+
     }
 }

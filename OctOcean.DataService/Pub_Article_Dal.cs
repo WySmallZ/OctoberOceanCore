@@ -41,12 +41,23 @@ END": "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //å¦‚æ
 
         public Pub_Article_Entity GetPub_Article_Entity(string ArticleKey)
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pub_Article where DelStatus=0 and ArticleKey=@ArticleKey";
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pub_Article where ArticleKey=@ArticleKey";
 
             var query = connection.Query<Pub_Article_Entity>(sql, new { ArticleKey = ArticleKey }).AsList();
             if (query != null && query.Count > 0)
                 return query[0];
             return null;
+        }
+
+
+        public int DeletePub_ArticleWithHard(string ArticleKey)
+        {
+            return connection.Execute("DELETE FROM Pub_Article WHERE ArticleKey=@ArticleKey", new { ArticleKey = ArticleKey });
+        }
+
+        public int DeletePub_Article(string ArticleKey)
+        {
+            return connection.Execute("UPDATE Pub_Article SET DelStatus=1  WHERE ArticleKey=@ArticleKey", new { ArticleKey = ArticleKey });
         }
     }
 }

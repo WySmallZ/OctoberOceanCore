@@ -100,7 +100,7 @@
 
                             <label class="layui-form-label">发布：</label>
                             <div class="layui-input-block">
-                                <input type="checkbox" lay-skin="switch" lay-text="ON|OFF" @(Model.IsPublish?"checked=\"checked\"":"") lay-filter="chkpublish"  @((Model.ArticleDraftEntity==null||Model.ArticleDraftEntity.Id==0)? "disabled=\"disabled\"" :"")>
+                                <input type="checkbox" lay-skin="switch" lay-text="ON|OFF" @(Model.IsPublish?"checked=\"checked\"":"") lay-filter="chkpublish"  @((Model.ArticleDraftEntity==null||Model.ArticleDraftEntity.Id==0||Model.ArticleDraftEntity.DelStatus==1)? "disabled=\"disabled\"" :"")>
                             </div>
                         </div>
                     </div>

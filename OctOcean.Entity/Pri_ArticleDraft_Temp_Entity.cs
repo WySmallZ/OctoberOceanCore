@@ -35,9 +35,6 @@ namespace OctOcean.Entity
         /// 更新时间
         /// </summary>
         public DateTime UpdateTime { get; set; }
-        /// <summary>
-        /// 删除状态，1：表示已经删除，0：表示未删除
-        /// </summary>
-        public byte DelStatus { get; set; }
+        
     }
 }

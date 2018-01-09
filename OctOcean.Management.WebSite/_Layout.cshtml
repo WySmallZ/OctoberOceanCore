@@ -72,7 +72,7 @@
                 </ul>
             </div>
         </div>
-        <script src="~/lib/layui/layui.all.js"></script>
+
 
 
         <div class="layui-body">
@@ -87,7 +87,8 @@
             © octoberocean@163.com - 底部固定区域
         </div>
     </div>
-
+    <script src="~/lib/layui/layui.all.js"></script>
+    @RenderSection("bottomscripts", required: false)
 
     <!--<script>
         ; !function () {
@@ -102,6 +103,8 @@
     </script>-->
 
 
-    @RenderSection("scripts",required:false)
+
+
+
 </body>
 </html>

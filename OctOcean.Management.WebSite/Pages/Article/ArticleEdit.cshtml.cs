@@ -44,11 +44,12 @@ namespace OctOcean.Management.WebSite.Pages.Article
                 {
                     //获取信息
                     this.ArticleDraftEntity = dal.GetPri_ArticleDraft(ArticleKey);
-                    this.ArticleDraftEntity.ArticleTag =  this.ArticleDraftEntity.ArticleTag ?? "";
-                   
+                    this.ArticleDraftEntity.ArticleTag = this.ArticleDraftEntity.ArticleTag ?? "";
+
                     //判断是否已经发布
-                    IsPublish = !(new OctOcean.DataService.Pub_Article_Dal().GetPub_Article_Entity(ArticleKey) == null);
-                    
+                    var pubarticle = new OctOcean.DataService.Pub_Article_Dal().GetPub_Article_Entity(ArticleKey);
+                    IsPublish = pubarticle != null && pubarticle.DelStatus == 0; //如果存在数据，并且未删除就表示是发布过的
+
                 });
 
                 if (ArticleDraftEntity == null)
@@ -70,13 +71,13 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
+
             this.ArticleDraftEntity.UpdateTime = DateTime.Now;
             this.ArticleDraftEntity.ArticleKey = this.ArticleGuidKey;// Guid.NewGuid().ToString().Replace("-", "");
             this.ArticleDraftEntity.ArticleTag = this.ArticleDraftEntity.ArticleTag ?? "";
             this.ArticleDraftEntity.ArticleCategory = this.ArticleDraftEntity.ArticleCategory ?? "";
             this.ArticleDraftEntity.AidStyle = this.ArticleDraftEntity.AidStyle ?? "";
-
+            this.ArticleDraftEntity.DelStatus = 0;//通过保存提交之后，状态就更新为未删除，该功能可以对删除过的数据进行还原。
             //if (!string.IsNullOrEmpty(this.ArticleDraftEntity.ArticleTag.Trim()))
             // {
             //     this.ArticleDraftEntity.ArticleTag = '[' + this.ArticleDraftEntity.ArticleTag.Replace(":", "][") + ']';
@@ -90,13 +91,14 @@ namespace OctOcean.Management.WebSite.Pages.Article
                 }
                 else
                 {
-                   
+
                     dal.InsertPri_ArticleDraft(this.ArticleDraftEntity);
                 }
 
 
 
             });
+
             return RedirectToPage(new { ArticleKey = ArticleDraftEntity.ArticleKey });
 
 

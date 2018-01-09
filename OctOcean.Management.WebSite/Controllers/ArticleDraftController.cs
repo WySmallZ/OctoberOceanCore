@@ -11,8 +11,8 @@ namespace OctOcean.Management.WebSite.Controllers
     public class ArticleDraftController : Controller
     {
 
-       
-            OctOcean.DataService.Pri_ArticleDraft_Dal draftdal = new DataService.Pri_ArticleDraft_Dal();
+
+        OctOcean.DataService.Pri_ArticleDraft_Dal draftdal = new DataService.Pri_ArticleDraft_Dal();
 
         private IConfiguration _iconfiguration;
 
@@ -64,12 +64,12 @@ namespace OctOcean.Management.WebSite.Controllers
                         ArticleCategory = ArticleCategory ?? "",
                         ArticleTitle = ArticleTitle ?? "",
                         ContentText = ContentText ?? "",
-                        DelStatus = 0,
                         UpdateTime = DateTime.Now
 
                     });
 
-                    //直接更新到Draft中去
+                    //查询一下之前旧的状态，是否删除
+                    var olddraft = draftdal.GetPri_ArticleDraft(ArticleKey);
 
                     //必须在Draft中有这条记录修改才能生效，也就是说，只有点了保存按钮，产生了数据，才能够和temp数据进行关联，这样的话可以减少草稿内容（比如测试、或者打开页面没有做任何事情）的产生。
                     draftdal.UpdatePri_ArticleDraft(new Entity.Pri_ArticleDraft_Entity()
@@ -80,7 +80,7 @@ namespace OctOcean.Management.WebSite.Controllers
                         ArticleCategory = ArticleCategory ?? "",
                         ArticleTitle = ArticleTitle ?? "",
                         ContentText = ContentText ?? "",
-                        DelStatus = 0,
+                        DelStatus = olddraft == null ? (byte)0 : olddraft.DelStatus,
                         UpdateTime = DateTime.Now
                     });
 
@@ -101,12 +101,13 @@ namespace OctOcean.Management.WebSite.Controllers
 
 
 
-        public object Publish(string ArticleKey,bool IsPublish)
+        public object Publish(string ArticleKey, bool IsPublish)
         {
             string _msg = string.Empty;
             int _status = 0;
             //先判断是否已经存在了Draft中去
-            if(draftdal.GetPri_ArticleDraft(ArticleKey)==null)
+            var draftentity = draftdal.GetPri_ArticleDraft(ArticleKey);
+            if (draftentity == null||draftentity.DelStatus==1) //如果没有数据或者数据已经删除，需要重新保存
             {
                 _status = 2;
                 _msg = "请先保存数据";
@@ -117,38 +118,74 @@ namespace OctOcean.Management.WebSite.Controllers
                 OctOcean.DataService.Pub_Article_Dal padal = new DataService.Pub_Article_Dal();
                 try
                 {
-                    padal.InsertPub_ArticleWithPri_ArticleDraft(ArticleKey,IsPublish);
+                    padal.InsertPub_ArticleWithPri_ArticleDraft(ArticleKey, IsPublish);
                     _status = 1;
                 }
-                catch (Exception ex )
+                catch (Exception ex)
                 {
                     _status = 4;
                     _msg = ex.Message;
                 }
-               
+
             }
             return new { status = _status, msg = _msg };
 
         }
 
+        public object Delete(string ArticleKey)
+        {
+            int _status = 0;
+            string _msg = "";
+            try
+            {
+             //如果没有执行过删除，就更新一下状态，否则就彻底删除
+                draftdal.DeleteAndClearTemp(ArticleKey);
+                _status = 1;
+            }
+            catch (Exception ex)
+            {
+                _status = 4;
+                _msg = ex.Message;
+
+            }
+            return new { status = _status, msg = _msg };
 
 
-        [Route("ArticleDraft/Pagination/{PageIndex}/{PageSize}/{ArticleCategoryCode?}")]
-        public object Pager(int PageIndex,int PageSize,string ArticleCategoryCode)
+        }
+
+
+        [Route("ArticleDraft/Pagination")] //Post和GET都可以访问
+        public object Pager(string orderColumn = "UpdateTime", string orderType = "desc", int PageIndex = 1, int PageSize = 10, string ArticleCategoryCode = "", int DelStatus = 0)
         {
             int sumcount = 0;
+            //int PageIndex = page;
+            //int PageSize = limit;
             IList<Pri_ArticleDraftPager_Entity> data = null;
-            if(string.IsNullOrEmpty(ArticleCategoryCode))
+            string where = "";
+            if (DelStatus == 0)
             {
-
-                 data= draftdal.GetPri_ArticleDraftPagerList("", PageIndex, PageSize, null,out sumcount);
-                
+                where = " d.DelStatus=0 ";
+            }
+            else if (DelStatus == 1)
+            {
+                where = " d.DelStatus=1 ";
             }
             else
             {
-                data= draftdal.GetPri_ArticleDraftPagerList(" AND d.ArticleCategory=@ArticleCategory ", PageIndex, PageSize, new { ArticleCategory= ArticleCategoryCode },out sumcount);
+                where = " 1=1 ";
             }
-            return new { SumCount = sumcount, Data = data };
+            if (string.IsNullOrEmpty(ArticleCategoryCode))
+            {
+
+                data = draftdal.GetPri_ArticleDraftPagerList(where, PageIndex, PageSize, null, orderColumn, orderType, out sumcount);
+
+            }
+            else
+            {
+                where=where+ " AND d.ArticleCategory=@ArticleCategory ";
+                data = draftdal.GetPri_ArticleDraftPagerList(where, PageIndex, PageSize, new { ArticleCategory = ArticleCategoryCode }, orderColumn, orderType, out sumcount);
+            }
+            return new { code = 0, msg = "", count = sumcount, data = data };
 
         }
     }
