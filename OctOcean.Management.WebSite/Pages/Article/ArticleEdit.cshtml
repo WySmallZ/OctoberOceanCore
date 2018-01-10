@@ -59,7 +59,7 @@
                                 @foreach (var at in Model.Base_ArticleTagList)
                                 {
                                     
-                                        bool chked= (Model.ArticleDraftEntity != null) && Model.ArticleDraftEntity.ArticleTag.Contains('[' + at.ArticleTagCode.Trim() + ']');
+                                        bool chked= (Model.ArticleDraftEntity != null) && Model.ArticleDraftEntity.ArticleTag.Contains(':' + at.ArticleTagCode.Trim() + ':');
                                         
 
                                     
@@ -90,8 +90,8 @@
                     <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button type="submit" class="layui-btn layui-btn-normal" lay-submit lay-filter="*">保存</button>
-                                <a href="" class="layui-btn layui-btn-warm" >预览</a>
+                                <button type="submit" class="layui-btn layui-btn-green" lay-submit lay-filter="*"><i class="layui-icon">&#xe6b2;</i>保存</button>
+                                <a href="" class="layui-btn layui-btn-normal" ><i class="layui-icon">&#xe63c;</i>预览</a>
                             </div>
                         </div>
                     </div>
@@ -100,6 +100,7 @@
 
                             <label class="layui-form-label">发布：</label>
                             <div class="layui-input-block">
+                                @*如果没有保存过draft，或者draft已经删除过，需要重新进行保存才可以使用发布*@
                                 <input type="checkbox" lay-skin="switch" lay-text="ON|OFF" @(Model.IsPublish?"checked=\"checked\"":"") lay-filter="chkpublish"  @((Model.ArticleDraftEntity==null||Model.ArticleDraftEntity.Id==0||Model.ArticleDraftEntity.DelStatus==1)? "disabled=\"disabled\"" :"")>
                             </div>
                         </div>
@@ -136,22 +137,7 @@
 
 
 
-
-            @*<div class="layui-form-item">
-
-
-                    <div class="ae-top-row">
-                        <label></label>
-                        <input type="text" />
-
-                        <label>文章标签：</label>
-                        <input type="text" />
-
-                        <input type="button" value="保存" />
-                        <input type="button" value="发布" />
-                    </div>
-
-                </div>*@
+ 
 
             <!--用父容器来控制宽度-->
             <div>
@@ -185,7 +171,7 @@
                 newarr.push($.trim($(this).val()));
             });
             if (newarr.length > 0) {
-                $('#hfArticleTag').val('[' + newarr.sort().join('][') + ']');
+                $('#hfArticleTag').val(':' + newarr.sort().join(':') + ':');
             }
             else {
                 $('#hfArticleTag').val('');

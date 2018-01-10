@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OctOcean.Entity
 {
-    public class Pri_ArticleDraftPager_Entity
+    public class Aux_ArticleDraftPager_Entity
     {
         public int SNumber { get; set; }
         public string ArticleKey { get; set; }
@@ -19,6 +19,7 @@ namespace OctOcean.Entity
         public string PubArticleKey { get; set; }
 
         public int DelStatus { get; set; }
+ 
 
     }
 }

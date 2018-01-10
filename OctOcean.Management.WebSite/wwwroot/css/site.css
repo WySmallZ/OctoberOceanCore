@@ -1,5 +1,27 @@
-.ae-top
-{
-    margin:10px;
+
+.article-tag-span {
+    margin: 0 1px;
+    padding: 2px 5px;
+    border: 1px solid #c8c5c5;
 }
-.ae-top-row{margin:10px;}
+
+.article-publish-yes {
+    color: #41a841;
+}
+
+.article-publish-no {
+    color: #f86161
+}
+.layui-btn-green {
+    background-color: #3db15d;
+}
+
+.layui-btn-add {
+    background-color: #1298fc;
+}
+.layui-btn-edit {
+    background-color: #fe7e33;
+}
+.layui-btn-del {
+    background-color:#fc4f18;
+}

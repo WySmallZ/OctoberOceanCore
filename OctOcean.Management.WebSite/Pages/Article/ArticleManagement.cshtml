@@ -46,7 +46,7 @@
                     <label class="layui-form-label">筛选条件：</label>
                     <div class="layui-input-block" id="ddlStatuspanel">
                         <input type="radio" name="ddlStatus" lay-filter="ddlStatus" value="0" title="未删除" checked>
-                        <input type="radio" name="ddlStatus" lay-filter="ddlStatus" value="1" title="已删除" >
+                        <input type="radio" name="ddlStatus" lay-filter="ddlStatus" value="1" title="已删除">
                         <input type="radio" name="ddlStatus" lay-filter="ddlStatus" value="2" title="全部">
                     </div>
 
@@ -58,6 +58,19 @@
                     <div class="layui-input-block">
 
                         <select lay-filter="ddlArticleCategory" asp-items="Model.Base_ArticleCategoryddl" id="ddlArticleCategory">
+                            <option value="">全部</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="layui-col-md3">
+                <div class="layui-form-item pane" style="margin:0;">
+                    <label class="layui-form-label">文章标签：</label>
+                    <div class="layui-input-block">
+
+                        <select lay-filter="ddlArticleTag" asp-items="Model.Base_ArticleTagddl" id="ddlArticleTag">
                             <option value="">全部</option>
                         </select>
                     </div>
@@ -79,23 +92,29 @@
     <table id="articletable" lay-filter="myarticletable"></table>
 
 
-    <a asp-page="ArticleEdit" class="layui-btn layui-btn-sm" target="_blank">新增</a>
-    <a class="layui-btn layui-btn-sm" id="btnreload">重新加载数据</a>
+    <a asp-page="ArticleEdit" class="layui-btn layui-btn-sm layui-btn-add" target="_blank"><i class="layui-icon">&#xe608;</i>新增</a>
+    <a class="layui-btn layui-btn-sm layui-btn-green" id="btnreload"> <i class="layui-icon">&#x1002;</i>重新加载数据</a>
 </form>
 
 
 @section bottomscripts{
 
+
+
     @*自定义列工具条*@
 <script type="text/html" id="articletoolbar">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail" href="{{d.delStatus}}"><i class="layui-icon">&#xe63c;</i>预览</a>
+
     {{# if(d.delStatus==1){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs article-cd-del" lay-event="del">彻底删除并清空</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}">还原</a>
+
+    <a class="layui-btn layui-btn-xs layui-btn-green" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}"><i class="layui-icon">&#x1005;</i>还原</a>
+
+    <a class="layui-btn layui-btn-del layui-btn-xs article-cd-del" lay-event="cddel"><i class="layui-icon">&#x1006;</i>擦除</a>
 
     {{# } else{ }}
-    <a class="layui-btn layui-btn-xs" lay-event="detail" href="{{d.delStatus}}">预览</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+    <a class="layui-btn layui-btn-xs layui-btn-edit" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}"><i class="layui-icon">&#xe642;</i>编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-del" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 
     {{# }}}
 </script>
@@ -103,9 +122,9 @@
     @*自定义列模板*@
     <script type="text/html" id="publishstatusTpl">
         {{# if(d.pubArticleKey){}}
-        <span style="background-color:#41a841; color:#fff; padding:5px;">已发布</span>
+        <span class="article-publish-yes"><i class="layui-icon">&#xe618;</i></span>
         {{# }else{}}
-        <span style="background-color:#f86161; color:#fff; padding:5px;">未发布</span>
+        <span class="article-publish-no">未发布</span>
         {{# }}}
 
 
@@ -113,10 +132,30 @@
 
     </script>
 
+
+    <script type="text/html" id="articleTagTpl">
+        {{#
+            var txt = '';
+            var arr = d.articleTag.split(':');
+            for (var index in arr) {
+                if(arr[index]){
+                    txt+='<span class="article-tag-span">'+tagjsondata[arr[index]]+'</span>';
+                }
+            }
+        }}
+
+        {{txt}}
+
+    </script>
+
+
+
+
+
     <script>
-
-
-
+        //获取TagName的值
+        var tagjsondata =@Html.Raw(ViewData["TagJson"]);
+        
         //使用方法渲染绑定table的数据
         var table = layui.table;
 
@@ -139,17 +178,18 @@
             , method: 'get'
             , where: {
                 ArticleCategoryCode: $('#ddlArticleCategory').val()
-                ,DelStatus: $("#ddlStatuspanel :radio:checked").val()
+                , DelStatus: $("#ddlStatuspanel :radio:checked").val()
+                , ArticleTag: $('#ddlArticleTag').val()
             }
             , page: true //开启分页
             , cols: [[ //表头
                 { field: 'sNumber', title: '序号', width: 60, align: 'center', event: 'smallzclick' } //event:自定义单元格点击事件名，以便在 tool 事件中完成对该单元格的业务处理
-                , { field: 'articleCategoryName', title: '文章分类', width: 100, sort: true }
+                , { field: 'articleCategoryName', title: '文章分类', width: 95, sort: true }
                 , { field: 'articleTitle', title: '文章标题', sort: true }
-                , { field: 'articleKey', title: '唯一标识', width: 278 }
-                , { field: 'updateTime', title: '更新时间', width: 145, sort: true }
+                , { field: 'articleTag', title: '文章标签', width: 278, templet: '#articleTagTpl'}
+                , { field: 'updateTime', title: '更新时间', width: 155, sort: true }
                 , { field: 'pubArticleKey', title: '发布状态', width: 86, templet: '#publishstatusTpl' }
-                , { title: '操作', width: 175, align: 'center', toolbar: '#articletoolbar' }
+                , { title: '操作', width: 210, align: 'center', toolbar: '#articletoolbar' }
                 //{ field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left' }
                 //, { field: 'username', title: '用户名', width: 80 }
                 //, { field: 'sex', title: '性别', width: 80, sort: true }
@@ -180,20 +220,24 @@
         //监听工具条
         table.on('tool(myarticletable)', function (obj) { //注：tool是工具条事件名（相当于button的click一样），test是table原始容器的属性 lay-filter="对应的值"
             var data = obj.data; //获得当前行数据
-            console.log(data);
+            //console.log(data);
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             //console.log(layEvent); //如果单击了序号那一列，将会显示smallzclick
             var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+
 
             if (layEvent === 'detail') { //查看
 
 
                 //do somehing
-            } else if (layEvent === 'del') { //删除
-                layer.confirm('确定删除吗？', function (index) {
+            } else if (layEvent === 'del' || layEvent == "cddel") { //删除
+                var cfmsg = layEvent === 'del' ? "系统将会更新该条记录的删除状态,可进行还原，您确定要继续操作吗？" : "系统将会彻底删除该条记录有关的所有信息，不可恢复，您确定要继续操作吗？";
+
+                layer.confirm(cfmsg, { icon: 3, title: '提示' }, function (index) {
 
 
-                   
+
                     //向服务端发送删除指令
                     $.post('/ArticleDraft/Delete', {
                         "ArticleKey": data.articleKey
@@ -202,18 +246,18 @@
                         if (rd.status == 1) {
                             obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
                             layer.close(index); //关闭对话框
-                             
-                            
+
+
                         }
                         else {
                             layer.alert('操作失败，：' + rd.msg, { icon: 5 });
 
                         }
 
-                     }, "json");
+                    }, "json");
 
 
-                   
+
 
 
                 });
@@ -226,6 +270,22 @@
                 //});
             }
         });
+
+        var tableReload = function (articleCategoryCode, delStatus, articleTag) {
+            tablelns.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    ArticleCategoryCode: articleCategoryCode// $('#ddlArticleCategory').val()
+                    , DelStatus: delStatus// $("#ddlStatuspanel :radio:checked").val()
+                    , ArticleTag: articleTag//$('#ddlArticleTag').val()
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+
+
+        }
+
 
 
         //监听排序切换
@@ -241,26 +301,16 @@
                 , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                     orderColumn: obj.field //排序字段
                     , orderType: obj.type //排序方式
+                    , ArticleCategoryCode: $('#ddlArticleCategory').val()
+                    , DelStatus: $("#ddlStatuspanel :radio:checked").val()
+                    , ArticleTag: $('#ddlArticleTag').val()
                 }
             });
         });
 
         //重新加载数据
         $('#btnreload').click(function () {
-
-            //获取下拉框的值
-            
-            tablelns.reload({
-                where: { //设定异步数据接口的额外参数，任意设
-                    ArticleCategoryCode: $('#ddlArticleCategory').val()
-                    , DelStatus: $("#ddlStatuspanel :radio:checked").val()
-                }
-                , page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-            });
-
-
+            tableReload($('#ddlArticleCategory').val(), $("#ddlStatuspanel :radio:checked").val(), $('#ddlArticleTag').val());
         });
 
         var form = layui.form;
@@ -269,53 +319,42 @@
             //console.log(data.elem); //得到select原始DOM对象
             //console.log(data.value); //得到被选中的值
             //console.log(data.othis); //得到美化后的DOM对象
-
-            tablelns.reload({
-                where: { //设定异步数据接口的额外参数，任意设
-                    ArticleCategoryCode: data.value
-                    , DelStatus: $("#ddlStatuspanel :radio:checked").val()
-                }
-                , page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-            });
+            tableReload(data.value, $("#ddlStatuspanel :radio:checked").val(), $('#ddlArticleTag').val());
         });
+        form.on('select(ddlArticleTag)', function (data) {
+            //console.log(data.elem); //得到select原始DOM对象
+            //console.log(data.value); //得到被选中的值
+            //console.log(data.othis); //得到美化后的DOM对象
+            tableReload($('#ddlArticleCategory').val(), $("#ddlStatuspanel :radio:checked").val(), data.value);
+        });
+
+
         //监听radio单选
         form.on('radio(ddlStatus)', function (data) {
 
-           
+
             //console.log(data.elem); //得到radio原始DOM对象
             //console.log(data.value); //被点击的radio的value值
-
-            tablelns.reload({
-                where: { //设定异步数据接口的额外参数，任意设
-                    ArticleCategoryCode: $('#ddlArticleCategory').val()
-                    , DelStatus: data.value
-                }
-                , page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-            });
-
+            tableReload($('#ddlArticleCategory').val(), data.value, $('#ddlArticleTag').val());
         });
 
-                    //var table = layui.table;
+                        //var table = layui.table;
 
-                    ////执行渲染
-                    //table.render({
-                    //    elem: '#demo' //指定原始表格元素选择器（推荐id选择器）
-                    //    , height: 315 //容器高度
-                    //    , url:'/ArticleDraft/Pagination'
-                    //    , cols: [{}] //设置表头
-                    //    //,…… //更多参数参考右侧目录：基本参数选项
-                    //});
+                        ////执行渲染
+                        //table.render({
+                        //    elem: '#demo' //指定原始表格元素选择器（推荐id选择器）
+                        //    , height: 315 //容器高度
+                        //    , url:'/ArticleDraft/Pagination'
+                        //    , cols: [{}] //设置表头
+                        //    //,…… //更多参数参考右侧目录：基本参数选项
+                        //});
 
 
-                    //转换静态表格
-                    //table.init('amtable', {
-                    //    limit: 10 //注意：请务必确保 limit 参数（默认：10）是与你服务端限定的数据条数一致
-                    //    , page: true  //支持所有基础参数
-                    //});
+                        //转换静态表格
+                        //table.init('amtable', {
+                        //    limit: 10 //注意：请务必确保 limit 参数（默认：10）是与你服务端限定的数据条数一致
+                        //    , page: true  //支持所有基础参数
+                        //});
 
     </script>
 }

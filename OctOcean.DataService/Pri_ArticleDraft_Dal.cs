@@ -126,7 +126,7 @@ END";
         }
 
 
-        public IList<Pri_ArticleDraftPager_Entity> GetPri_ArticleDraftPagerList(string where, int PageIndex, int PageSize, object whereObjPar,string OrderColumn,string OrderType, out int SumCount)
+        public IList<Aux_ArticleDraftPager_Entity> GetPri_ArticleDraftPagerList(string where, int PageIndex, int PageSize, object whereObjPar,string OrderColumn,string OrderType, out int SumCount)
         {
             int start = (PageIndex - 1) * PageSize + 1;
             int end = PageIndex * PageSize;
@@ -164,7 +164,7 @@ from wt left join Pri_ArticleDraft d on wt.ArticleKey = d.ArticleKey
 LEFT JOIN Pub_Article AS u ON u.ArticleKey=wt.ArticleKey
 where wt.SNumber BETWEEN {1} AND {2} order by {4} {5}; ", where, start, end, snorderby,rsorderby, OrderType);
 
-            var query = connection.Query<Pri_ArticleDraftPager_Entity>(sql, whereObjPar).AsList();
+            var query = connection.Query<Aux_ArticleDraftPager_Entity>(sql, whereObjPar).AsList();
             return query;
 
         }

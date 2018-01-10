@@ -80,7 +80,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
             this.ArticleDraftEntity.DelStatus = 0;//通过保存提交之后，状态就更新为未删除，该功能可以对删除过的数据进行还原。
             //if (!string.IsNullOrEmpty(this.ArticleDraftEntity.ArticleTag.Trim()))
             // {
-            //     this.ArticleDraftEntity.ArticleTag = '[' + this.ArticleDraftEntity.ArticleTag.Replace(":", "][") + ']';
+            //     this.ArticleDraftEntity.ArticleTag = ':' + this.ArticleDraftEntity.ArticleTag.Replace(":", ":") + ':';
             // }
 
             await Task.Run(() =>
