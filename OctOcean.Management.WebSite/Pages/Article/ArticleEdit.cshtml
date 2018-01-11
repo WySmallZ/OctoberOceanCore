@@ -13,11 +13,15 @@
     <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link href="~/css/site.css" rel="stylesheet" />
+
+
     <style>
-        .layui-form-item{margin-bottom:8px;}
+        .layui-form-item {
+            margin-bottom: 8px;
+        }
     </style>
 
-   
+
 </head>
 <body>
     <form method="post" class="layui-form layui-form-pane" onsubmit="return checkForm()">
@@ -58,11 +62,11 @@
                             <div class="layui-input-block" id="chkTagList">
                                 @foreach (var at in Model.Base_ArticleTagList)
                                 {
-                                    
-                                        bool chked= (Model.ArticleDraftEntity != null) && Model.ArticleDraftEntity.ArticleTag.Contains(':' + at.ArticleTagCode.Trim() + ':');
-                                        
 
-                                    
+                                    bool chked = (Model.ArticleDraftEntity != null) && Model.ArticleDraftEntity.ArticleTag.Contains(':' + at.ArticleTagCode.Trim() + ':');
+
+
+
 
                                     <input type="checkbox" @( chked ? "checked=\"checked\"" : "") lay-filter="checkwy" name="like[@at.ArticleTagCode]" value="@at.ArticleTagCode.Trim()" title="@at.ArticleTagName">
                                 }
@@ -83,6 +87,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="layui-row">
+                    <div class="layui-col-md12">
+                        <div class="layui-form-item pane">
+                            <label class="layui-form-label">图片列表：</label>
+                            <div class="layui-input-block">
+                                <span>ffffffffffffff</span>
+                                <span>sssssssssssssss</span>
+                                <span>ffffffffffffff</span>
+                                <span>sssssssssssssss</span>
+                                <span>ffffffffffffff</span>
+                                <span>sssssssssssssss</span>
+                                <span>ffffffffffffff</span>
+                                <span>sssssssssssssss</span>
+                                <span>ffffffffffffff</span>
+                                <span>sssssssssssssss</span>
+                                <span>ffffffffffffff</span>
+                                <span>sssssssssssssss</span>
+                                <span>ffffffffffffff</span>
+                                <span>sssssssssssssss</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <input type="hidden" asp-for="ArticleGuidKey" id="hfArticleKey" />
                 <input type="hidden" asp-for="ArticleDraftEntity.Id" />
 
@@ -91,7 +119,7 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button type="submit" class="layui-btn layui-btn-green" lay-submit lay-filter="*"><i class="layui-icon">&#xe6b2;</i>保存</button>
-                                <a href="" class="layui-btn layui-btn-normal" ><i class="layui-icon">&#xe63c;</i>预览</a>
+                                <a href="" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe63c;</i>预览</a>
                             </div>
                         </div>
                     </div>
@@ -101,7 +129,7 @@
                             <label class="layui-form-label">发布：</label>
                             <div class="layui-input-block">
                                 @*如果没有保存过draft，或者draft已经删除过，需要重新进行保存才可以使用发布*@
-                                <input type="checkbox" lay-skin="switch" lay-text="ON|OFF" @(Model.IsPublish?"checked=\"checked\"":"") lay-filter="chkpublish"  @((Model.ArticleDraftEntity==null||Model.ArticleDraftEntity.Id==0||Model.ArticleDraftEntity.DelStatus==1)? "disabled=\"disabled\"" :"")>
+                                <input type="checkbox" lay-skin="switch" lay-text="ON|OFF" @(Model.IsPublish ? "checked=\"checked\"" : "") lay-filter="chkpublish" @((Model.ArticleDraftEntity == null || Model.ArticleDraftEntity.Id == 0 || Model.ArticleDraftEntity.DelStatus == 1) ? "disabled=\"disabled\"" : "")>
                             </div>
                         </div>
                     </div>
@@ -137,14 +165,14 @@
 
 
 
- 
+
 
             <!--用父容器来控制宽度-->
             <div>
                 <input type="hidden" id="hfContentText" asp-for="ArticleDraftEntity.ContentText" />
                 <!--用当前元素来控制高度-->
                 <div id="myEditor">
-                    @Html.Raw(Model.ArticleDraftEntity==null?"":Model.ArticleDraftEntity.ContentText)
+                    @Html.Raw(Model.ArticleDraftEntity == null ? "" : Model.ArticleDraftEntity.ContentText)
                 </div>
             </div>
 
@@ -176,10 +204,10 @@
             else {
                 $('#hfArticleTag').val('');
             }
-           
+
             //设置富文本编辑器的值
             $('#hfContentText').val(editor.txt.html());
-             
+
             return true;
 
         }
@@ -188,7 +216,7 @@
         function autoSubmitData() {
 
             checkForm();
-             
+
             $.post("/ArticleDraft/Save", {
                 "ArticleKey": $('#hfArticleKey').val(),
                 "ArticleTitle": $('#txtArticleTitle').val(),
@@ -200,9 +228,9 @@
                 console.log(data);
                 $('#lblArticleKey').text(data.ak);
                 $('#lblsavecount').text(data.sc);
-                
 
-                
+
+
                 if (data.status == 1) {
 
                     $('#lblmsg').text('数据自动保存成功！');
@@ -223,12 +251,12 @@
                 }
 
 
-             }, "json");
+            }, "json");
 
 
         }
         //每隔30秒触发一次
-        var autoTimer= window.setInterval(autoSubmitData, 1000*30);
+        var autoTimer = window.setInterval(autoSubmitData, 1000 * 30);
 
         $(function () {
             $('#myEditor>div:eq(1)').height($(window).height() - 110);
@@ -237,15 +265,15 @@
                 $('#myEditor>div:eq(1)').height($(window).height() - 110);
             });
 
-           
 
-              // 或者 var editor = new E( document.getElementById('editor') )
+
+            // 或者 var editor = new E( document.getElementById('editor') )
 
         });
 
         window.onbeforeunload = function () {
             autoSubmitData();
-        }  
+        }
 
         var form = layui.form;
         //发布
@@ -271,54 +299,54 @@
                 }
 
 
-             });
+            });
 
 
-            
+
             //console.log(data.elem); //得到checkbox原始DOM对象
             //console.log(data.elem.checked); //开关是否开启，true或者false
             //console.log(data.value); //开关value值，也可以通过data.elem.value得到
             //console.log(data.othis); //得到美化后的DOM对象
-        });  
+        });
 
 
-                //form.on('checkbox(checkwy)', function (data) {
-                //    var oldvalue = $('#hfArticleTag').val();
-                //    var oldarr = oldvalue.split(":");
-                //    var _index = $.inArray(data.value, oldarr);
-                //    if (data.elem.checked) {
-                //        //如果没有，就添加
-                //        if (_index== -1) {
-                //            oldarr.push(data.value);
-                //        }
-                //    }
-                //    else {
+                    //form.on('checkbox(checkwy)', function (data) {
+                    //    var oldvalue = $('#hfArticleTag').val();
+                    //    var oldarr = oldvalue.split(":");
+                    //    var _index = $.inArray(data.value, oldarr);
+                    //    if (data.elem.checked) {
+                    //        //如果没有，就添加
+                    //        if (_index== -1) {
+                    //            oldarr.push(data.value);
+                    //        }
+                    //    }
+                    //    else {
 
-                //        if (_index>=0) {
-                //            //移除
-                //            oldarr.splice(_index, 1);
-                //        }
+                    //        if (_index>=0) {
+                    //            //移除
+                    //            oldarr.splice(_index, 1);
+                    //        }
 
-                //    }
-                //    $('#hfArticleTag').val(oldarr.join(':'));
-                //    console.log($('#hfArticleTag').val());
-
-
-
+                    //    }
+                    //    $('#hfArticleTag').val(oldarr.join(':'));
+                    //    console.log($('#hfArticleTag').val());
 
 
 
-                //    //console.log(data.elem); //得到checkbox原始DOM对象
-                //    //console.log(data.elem.checked); //是否被选中，true或者false
-                //    //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
-                //    //console.log(data.othis); //得到美化后的DOM对象
-                //});
 
-       
+
+
+                    //    //console.log(data.elem); //得到checkbox原始DOM对象
+                    //    //console.log(data.elem.checked); //是否被选中，true或者false
+                    //    //console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+                    //    //console.log(data.othis); //得到美化后的DOM对象
+                    //});
+
+
     </script>
     <div style="height:30px;">
- 
-        
+
+
         <p id="lblmsgpanel" style="line-height:30px; font-size:16px; display:none; text-align:center; ">
             <span id="lblArticleKey"></span>
             -
