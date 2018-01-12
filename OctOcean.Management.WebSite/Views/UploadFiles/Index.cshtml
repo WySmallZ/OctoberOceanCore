@@ -1,4 +1,4 @@
-﻿
+﻿@model OctOcean.Management.WebSite.Models.Ex_UploadFile_M
 @{
     Layout = null;
 }
@@ -9,39 +9,228 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>文件上传</title>
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="~/lib/webUploader/webuploader.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/webUploader/webuploader.min.js"></script>
-    
+    <link href="~/css/site.css" rel="stylesheet" />
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .dndpanel {
+            border: 2px solid #808080;
+            margin: auto;
+            height: 200px;
+        }
+
+        .uf-filelist li {
+            list-style: none;
+            border-bottom: 1px solid #808080;
+            padding: 0 10px;
+        }
+
+        .uf-filelist h5 {
+            float: left;
+            font-size: 14px;
+            width: 20%;
+            font-weight: normal;
+            word-wrap: break-word
+        }
+
+        .singfilemsg {
+            float: left;
+            font-size: 14px;
+            height: 14px;
+            width: 80%;
+            padding-top: 6px;
+        }
+    </style>
+
 </head>
 <body>
-    <div id="uploader" class="wu-example">
+    <div id="dndArea" class="dndpanel">
         <!--用来存放文件信息-->
-        <div id="thelist" class="uploader-list"></div>
-        <div class="btns">
-            <div id="picker">选择文件</div>
-            <button id="ctlBtn" class="btn btn-default">开始上传</button>
-        </div>
+        <ul class="uf-filelist" id="filelist">
+            @*<li>
+            <h5>文件名称：</h5>
+            <div class="singfilemsg" id="sfmsg_">
+
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                        <span class="sr-only">60% Complete</span>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </li>
+
+        <li>
+            <h5>文件名称：</h5>
+            <div class="singfilemsg" id="sfmsg_">
+                <p>准备上传....</p>
+            </div>
+            <div class="clear"></div>
+        </li>*@
+        </ul>
+
+
+
     </div>
 
+
+    <div id="btnSelectFile">选择文件</div>
+
+
     <script>
+        //根据传入的类型决定可以选择的文件,默认为null
+        var _accept = '@Model.Accept_MimeTypes'? {
+            title: '@Html.Raw( Model.Accept_Title)',
+            extensions: '@Model.Accept_Extensions',
+            mimeTypes:  '@Model.Accept_MimeTypes'}:null;
+        //eg: {
+        //    title: 'Images',
+        //        extensions: 'gif,jpg,jpeg,bmp,png',
+        //            mimeTypes: 'image/*'
+        //}
+         //初始化Web Uploader
         var uploader = WebUploader.create({
-            auto:true,
-            // swf文件路径
-            swf: '~/lib/webUploader/js/Uploader.swf',
+            pick: {
+                id: '#btnSelectFile',
+                innerHTML: '点击选择文件',
+                multiple: true //是否允许多选
+            },
 
-            // 文件接收服务端。
-            server: '/Upload/wy',
+            auto: true,// 选完文件后，是否自动上传。
 
-            // 选择文件的按钮。可选。
-            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: '#picker',
+            swf: '~/lib/webUploader/js/Uploader.swf', // swf文件路径
 
-            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-            resize: false
+            server: '/Upload/Send/@Model.ArticleKey', // 文件接收服务端。
+
+            resize: false, // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+
+            accept: _accept, //允许上传的文件类型
+
+
+            chunked: new Boolean(@Model.Chunked),// 是否开起分片上传。
+            chunkSize: 10 * 1024 * 1024, //每个分片大小，指定为10M
+            threads: 5, //上传并发数，默认是3
+
+            dnd: '#dndArea',//指定Drag And Drop拖拽的容器，如果不指定，则不启动
+            disableGlobalDnd: true, //是否禁掉整个页面的拖拽功能，如果不禁用，图片拖进来的时候会默认被浏览器打开。
+            paste: document.body, //指定监听paste事件的容器，如果不指定，不启用此功能。此功能为通过粘贴来添加截屏的图片。建议设置为document.body.
+
+            compress: false, //上传前不压缩图片
+
+            prepareNextFile: true,//是否允许在文件传输时提前把下一个文件准备好
+
+            @*formData: {
+                articlekey:'@Model.ArticleKey'
+            },*@ //文件上传请求的参数表，每次发送都会发送此对象中的参数
+
+            fileVal: 'file',//[默认值：'file'] 设置文件上传域的name。
+
+            method: 'POST',//文件上传方式，POST或者GET
+
+           // fileNumLimit: 100,//验证文件总数量, 超出则不允许加入队列
+
+           // fileSizeLimit: 5000, //验证文件总大小是否超出限制, 超出则不允许加入队列
+            //fileSingleSizeLimit: 1 * 1024 * 1024, //验证单个文件大小是否超出限制, 超出则不允许加入队列
+
+            duplicate: true //去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
         });
 
+
+
+
+        //当每个文件被加入队列之前触发，有多少个文件就触发多少次，此事件的handler返回值为false，则此文件不会被添加进入队列
+        uploader.on('beforeFileQueued', function (file) {
+            file.guid = WebUploader.Base.guid();
+            console.log(file);
+        });
+
+
+        var $list = $('#filelist');
+
+
+         // 当有文件被添加进队列的时候，有几个文件就触发几次
+        uploader.on('fileQueued', function (file) {
+            $list.append(
+                '<li><h5>' + file.name + '</h5><div class="singfilemsg" id="sfmsg_' + file.id + '"><p>准备上传....</p></div><div class="clear"></div></li>');
+        });
+
+
+        //文件分块上传前触发，加参数
+        uploader.on('uploadBeforeSend', function (object, data, headers) {
+            // console.log(object);
+           data.guid = object.file.guid;//保持Guid统一
+        });
+
+
+
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on('uploadProgress', function (file, percentage) {
+       
+            var $msgpanel = $('#sfmsg_' + file.id);
+            var progresspanel = $('#progress_' + file.id);
+            var protxt = percentage * 100 + '%';
+            if (progresspanel.length) {
+                progresspanel.css('width', protxt).children('span').text(protxt);
+            }
+            else {
+
+                $msgpanel.empty().append('<div class="progress"><div id= "progress_' + file.id + '" class="progress-bar progress-bar-info progress-bar-striped active" role= "progressbar" aria- valuemin="0" aria- valuemax="100" style= "width:'
+                    + protxt + '" ><span>' + protxt + '</span></div></div>');
+            }
+        });
+
+           //文件上传成功
+        uploader.on('uploadSuccess', function (file) {
+            $('#sfmsg_' + file.id).empty().append("<span>上传成功</span>");
+        });
+
+
+
+
+        ////当一批文件添加进队列以后触发。
+        //uploader.on('filesQueued', function (file) {
+
+        //});
+
+
+        //// 文件上传过程中创建进度条实时显示。
+        //uploader.on('uploadProgress', function (file, percentage) {
+        //    var $li = $('#' + file.id),
+        //        $percent = $li.find('.progress .progress-bar');
+
+        //    // 避免重复创建
+        //    if (!$percent.length) {
+        //        $percent = $('<div class="progress progress-striped active">' +
+        //            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+        //            '</div>' +
+        //            '</div>').appendTo($li).find('.progress-bar');
+        //    }
+
+        //    $li.find('p.state').text('上传中');
+
+        //    $percent.css('width', percentage * 100 + '%');
+        //});
+
+        ////文件上传成功
+        //uploader.on('uploadSuccess', function (file) {
+        //    $('#' + file.id).find('p.state').text('已上传');
+        //});
+        ////文件上传失败
+        //uploader.on('uploadError', function (file) {
+        //    $('#' + file.id).find('p.state').text('上传出错');
+        //});
+        ////文件上传完后，无论成功失败都会触发
+        //uploader.on('uploadComplete', function (file) {
+        //    $('#' + file.id).find('.progress').fadeOut();
+        //});
 
     </script>
 </body>
