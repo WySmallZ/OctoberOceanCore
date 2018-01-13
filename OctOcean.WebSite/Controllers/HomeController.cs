@@ -18,7 +18,7 @@ namespace OctOcean.WebSite.Controllers
         {
 
             //var all = _context.Pub_Article_Entity_DbSet.ToList();
-            var s= Utils.ConfigHelper.DefaultConnectionString;
+           // var s= Utils.OctOceanConfig.DefaultConnectionString;
             return View();
 
         }

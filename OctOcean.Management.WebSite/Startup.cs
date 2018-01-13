@@ -19,7 +19,7 @@ namespace OctOcean.Management.WebSite
 
         public IConfiguration Configuration { get; } //没有set，只能在构造函数中进行赋值
 
-        
+
 
         //ConfigureServices 定义应用所使用的服务（如 ASP.NET Core MVC、Entity Framework Core 和标识）
         public void ConfigureServices(IServiceCollection services)
@@ -40,7 +40,7 @@ namespace OctOcean.Management.WebSite
 
         }
 
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             //Configure 定义请求管道的中间件。
@@ -71,8 +71,13 @@ namespace OctOcean.Management.WebSite
 
         private void InitLoad()
         {
+
             //获取连接字符串
-            ConfigHelper.DefaultConnectionString= Configuration.GetConnectionString("defaultConnStr");
+            OctOceanGlobal.SetConfig(
+               defaultConnectionString: Configuration.GetConnectionString("defaultConnStr")
+               , fileRoot: Configuration.GetValue<string>("OctOcean:FileRoot")
+               , urlRoot: Configuration.GetValue<string>("OctOcean:UrlRoot")
+                );
 
 
         }

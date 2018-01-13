@@ -33,7 +33,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
             //如果没有key，生成key
             if (string.IsNullOrEmpty(ArticleKey))
             {
-                this.ArticleGuidKey = Guid.NewGuid().ToString().Replace("-", "");
+                this.ArticleGuidKey = "A_"+Guid.NewGuid().ToString().Replace("-", "");
                 IsPublish = false;
 
             }
@@ -73,7 +73,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
         {
 
             this.ArticleDraftEntity.UpdateTime = DateTime.Now;
-            this.ArticleDraftEntity.ArticleKey = this.ArticleGuidKey;// Guid.NewGuid().ToString().Replace("-", "");
+            this.ArticleDraftEntity.ArticleKey = this.ArticleGuidKey; 
             this.ArticleDraftEntity.ArticleTag = this.ArticleDraftEntity.ArticleTag ?? "";
             this.ArticleDraftEntity.ArticleCategory = this.ArticleDraftEntity.ArticleCategory ?? "";
             this.ArticleDraftEntity.AidStyle = this.ArticleDraftEntity.AidStyle ?? "";

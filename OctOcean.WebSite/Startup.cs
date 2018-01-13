@@ -67,8 +67,13 @@ namespace OctOcean.WebSite
 
         private void InitLoad()
         {
+
             //获取连接字符串
-           ConfigHelper.DefaultConnectionString = Configuration.GetConnectionString("defaultConnStr");
+            OctOceanGlobal.SetConfig(
+               defaultConnectionString: Configuration.GetConnectionString("defaultConnStr")
+               , fileRoot: Configuration.GetValue<string>("OctOcean:FileRoot")
+               , urlRoot: Configuration.GetValue<string>("OctOcean:UrlRoot")
+                );
 
 
         }

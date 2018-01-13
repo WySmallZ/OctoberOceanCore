@@ -14,7 +14,7 @@ namespace OctOcean.DataService
         IDbConnection connection = null;
         public Base_ArticleCategory_Dal()
         {
-            this.connection = new SqlConnection(ConfigHelper.DefaultConnectionString);
+            this.connection = new SqlConnection(OctOceanGlobal.Config.DefaultConnectionString);
         }
 
         public int InsertArticleCategory(Base_ArticleCategory_Entity entity)

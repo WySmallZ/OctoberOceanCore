@@ -15,7 +15,7 @@ namespace OctOcean.DataService
         IDbConnection connection = null;
         public Pri_ArticleDraft_Dal()
         {
-            this.connection = new SqlConnection(ConfigHelper.DefaultConnectionString);
+            this.connection = new SqlConnection(OctOceanGlobal.Config.DefaultConnectionString);
         }
 
         public int InsertPri_ArticleDraft(Pri_ArticleDraft_Entity entity)

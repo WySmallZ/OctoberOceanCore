@@ -14,7 +14,7 @@ namespace OctOcean.DataService
         IDbConnection connection = null;
         public Pub_Article_Dal()
         {
-            this.connection = new SqlConnection(ConfigHelper.DefaultConnectionString);
+            this.connection = new SqlConnection(OctOceanGlobal.Config.DefaultConnectionString);
         }
 
         /// <summary>

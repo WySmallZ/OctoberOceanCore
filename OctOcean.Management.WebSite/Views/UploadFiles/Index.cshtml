@@ -107,7 +107,7 @@
 
             swf: '~/lib/webUploader/js/Uploader.swf', // swf文件路径
 
-            server: '/Upload/Send/@Model.ArticleKey', // 文件接收服务端。
+            server: '/Upload/Send/img/@Model.ArticleKey', // 文件接收服务端。
 
             resize: false, // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
 
@@ -128,7 +128,7 @@
 
             @*formData: {
                 articlekey:'@Model.ArticleKey'
-            },*@ //文件上传请求的参数表，每次发送都会发送此对象中的参数
+            },*@ //文件上传请求的参数表，每次发送都会发送此对象中的参数，注意：该处是所有文件的公共参数，不同文件的参数必须在事件中设定
 
             fileVal: 'file',//[默认值：'file'] 设置文件上传域的name。
 
@@ -147,7 +147,7 @@
 
         //当每个文件被加入队列之前触发，有多少个文件就触发多少次，此事件的handler返回值为false，则此文件不会被添加进入队列
         uploader.on('beforeFileQueued', function (file) {
-            file.guid = WebUploader.Base.guid();
+            file.guid = WebUploader.Base.guid();//每个文件绑定一个独立的Guid
             console.log(file);
         });
 
@@ -162,10 +162,13 @@
         });
 
 
-        //文件分块上传前触发，加参数
+        //文件分块上传前触发，加参数，无论是否启用分块，都会执行
         uploader.on('uploadBeforeSend', function (object, data, headers) {
-            // console.log(object);
-           data.guid = object.file.guid;//保持Guid统一
+            
+            //console.log(object);
+            //console.log('uploadBeforeSend:'+object.file.guid);
+
+           data.guid = object.file.guid;//获取该文件独立的Guid，并发送到后台
         });
 
 

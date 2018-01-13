@@ -13,7 +13,7 @@ namespace OctOcean.DataService
         IDbConnection connection = null;
         public Base_ArticleTag_Dal()
         {
-            this.connection = new SqlConnection(ConfigHelper.DefaultConnectionString);
+            this.connection = new SqlConnection(OctOceanGlobal.Config.DefaultConnectionString);
         }
 
         public int InsertArticleTag(Base_ArticleTag_Entity entity)
