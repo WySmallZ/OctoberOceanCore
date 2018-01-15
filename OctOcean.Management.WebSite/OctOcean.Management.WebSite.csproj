@@ -15,7 +15,4 @@
     <ProjectReference Include="..\OctOcean.Entity\OctOcean.Entity.csproj" />
     <ProjectReference Include="..\OctOcean.Utils\OctOcean.Utils.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
 </Project>

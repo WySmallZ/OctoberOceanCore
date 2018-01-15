@@ -38,6 +38,11 @@ namespace OctOcean.Utils
 
         }
 
+        public string UrlRoot_Cache_Image
+        {
+            get { return UrlRoot + "/Cache/image"; }
+        }
+
 
 
     }

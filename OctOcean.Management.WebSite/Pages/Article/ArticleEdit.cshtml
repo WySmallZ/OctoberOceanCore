@@ -115,11 +115,12 @@
                 <input type="hidden" asp-for="ArticleDraftEntity.Id" />
 
                 <div class="layui-row">
-                    <div class="layui-col-md4">
+                    <div class="layui-col-md6">
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button type="submit" class="layui-btn layui-btn-green" lay-submit lay-filter="*"><i class="layui-icon">&#xe6b2;</i>保存</button>
+                                <button type="submit" class="layui-btn layui-btn-green" lay-submit lay-filter="lf_articleSubmit"><i class="layui-icon">&#xe6b2;</i>保存</button>
                                 <a href="" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe63c;</i>预览</a>
+                                <button id="btnuploadImg" type="button" class="layui-btn layui-btn-warm"><i class="layui-icon">&#xe6b2;</i>上传图片</button>
                             </div>
                         </div>
                     </div>
@@ -265,8 +266,37 @@
                 $('#myEditor>div:eq(1)').height($(window).height() - 110);
             });
 
+            //绑定上传图片事件
+            $('#btnuploadImg').click(function () {
+                var layer= layui.layer;
+                 layer.open({
+                    type: 2 //你可以title: ['文本', 'font-size:18px;']，数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+                    ,title: '图片上传'
+                    , content: '/Upload/img/@Model.ArticleGuidKey'
+                    , area: ['800px', '600px']
+                    , resize: false//是否可以拉伸
+                    //右上角关闭回调
+                     , cancel: function (index, layero) {
+                         alert(layer.getChildFrame('title', index).text());// - 获取iframe页的DOM
 
 
+                        if (confirm('您确定取消上传？')) {//只有当点击confirm框的确定时，该层才会关闭
+                            layer.close(index)
+                        }
+                        return false; //不关闭
+
+                      
+                    }
+                    , closeBtn :2
+                    , btnAlign: 'c' //居中
+                    , btn: ['确定']
+                    , yes: function (index, layero) {
+
+                        layer.close(index); //如果设定了yes回调，需进行手工关闭
+                     }
+                });  
+
+             });
             // 或者 var editor = new E( document.getElementById('editor') )
 
         });

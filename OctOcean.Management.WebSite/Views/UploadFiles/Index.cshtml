@@ -15,21 +15,22 @@
     <script src="~/lib/webUploader/webuploader.min.js"></script>
     <link href="~/css/site.css" rel="stylesheet" />
     <style>
+        ul, li,p{margin-bottom:0;}
         * {
             padding: 0;
             margin: 0;
         }
-
-        .dndpanel {
+       
+        .dndbody {
             border: 2px solid #808080;
-            margin: auto;
-            height: 200px;
+            padding:10px;
+        
         }
 
         .uf-filelist li {
             list-style: none;
-            border-bottom: 1px solid #808080;
-            padding: 0 10px;
+            border-top: 1px dashed #73c9e3;
+            padding: 3px 10px;
         }
 
         .uf-filelist h5 {
@@ -37,7 +38,8 @@
             font-size: 14px;
             width: 20%;
             font-weight: normal;
-            word-wrap: break-word
+            word-wrap: break-word;
+            color: #1588aa;
         }
 
         .singfilemsg {
@@ -47,41 +49,55 @@
             width: 80%;
             padding-top: 6px;
         }
+        .singfilemsg p{color:#adaaaa;}
+            .singfilemsg span {
+                color: #5cb85c;
+            }
     </style>
+ 
 
 </head>
-<body>
-    <div id="dndArea" class="dndpanel">
-        <!--用来存放文件信息-->
-        <ul class="uf-filelist" id="filelist">
-            @*<li>
-            <h5>文件名称：</h5>
-            <div class="singfilemsg" id="sfmsg_">
+<body class="dndbody">
 
-                <div class="progress">
-                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                        <span class="sr-only">60% Complete</span>
+    <div>
+        <div class="float-left" style="width:20%; text-align:center;">
+            <div id="btnSelectFile">选择文件</div>
+            <div style="border:1px solid #73c9e3; width:100%; height:300px;">
+                <img src="~/images/zwtp.gif" width="98%"/>
+            </div>
+
+        </div>
+        <div class="float-right" style="width:78%; border:1px solid #73c9e3;">
+            <p style="text-align:center;height:40px; background-color:#73c9e3; font-size:16px; color:#fff; line-height:40px;">文件列表</p>
+            <ul class="uf-filelist" id="filelist">
+                <li>
+                <h5>文件名称：</h5>
+                <div class="singfilemsg" id="sfmsg_">
+
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success  progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">60% Complete</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="clear"></div>
-        </li>
+                <div class="clear"></div>
+            </li>
 
-        <li>
-            <h5>文件名称：</h5>
-            <div class="singfilemsg" id="sfmsg_">
-                <p>准备上传....</p>
-            </div>
-            <div class="clear"></div>
-        </li>*@
-        </ul>
+            <li>
+                <h5>文件名称：</h5>
+                <div class="singfilemsg" id="sfmsg_">
+                    <p>准备上传....</p>
+                </div>
+                <div class="clear"></div>
+            </li>
+            </ul>
 
-
-
+        </div>
+        <div class="float-clear"></div>
     </div>
 
-
-    <div id="btnSelectFile">选择文件</div>
+ 
+   
 
 
     <script>
@@ -118,7 +134,7 @@
             chunkSize: 10 * 1024 * 1024, //每个分片大小，指定为10M
             threads: 5, //上传并发数，默认是3
 
-            dnd: '#dndArea',//指定Drag And Drop拖拽的容器，如果不指定，则不启动
+            dnd: document.body,//指定Drag And Drop拖拽的容器，如果不指定，则不启动
             disableGlobalDnd: true, //是否禁掉整个页面的拖拽功能，如果不禁用，图片拖进来的时候会默认被浏览器打开。
             paste: document.body, //指定监听paste事件的容器，如果不指定，不启用此功能。此功能为通过粘贴来添加截屏的图片。建议设置为document.body.
 
@@ -185,14 +201,20 @@
             }
             else {
 
-                $msgpanel.empty().append('<div class="progress"><div id= "progress_' + file.id + '" class="progress-bar progress-bar-info progress-bar-striped active" role= "progressbar" aria- valuemin="0" aria- valuemax="100" style= "width:'
+                $msgpanel.empty().append('<div class="progress"><div id= "progress_' + file.id + '" class="progress-bar progress-bar-success progress-bar-striped active" role= "progressbar" aria- valuemin="0" aria- valuemax="100" style= "width:'
                     + protxt + '" ><span>' + protxt + '</span></div></div>');
             }
         });
 
            //文件上传成功
-        uploader.on('uploadSuccess', function (file) {
+        uploader.on('uploadSuccess', function (file, response) {
+            
             $('#sfmsg_' + file.id).empty().append("<span>上传成功</span>");
+            $('#sfmsg_' + file.id).parent('li').click(function () {
+                console.log(response);
+
+             });
+
         });
 
 
@@ -234,6 +256,10 @@
         //uploader.on('uploadComplete', function (file) {
         //    $('#' + file.id).find('.progress').fadeOut();
         //});
+
+
+       
+
 
     </script>
 </body>

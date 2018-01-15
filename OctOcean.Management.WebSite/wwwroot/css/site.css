@@ -5,7 +5,9 @@
     float: right;
 }
 .clear{clear:both;}
-
+.float-clear {
+    clear: both;
+}
 
 .article-tag-span {
     margin: 0 1px;
