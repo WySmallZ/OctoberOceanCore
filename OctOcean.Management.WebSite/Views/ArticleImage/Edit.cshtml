@@ -1,0 +1,113 @@
+﻿@model OctOcean.Entity.Pri_ArticleImage_Entity
+@{
+    ViewData["Title"] = "编辑图片";
+    Layout = "~/_SimLayout.cshtml";
+}
+@section CustomStyleTitle{
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/webUploader/webuploader.css" rel="stylesheet" />
+
+}
+@section CustomScriptTitle{
+    <script src="~/lib/webUploader/webuploader.min.js"></script>
+}
+
+<form method="post" class="layui-form layui-form-pane">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">Image Key:</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled readonly value="@Model.ImgKey" />
+
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">Article Key:</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled readonly value="@Model.ArticleKey" />
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">图片:</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled readonly value="@Model.ImgName" />
+            <div>
+                <div class="float-left" style="width:40%;">
+                    <img src="@Model.Src" style="max-height:400px; max-width:100%;" />
+                </div>
+                <div class="float-left" style="width:60%;">
+                    <div id="btnSelectFile">选择文件</div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success  progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">60% Complete</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="float-clear"></div>
+
+            </div>
+
+
+            <div></div>
+        </div>
+    </div>
+
+
+    @*<div class="layui-form-item">
+            <label class="layui-form-label">分类名称:</label>
+            <div class="layui-input-block">
+                <input asp-for="ArticleCategoryEntity.ArticleCategoryName" type="text" maxlength="10" required lay-verify="required" placeholder="请输入文章分类" autocomplete="off" class="layui-input">
+            </div>
+        </div>*@
+    <script>
+
+    var uploader = WebUploader.create({
+            pick: {
+                id: '#btnSelectFile',
+                innerHTML: '点击选择文件',
+                multiple: false //是否允许多选
+            },
+
+            auto: true,// 选完文件后，是否自动上传。
+
+            swf: '~/lib/webUploader/js/Uploader.swf', // swf文件路径
+
+            server: '/ArticleImage/Update/@Model.ImgKey', // 文件接收服务端。
+
+            resize: false, // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+
+            accept: { title: 'Images', extensions: 'gif,jpg,jpeg,bmp,png', mimeTypes:'image/*'}, //允许上传的文件类型
+
+
+            chunked: false,//new Boolean( Model.Chunked),// 是否开起分片上传。
+            chunkSize: 10 * 1024 * 1024, //每个分片大小，指定为10M
+            threads: 5, //上传并发数，默认是3
+
+            dnd: document.body,//指定Drag And Drop拖拽的容器，如果不指定，则不启动
+            disableGlobalDnd: true, //是否禁掉整个页面的拖拽功能，如果不禁用，图片拖进来的时候会默认被浏览器打开。
+            paste: document.body, //指定监听paste事件的容器，如果不指定，不启用此功能。此功能为通过粘贴来添加截屏的图片。建议设置为document.body.
+
+            compress: false, //上传前不压缩图片
+
+            prepareNextFile: true,//是否允许在文件传输时提前把下一个文件准备好
+
+            @*formData: {
+                articlekey:'@Model.ArticleKey'
+            },*@ //文件上传请求的参数表，每次发送都会发送此对象中的参数，注意：该处是所有文件的公共参数，不同文件的参数必须在事件中设定
+
+            fileVal: 'file',//[默认值：'file'] 设置文件上传域的name。
+
+            method: 'POST',//文件上传方式，POST或者GET
+
+           // fileNumLimit: 100,//验证文件总数量, 超出则不允许加入队列
+
+           // fileSizeLimit: 5000, //验证文件总大小是否超出限制, 超出则不允许加入队列
+            //fileSingleSizeLimit: 1 * 1024 * 1024, //验证单个文件大小是否超出限制, 超出则不允许加入队列
+
+            duplicate: true //去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
+    });
+    </script>
+</form>
+

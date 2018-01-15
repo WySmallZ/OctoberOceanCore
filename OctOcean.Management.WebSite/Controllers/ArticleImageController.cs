@@ -10,51 +10,45 @@ using OctOcean.Utils;
 
 namespace OctOcean.Management.WebSite.Controllers
 {
-    [Route("OldUpload")]
-    public class UploadFilesController : Controller
+    [Route("ArticleImage")]
+    public class ArticleImageController : Controller
     {
-        [Route("{UploadType}/{ArticleKey}")]
-        public IActionResult Index(string UploadType, string ArticleKey)
+
+        OctOcean.DataService.Pri_ArticleImage_Dal imgdal = new DataService.Pri_ArticleImage_Dal();
+        [Route("Upload/{ArticleKey}")]
+        public IActionResult Upload(string ArticleKey)
         {
-            string _extensions = string.Empty;
-            string _mimeTypes = string.Empty;
-            string _title = string.Empty;
-            switch (UploadType)
-            {
-                case "img":
-                    _extensions = "gif,jpg,jpeg,bmp,png";
-                    _mimeTypes = "image/*";
-                    _title = "Images";
-                    break;
-                default:
-                    break;
-            }
+            //string _extensions = string.Empty;
+            //string _mimeTypes = string.Empty;
+            //string _title = string.Empty;
+            ////switch (UploadType)
+            ////{
+            ////    case "img":
+            ////        _extensions = "gif,jpg,jpeg,bmp,png";
+            ////        _mimeTypes = "image/*";
+            ////        _title = "Images";
+            ////        break;
+            ////    default:
+            ////        break;
+            ////}
 
 
 
-            Ex_UploadFile_M uploadmodel = new Ex_UploadFile_M()
-            {
-                Accept_Extensions = _extensions,
-                Accept_MimeTypes = _mimeTypes,
-                Accept_Title = _title,
-                Chunked = 0,
-                ArticleKey = ArticleKey
-            };
-
-
-
-
-
-
-            return View(uploadmodel);
+            //Ex_UploadFile_M uploadmodel = new Ex_UploadFile_M()
+            //{
+            //    Accept_Extensions = _extensions,
+            //    Accept_MimeTypes = _mimeTypes,
+            //    Accept_Title = _title,
+            //    Chunked = 0,
+            //    ArticleKey = ArticleKey
+            //};
+            ViewBag.ArticleKey = ArticleKey;
+            return View();
         }
 
 
-
-
-
-        [Route("Send/{FileType}/{ArticleKey}")]
-        public async Task<IActionResult> SendSmallFile(string FileType, string ArticleKey)
+        [Route("Send/{ArticleKey}")]
+        public async Task<IActionResult> SendSmallFile(string ArticleKey)
         {
             var requestForm = HttpContext.Request.Form;
             string imageurl = Utils.OctOceanGlobal.Config.UrlRoot_Cache_Image + "/" + ArticleKey;
@@ -72,40 +66,35 @@ namespace OctOcean.Management.WebSite.Controllers
                 string fileguid = requestForm["guid"]; //该Guid是上传控件自带的Guid，有wu前缀，程序里使用自动生成的Guid作为ImageKey
                 string filename = requestForm["name"];
                 //判断是否进行了分片
-                if (requestForm.ContainsKey("chunk"))
+
+                List<IFormFile> files = this.HttpContext.Request.Form.Files as List<IFormFile>;
+                if (files != null && files.Count > 0)
                 {
-                    await Task.Run(() => { });
-                }
-                else
-                {
-                    List<IFormFile> files = this.HttpContext.Request.Form.Files as List<IFormFile>;
-                    if (files != null && files.Count > 0)
+                    var formFile = files[0];
+                    string imgname = "Img_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(formFile.FileName);
+                    fileName = imgname;
+                    string fn = Path.Combine(imageCacheDir, imgname);
+                    using (var stream = new FileStream(fn, FileMode.Create))
                     {
-                        var formFile = files[0];
-                        string imgname = "Img_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(formFile.FileName);
-                        fileName = imgname;
-                        string fn = Path.Combine(imageCacheDir, imgname);
-                        using (var stream = new FileStream(fn, FileMode.Create))
-                        {
-                            await formFile.CopyToAsync(stream);
+                        await formFile.CopyToAsync(stream);
 
-                            imageurl = imageurl + "/" + imgname;
-                        }
-                        //只会有一个文件
-                        //foreach (var formFile in files)
-                        //{
-                        //    string imgname = "Img_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(formFile.FileName);
-                        //    string fn = Path.Combine(imageCacheDir, imgname );
-                        //    using (var stream = new FileStream(fn, FileMode.Create))
-                        //    {
-                        //        await formFile.CopyToAsync(stream);
-
-                        //        imageurl= imageurl + "/" + imgname;
-                        //    }
-
-                        //}
+                        imageurl = imageurl + "/" + imgname;
                     }
+                    //只会有一个文件
+                    //foreach (var formFile in files)
+                    //{
+                    //    string imgname = "Img_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(formFile.FileName);
+                    //    string fn = Path.Combine(imageCacheDir, imgname );
+                    //    using (var stream = new FileStream(fn, FileMode.Create))
+                    //    {
+                    //        await formFile.CopyToAsync(stream);
+
+                    //        imageurl= imageurl + "/" + imgname;
+                    //    }
+
+                    //}
                 }
+
 
 
                 return Json(new { status = 1, msg = imageurl, fileName = fileName });
@@ -122,8 +111,16 @@ namespace OctOcean.Management.WebSite.Controllers
 
         }
 
-        [Route("Confirm/{FileType}/{ArticleKey}")]
-        public    ActionResult ConfirmFile(string FileType, string ArticleKey, string CacheFileNames)
+        [Route("Update/{ImgKey}")]
+        public async Task<IActionResult> UpdateArticleImage(string ImgKey)
+        {
+            return Json("");
+
+        }
+
+
+        [Route("Confirm/{ArticleKey}")]
+        public ActionResult ConfirmFile( string ArticleKey, string CacheFileNames)
         {
 
 
@@ -139,7 +136,7 @@ namespace OctOcean.Management.WebSite.Controllers
 
 
             string[] farr = CacheFileNames.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-            OctOcean.DataService.Pri_ArticleImage_Dal imgdal = new DataService.Pri_ArticleImage_Dal();
+          
 
             foreach (string fn in farr)
             {
@@ -176,5 +173,17 @@ namespace OctOcean.Management.WebSite.Controllers
             return Json(new { status = status, msg = msg });
 
         }
+
+        [Route("Edit/{ImageKey}")]
+        public ActionResult Edit(string ImageKey)
+        {
+            OctOcean.Entity.Pri_ArticleImage_Entity entity= imgdal.GetPri_ArticleImage_Entity(ImageKey);
+            return View(entity);
+        }
+
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
     }
 }

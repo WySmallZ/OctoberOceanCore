@@ -45,5 +45,33 @@ namespace OctOcean.Utils
 
 
 
+
+        private string _fileRoot_web_image;
+        public string FileRoot_Web_Image
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_fileRoot_web_image))
+                {
+                    _fileRoot_web_image = Path.Combine(FileRoot, "Web/image");
+                    if (!Directory.Exists(_fileRoot_web_image))
+                    {
+                        Directory.CreateDirectory(_fileRoot_web_image);
+                    }
+
+                }
+                return _fileRoot_web_image;
+            }
+
+        }
+
+
+
+        public string UrlRoot_Web_Image
+        {
+            get { return UrlRoot + "/Web/image"; }
+        }
+
+
     }
 }

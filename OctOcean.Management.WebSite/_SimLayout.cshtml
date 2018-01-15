@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/octocean.exp.js"></script>
+
+    @RenderSection("CustomStyleTitle", required: false)
+    @RenderSection("CustomScriptTitle", required: false)
+    
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+
+    <script src="~/lib/layui/layui.all.js"></script>
+
+    @RenderSection("CustomScriptFoot", required: false)
+
+
+</body>
+</html>

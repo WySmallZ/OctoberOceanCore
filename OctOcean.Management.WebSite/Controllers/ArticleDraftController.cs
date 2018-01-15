@@ -83,19 +83,22 @@ namespace OctOcean.Management.WebSite.Controllers
                         //查询一下之前旧的状态，是否删除
                         //删除的状态只能在执行删除或者还原的时候进行改变，此处仍然取旧的状态
                         var olddraft = draftdal.GetPri_ArticleDraft(ArticleKey);
-
-                        //必须在Draft中有这条记录修改才能生效，也就是说，只有点了保存按钮，产生了数据，才能够和temp数据进行关联，这样的话可以减少草稿内容（比如测试、或者打开页面没有做任何事情）的产生。
-                        draftdal.UpdatePri_ArticleDraft(new Entity.Pri_ArticleDraft_Entity()
+                        //只有有旧的记录才更新
+                        if (olddraft != null)
                         {
-                            ArticleKey = ArticleKey,
-                            ArticleTag = ArticleTag ?? "",
-                            AidStyle = AidStyle ?? "",
-                            ArticleCategory = ArticleCategory ?? "",
-                            ArticleTitle = ArticleTitle ?? "",
-                            ContentText = ContentText ?? "",
-                            DelStatus = olddraft == null ? (byte)0 : olddraft.DelStatus,
-                            UpdateTime = DateTime.Now
-                        });
+                            //必须在Draft中有这条记录修改才能生效，也就是说，只有点了保存按钮，产生了数据，才能够和temp数据进行关联，这样的话可以减少草稿内容（比如测试、或者打开页面没有做任何事情）的产生。
+                            draftdal.UpdatePri_ArticleDraft(new Entity.Pri_ArticleDraft_Entity()
+                            {
+                                ArticleKey = ArticleKey,
+                                ArticleTag = ArticleTag ?? "",
+                                AidStyle = AidStyle ?? "",
+                                ArticleCategory = ArticleCategory ?? "",
+                                ArticleTitle = ArticleTitle ?? "",
+                                ContentText = ContentText ?? "",
+                                DelStatus = olddraft == null ? (byte)0 : olddraft.DelStatus,
+                                UpdateTime = DateTime.Now
+                            });
+                        }
                     }
 
                     //查询历史总次数

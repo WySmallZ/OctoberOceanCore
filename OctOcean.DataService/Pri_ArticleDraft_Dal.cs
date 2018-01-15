@@ -66,6 +66,7 @@ BEGIN
 DELETE FROM Pri_ArticleDraft WHERE ArticleKey=@ArticleKey;
 DELETE FROM Pri_ArticleDraft_Temp WHERE ArticleKey=@ArticleKey;
 DELETE FROM Pub_Article WHERE ArticleKey=@ArticleKey;
+DELETE FROM Pri_ArticleImage WHERE ArticleKey=@ArticleKey;
 END ELSE BEGIN
 --如果没有删除过，就更新数据
 UPDATE Pri_ArticleDraft SET DelStatus=1 WHERE ArticleKey=@ArticleKey;
@@ -117,7 +118,7 @@ END";
 
         public Pri_ArticleDraft_Entity GetPri_ArticleDraft(string ArticleKey)
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft where  ArticleKey=@ArticleKey";
+            string sql = "select top 1  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft where  ArticleKey=@ArticleKey";
 
             var query = connection.Query<Pri_ArticleDraft_Entity>(sql, new { ArticleKey = ArticleKey }).AsList();
             if (query != null && query.Count > 0)

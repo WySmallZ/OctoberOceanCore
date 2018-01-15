@@ -19,9 +19,13 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public bool IsPublish { get; set; }
 
+        public bool CanUploadOrPublish { get; set; }
+
         public SelectList Base_ArticleCategoryddl { get; set; }
 
         public IList<Base_ArticleTag_Entity> Base_ArticleTagList { get; set; }
+
+        public IList<Pri_ArticleImage_Entity> Pri_ArticleImageList { get; set; }
 
 
         //public string SelectArticleCategoryValue { get; set; }
@@ -35,6 +39,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
             {
                 this.ArticleGuidKey = "A_"+Guid.NewGuid().ToString().Replace("-", "");
                 IsPublish = false;
+                CanUploadOrPublish = false;
 
             }
             else
@@ -49,6 +54,9 @@ namespace OctOcean.Management.WebSite.Pages.Article
                     //判断是否已经发布
                     var pubarticle = new OctOcean.DataService.Pub_Article_Dal().GetPub_Article_Entity(ArticleKey);
                     IsPublish = pubarticle != null && pubarticle.DelStatus == 0; //如果存在数据，并且未删除就表示是发布过的
+
+                    //能够进行上传操作和发布操作的前提是该文章必须进行过保存而且没有删除
+                    CanUploadOrPublish = ArticleDraftEntity != null && ArticleDraftEntity.Id > 0 && ArticleDraftEntity.DelStatus == 0;
 
                 });
 
@@ -118,7 +126,9 @@ namespace OctOcean.Management.WebSite.Pages.Article
             Base_ArticleTag_Dal batdal = new Base_ArticleTag_Dal();
             Base_ArticleTagList = batdal.GetAllArticleTag();
 
-
+            Pri_ArticleImage_Dal imgdal = new Pri_ArticleImage_Dal();
+            Pri_ArticleImageList = imgdal.GetAllPri_ArticleImage();
+            
         }
     }
 }
