@@ -62,6 +62,8 @@ namespace OctOcean.Management.WebSite.Controllers
             }
             else
             {
+           ContentText = new DataService.Pri_ArticleImage_Dal().ReplaceImagesPlaceholder(ContentText, ArticleKey);
+
                 //将数据存入到Temp中去
                 OctOcean.DataService.Pri_ArticleDraft_Temp_Dal tempdal = new DataService.Pri_ArticleDraft_Temp_Dal();
                 try

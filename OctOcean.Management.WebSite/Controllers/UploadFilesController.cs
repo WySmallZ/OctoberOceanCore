@@ -69,7 +69,7 @@ namespace OctOcean.Management.WebSite.Controllers
 
 
 
-                string fileguid = requestForm["guid"]; //该Guid是上传控件自带的Guid，有wu前缀，程序里使用自动生成的Guid作为ImageKey
+                //string fileguid = requestForm["guid"]; //该Guid是上传控件自带的Guid，有wu前缀，程序里使用自动生成的Guid作为ImageKey
                 string filename = requestForm["name"];
                 //判断是否进行了分片
                 if (requestForm.ContainsKey("chunk"))

@@ -24,8 +24,8 @@
             padding: 0 5px;
             float: left;
             border: 1px solid #c6c6c6;
-            margin-bottom:8px;
-            margin-left:10px;
+            margin-bottom: 8px;
+            margin-left: 10px;
         }
 
             .article-img-list li p {
@@ -33,15 +33,18 @@
             }
 
             .article-img-list li a {
-           color:#0094ff;
-                }
+                color: #0094ff;
+            }
 
             .article-img-list li i {
                 color: red;
                 /*line-height: 24px;*/
                 font-size: 20px;
             }
-        .article-img-edit:hover{ cursor:pointer;}
+
+        .article-img-edit:hover {
+            cursor: pointer;
+        }
     </style>
 
 
@@ -117,36 +120,36 @@
                             <div class="layui-input-block">
                                 <ul class="article-img-list" id="article_img_list">
                                     @foreach (var Img in Model.Pri_ArticleImageList)
-    {
-                                <li>
-                                    <a href="@Img.Src" target="_blank">
-                                        @Img.ImgName
-                                    </a>
-                                    <p>
-                                        <label>宽度:</label><span>@Img.Width</span>
-                                        <label>高度:</label><span>@Img.Height</span>
-                                        <button class="article-img-edit layui-btn layui-btn-edit layui-btn-radius  layui-btn-xs" data-edit="insert" type="button">
-                                            <i class="layui-icon">&#xe64c;</i>
-                                            插入该图片
-                                        </button>
-                                        &nbsp;
-                                        <i class="layui-icon article-img-edit" data-edit="update">&#xe642;</i>
-                                        &nbsp;
-                                        <i class="layui-icon article-img-edit" data-edit="delete">&#xe640;</i>
-                                    </p>
+                                    {
+                                        <li id="@("li_"+Img.ImgKey)">
+                                            <a href="@Img.Src" target="_blank">
+                                                @Img.ImgName
+                                            </a>
+                                            <p data-imgkey="@Img.ImgKey">
+                                                <label>宽度:</label><span id="@("w_"+Img.ImgKey)">@Img.Width</span>
+                                                <label>高度:</label><span id="@("h_"+Img.ImgKey)">@Img.Height</span>
+                                                <button data-clipboard-text="@("[*"+Img.ImgKey+"*]")" class="article-img-edit-copy layui-btn layui-btn-edit layui-btn-radius  layui-btn-xs" type="button">
+                                                    <i class="layui-icon">&#xe64c;</i>
+                                                    复制该图片Key
+                                                </button>
+                                                &nbsp;
+                                                <i class="layui-icon article-img-edit" data-edit="update">&#xe642;</i>
+                                                &nbsp;
+                                                <i class="layui-icon article-img-edit" data-edit="delete">&#xe640;</i>
+                                            </p>
 
-                                </li>}
-
+                                        </li>}
+                                    
                                 </ul>
 
                             </div>
                         </div>
                     </div>
                 </div>
-
+               
                 <input type="hidden" asp-for="ArticleGuidKey" id="hfArticleKey" />
                 <input type="hidden" asp-for="ArticleDraftEntity.Id" />
-                
+
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
@@ -216,11 +219,37 @@
 
     <script src="~/lib/wangEditor/wangEditor.min.js"></script>
     <script src="~/lib/layui/layui.all.js"></script>
-
+    <script src="~/lib/clipboard/clipboard.min.js"></script>
     <script>
+        var clipboard=  new Clipboard('.article-img-edit-copy');
+
         //放在最外面
         var E = window.wangEditor
         var editor = new E('#myEditor');
+        editor.customConfig.menus = [
+            'head',  // 标题
+            'bold',  // 粗体
+            'italic',  // 斜体
+            'underline',  // 下划线
+            'strikeThrough',  // 删除线
+            'foreColor',  // 文字颜色
+            'backColor',  // 背景颜色
+            'link',  // 插入链接
+            'list',  // 列表
+            'justify',  // 对齐方式
+            'quote',  // 引用
+            'emoticon',  // 表情
+           // 'image',  // 插入图片
+            'table',  // 表格
+            //'video',  // 插入视频
+            'code',  // 插入代码
+            'undo',  // 撤销
+            'redo'  // 重复
+        ]
+
+        // 关闭粘贴样式的过滤
+        //editor.customConfig.pasteFilterStyle = false;
+
         editor.create();
 
 
@@ -292,6 +321,7 @@
         //每隔30秒触发一次
         var autoTimer = window.setInterval(autoSubmitData, 1000 * 30);
 
+        var layer = layui.layer;
         $(function () {
             $('#myEditor>div:eq(1)').height($(window).height() - 110);
             $(window).resize(function () {
@@ -301,7 +331,7 @@
 
             //绑定上传图片事件
             $('#btnuploadImg').click(function () {
-                var layer= layui.layer;
+                
                  layer.open({
                     type: 2 //你可以title: ['文本', 'font-size:18px;']，数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
                     ,title: '图片上传'
@@ -318,11 +348,7 @@
                              }
                              return false; //不关闭
                          }
-
-
-
-
-                    }
+                     }
                     , closeBtn :2
                     , btnAlign: 'c' //居中
                     , btn: ['确定']
@@ -347,7 +373,7 @@
 
 
 
-                        
+
                      }
                 });
 
@@ -358,20 +384,79 @@
 
             //绑定图片编辑操作
             $('#article_img_list .article-img-edit').click(function () {
-                var edittype = $(this).attr('data-edit');
-                if (edittype == "insert") {
-                    //插入到文章的光标位置
 
-                } else if (edittype == "update") {
+                var edittype = $(this).attr('data-edit');
+                var imgkey = $(this).parent('p').attr('data-imgkey');
+
+                //if (edittype == "insert") {
+                //    //插入到文章的光标位置，不能实现目前只能放在末尾
+                //    editor.txt.append('<ii>'+imgkey+'</ii>');
+
+
+
+
+                //} else
+
+                    if (edittype == "update") {
+                  
                     layer.open({
-                        type: 1,
-                        content: $('#id') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    });
+                        type: 2 //你可以title: ['文本', 'font-size:18px;']，数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+                        , title: '图片上传'
+                        , content: '/ArticleImage/Edit/' + imgkey
+                    , area: ['800px', '550px']
+                    , resize: false//是否可以拉伸
+                    //右上角关闭回调
+                    , cancel: function (index, layero) {
+                        //alert(layer.getChildFrame('title', index).text());// - 获取iframe页的DOM
+                        //如果有值才会提示
+                        if (layer.getChildFrame('#NewImgSrc', index).val()) {
+                            if (confirm('您确定取消上传？')) {//只有当点击confirm框的确定时，该层才会关闭
+                                layer.close(index)
+                            }
+                            return false; //不关闭
+                        }
+
+                    }
+                    , closeBtn :2
+                    , btnAlign: 'c' //居中
+                    , btn: ['确定']
+                        , yes: function (index, layero) {
+
+                            $.post("/ArticleImage/Info/" + imgkey, {
+
+                            }, function (data) {
+                                var ik = data.imgKey;
+                                var $li = $('#li_' + ik);
+                                $li.children('a').text(data.imgName).attr('href', data.src);
+                                $('#w_' + ik).text(data.width);
+                                $('#h_' + ik).text(data.height);
+
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                             },"json");
+                     }
+                });
 
 
                 } else if (edittype == "delete") {
 
+                    layer.confirm('系统将会彻底删除该图片的所有数据，您确定要删除该图片吗？', { icon: 3, title: '警告' }, function (index) {
+                        //do something
+                        $.post("/ArticleImage/Remove/" + imgkey, {
 
+                        }, function (data) {
+
+                            if (data.status == 1) {
+                                var $li = $('#li_' + imgkey).remove();
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                            else {
+                                alert(data.msg);
+
+                            }
+
+                           
+                            }, "json");
+                    });
                 }
 
              });

@@ -1,4 +1,5 @@
 ﻿@model OctOcean.Entity.Pri_ArticleImage_Entity
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "编辑图片";
     Layout = "~/_SimLayout.cshtml";
@@ -6,61 +7,97 @@
 @section CustomStyleTitle{
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="~/lib/webUploader/webuploader.css" rel="stylesheet" />
+    <style>
+        .layui-form-item {
+            margin-bottom: 5px;
+        }
+    </style>
 
 }
 @section CustomScriptTitle{
     <script src="~/lib/webUploader/webuploader.min.js"></script>
 }
+<div style="padding:20px;">
+    <form method="post" class="layui-form layui-form-pane" asp-action="Save">
 
-<form method="post" class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">Image Key:</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly asp-for="ImgKey" />
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">Image Key:</label>
-        <div class="layui-input-block">
-            <input type="text" class="layui-input" disabled readonly value="@Model.ImgKey" />
-
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">Article Key:</label>
-        <div class="layui-input-block">
-            <input type="text" class="layui-input" disabled readonly value="@Model.ArticleKey" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">Article Key:</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly asp-for="ArticleKey" />
+            </div>
         </div>
-    </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">图片:</label>
-        <div class="layui-input-block">
-            <input type="text" class="layui-input" disabled readonly value="@Model.ImgName" />
-            <div>
-                <div class="float-left" style="width:40%;">
-                    <img src="@Model.Src" style="max-height:400px; max-width:100%;" />
+
+
+        <div class="layui-row">
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">最大宽度：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" asp-for="Width" />
+                    </div>
                 </div>
-                <div class="float-left" style="width:60%;">
+            </div>
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">最大高度：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" asp-for="Height" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片:</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly asp-for="ImgName" id="txtImgName" />
+            </div>
+            <div style="padding-top:10px;">
+                <div class="float-left" style="width:40%;">
+                    <img src="@Model.Src" id="myimg" style="max-height:400px; max-width:100%;" />
+                    <input type="hidden" id="NewImgSrc" name="NewImgSrc" />
+                </div>
+                <div class="float-left" style="width:60%; padding-left:10px;">
                     <div id="btnSelectFile">选择文件</div>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-success  progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">60% Complete</span>
+                        <div id="img-upload-progress-bar" class="progress-bar progress-bar-success  progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0">
+                            <span>0%</span>
                         </div>
                     </div>
+                    <div style="text-align:center;">
+                        <button type="submit" class="layui-btn layui-btn-green" lay-submit="" lay-filter="lf_articleSubmit"><i class="layui-icon">&#xe609;</i>保存数据</button>
 
+                    </div>
                 </div>
                 <div class="float-clear"></div>
 
             </div>
-
-
-            <div></div>
         </div>
-    </div>
 
 
-    @*<div class="layui-form-item">
-            <label class="layui-form-label">分类名称:</label>
-            <div class="layui-input-block">
-                <input asp-for="ArticleCategoryEntity.ArticleCategoryName" type="text" maxlength="10" required lay-verify="required" placeholder="请输入文章分类" autocomplete="off" class="layui-input">
-            </div>
-        </div>*@
+        @*<div class="layui-form-item">
+                <label class="layui-form-label">分类名称:</label>
+                <div class="layui-input-block">
+                    <input asp-for="ArticleCategoryEntity.ArticleCategoryName" type="text" maxlength="10" required lay-verify="required" placeholder="请输入文章分类" autocomplete="off" class="layui-input">
+                </div>
+            </div>*@
+    </form>
+
+</div>
+
+
+@section CustomScriptFoot{
+
+
     <script>
 
     var uploader = WebUploader.create({
@@ -107,7 +144,38 @@
             //fileSingleSizeLimit: 1 * 1024 * 1024, //验证单个文件大小是否超出限制, 超出则不允许加入队列
 
             duplicate: true //去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
-    });
-    </script>
-</form>
+            });
 
+            // 当有文件被添加进队列的时候，有几个文件就触发几次
+            uploader.on('fileQueued', function (file) {
+                $('#img-upload-progress-bar').css('width', 0).children('span').text("准备上传...");
+            });
+
+
+
+            // 文件上传过程中创建进度条实时显示。
+            uploader.on('uploadProgress', function (file, percentage) {
+                var protxt = percentage * 100 + '%';
+                $('#img-upload-progress-bar').css('width', protxt).children('span').text(protxt);
+            });
+
+
+            uploader.on('uploadSuccess', function (file, response) {
+                if (response.status == 1) {
+                    $('#myimg').attr('src', response.msg);
+                    $('#NewImgSrc').val(response.msg);
+                    $('#txtImgName').val(response.fileName);
+                    $('#img-upload-progress-bar').children('span').text("操作完成！");
+                }
+                else {
+
+                    alert(response.msg);
+                }
+
+
+            });
+
+
+
+    </script>
+}

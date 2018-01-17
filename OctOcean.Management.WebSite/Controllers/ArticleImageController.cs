@@ -5,50 +5,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+ 
 using OctOcean.Management.WebSite.Models;
 using OctOcean.Utils;
 
 namespace OctOcean.Management.WebSite.Controllers
 {
-    [Route("ArticleImage")]
+    [Route("ArticleImage")] //所有的访问都得加上该前缀
     public class ArticleImageController : Controller
     {
 
         OctOcean.DataService.Pri_ArticleImage_Dal imgdal = new DataService.Pri_ArticleImage_Dal();
         [Route("Upload/{ArticleKey}")]
-        public IActionResult Upload(string ArticleKey)
+        public IActionResult Upload(string ArticleKey) //在文章编辑页面，点击上传时调用，可以同时上传多个图片文件
         {
-            //string _extensions = string.Empty;
-            //string _mimeTypes = string.Empty;
-            //string _title = string.Empty;
-            ////switch (UploadType)
-            ////{
-            ////    case "img":
-            ////        _extensions = "gif,jpg,jpeg,bmp,png";
-            ////        _mimeTypes = "image/*";
-            ////        _title = "Images";
-            ////        break;
-            ////    default:
-            ////        break;
-            ////}
-
-
-
-            //Ex_UploadFile_M uploadmodel = new Ex_UploadFile_M()
-            //{
-            //    Accept_Extensions = _extensions,
-            //    Accept_MimeTypes = _mimeTypes,
-            //    Accept_Title = _title,
-            //    Chunked = 0,
-            //    ArticleKey = ArticleKey
-            //};
             ViewBag.ArticleKey = ArticleKey;
             return View();
         }
 
 
         [Route("Send/{ArticleKey}")]
-        public async Task<IActionResult> SendSmallFile(string ArticleKey)
+        public async Task<IActionResult> SendSmallFile(string ArticleKey) //同时上传多个文件时被调用
         {
             var requestForm = HttpContext.Request.Form;
             string imageurl = Utils.OctOceanGlobal.Config.UrlRoot_Cache_Image + "/" + ArticleKey;
@@ -112,15 +89,64 @@ namespace OctOcean.Management.WebSite.Controllers
         }
 
         [Route("Update/{ImgKey}")]
-        public async Task<IActionResult> UpdateArticleImage(string ImgKey)
+        public async Task<IActionResult> UpdateArticleImage(string ImgKey) //修改单个文件时被调用
         {
-            return Json("");
+            var requestForm = HttpContext.Request.Form;
+            int _status = -1;
+            string _msg = "";
+            string _fileName = "";
+            if(requestForm!=null)
+            {
+                List<IFormFile> files = requestForm.Files as List<IFormFile>;
+                if (files != null && files.Count > 0)
+                {
+                    //获取旧的信息
+                    var entity= imgdal.GetPri_ArticleImage_Entity(ImgKey);
+                    if (entity == null)
+                    {
+                        _status = 4;
+                        _msg = "ImgKey不存在";
+                    }
+                    else
+                    {
+                        string imageCacheDir = Path.Combine(OctOcean.Utils.OctOceanGlobal.Config.FileRoot_Cache_Image, entity.ArticleKey);
+                        if (!Directory.Exists(imageCacheDir)) { Directory.CreateDirectory(imageCacheDir); };
+                        var formFile = files[0];
+                       
+                        string imgname = ImgKey + Path.GetExtension(formFile.FileName); //获取上传图片的扩展名
+                        _fileName = imgname;
+ 
+                        string fn = Path.Combine(imageCacheDir, imgname);
+                        using (var stream = new FileStream(fn, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                            _status = 1;
+                            _msg = Utils.OctOceanGlobal.Config.UrlRoot_Cache_Image + "/" +entity. ArticleKey + "/" + imgname;
+
+                        }
+
+                    }
+                    
+                }
+                else
+                {
+                    _status = 3;
+                    _msg = "服务器没有获取到文件信息";
+
+                }
+            }
+            else
+            {
+                _status = 2;
+                _msg = "服务器未响应信息";
+            }
+            return Json(new { status=_status, msg = _msg, fileName = _fileName });
 
         }
 
 
         [Route("Confirm/{ArticleKey}")]
-        public ActionResult ConfirmFile( string ArticleKey, string CacheFileNames)
+        public ActionResult ConfirmFile( string ArticleKey, string CacheFileNames) //确定图片时调用
         {
 
 
@@ -174,11 +200,109 @@ namespace OctOcean.Management.WebSite.Controllers
 
         }
 
-        [Route("Edit/{ImageKey}")]
+
+
+
+        //编辑单个图片的时候
+        [Route("Edit/{ImageKey}",Name ="image_edit")]
         public ActionResult Edit(string ImageKey)
         {
             OctOcean.Entity.Pri_ArticleImage_Entity entity= imgdal.GetPri_ArticleImage_Entity(ImageKey);
+            if (entity == null) return Content("图片信息无效");
             return View(entity);
+        }
+
+        [HttpPost("Save")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save([Bind("ImgKey,ImgName,Height,Width")]Entity.Pri_ArticleImage_Entity img_Entity,string NewImgSrc)
+        {
+            var entity= imgdal.GetPri_ArticleImage_Entity(img_Entity.ImgKey);
+            if (entity == null) return Content("图片信息无效");
+            //判断是否重新上传过新的文件
+            if (!string.IsNullOrWhiteSpace(NewImgSrc))
+            {
+                string fullname = Path.Combine(Utils.OctOceanGlobal.Config.FileRoot_Cache_Image, entity.ArticleKey, img_Entity.ImgName);
+                string newfullname = Path.Combine(Utils.OctOceanGlobal.Config.FileRoot_Web_Image, entity.ArticleKey, img_Entity.ImgName);
+                //直接复制
+                System.IO.File.Copy(fullname, newfullname, true);
+
+                //修改旧的图片实体的信息
+                entity.ImgName = img_Entity.ImgName;
+                entity.Src = OctOceanGlobal.Config.UrlRoot_Web_Image + $"/{entity.ArticleKey}/{img_Entity.ImgName}";
+            }
+            
+            
+          
+         
+            entity.Height = img_Entity.Height;
+            entity.Width = img_Entity.Width;
+            entity.UpdateTime = DateTime.Now;
+            imgdal.UpdatePri_ArticleImage(entity);
+            
+             
+
+           // return Content("<script>alert('Hello World!');</script>", "application/x-javascript");
+            //return RedirectToRoute("image_edit",new { ImageKey = entity.ImgKey });
+           return RedirectToAction("Edit", new { ImageKey = entity.ImgKey });
+
+
+        }
+
+        [Route("Info/{ImgKey}")] //http://localhost:55730/articleimage/info/Img_4f756c2abfce4862a78e70e13dc0baad
+        public Entity.Pri_ArticleImage_Entity GetImageInfo(string ImgKey)
+        {
+            return imgdal.GetPri_ArticleImage_Entity(ImgKey);
+
+        }
+
+        [Route("Remove/{ImgKey}")]
+        public ActionResult RemoveImage(string ImgKey)
+        {
+            int _status = -1;
+            string _msg = "";
+            int i = 0;
+
+            var entity = imgdal.GetPri_ArticleImage_Entity(ImgKey);
+            if (entity == null) return Json(new { status = 2, msg = "数据获取失败" });
+            try
+            {
+               i= imgdal.DeletePri_ArticleImageByImgKey(ImgKey);
+                _status = 1;
+                
+            }
+            catch (Exception ex)
+            {
+                _status = 4;
+                _msg = ex.Message;
+                
+            }
+
+            //删除数据
+            if (i > 0)
+            {
+                //删除的时候有可能图片正在使用当中，不做处理
+                try
+                {
+
+                    //删除图片和缓存
+                    string f1 = Path.Combine(OctOceanGlobal.Config.FileRoot_Cache_Image, entity.ArticleKey, entity.ImgName);
+                    if (System.IO.File.Exists(f1))
+                    {
+                        System.IO.File.Delete(f1);
+                    }
+
+                    string f2 = Path.Combine(OctOceanGlobal.Config.FileRoot_Web_Image, entity.ArticleKey, entity.ImgName);
+                    if (System.IO.File.Exists(f2))
+                    {
+                        System.IO.File.Delete(f2);
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            return Json(new { status = _status, msg = _msg });
         }
 
         //public IActionResult Index()

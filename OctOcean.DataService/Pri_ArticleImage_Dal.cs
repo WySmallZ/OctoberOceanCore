@@ -46,7 +46,13 @@ namespace OctOcean.DataService
             return query;
         }
 
+        public IList<Pri_ArticleImage_Entity> GetAllPri_ArticleImage(string ArticleKey)
+        {
+            string sql = "select  ImgKey,ArticleKey,ImgName,Src,Height,Width,UpdateTime from Pri_ArticleImage WHERE ArticleKey = @ArticleKey   ";
 
+            var query = connection.Query<Pri_ArticleImage_Entity>(sql, new { ArticleKey = ArticleKey }).AsList();
+            return query;
+        }
 
         public  Pri_ArticleImage_Entity GetPri_ArticleImage_Entity(string ImgKey)
         {
@@ -56,6 +62,34 @@ namespace OctOcean.DataService
             if (query != null && query.Count > 0)
                 return query[0];
             return null;
+        }
+
+
+        public int UpdatePri_ArticleImage(Pri_ArticleImage_Entity entity)
+        {
+            string sql = "UPDATE Pri_ArticleImage SET ImgName=@ImgName,Src=@Src,Height=@Height,Width=@Width,UpdateTime=GETDATE() WHERE ImgKey=@ImgKey ";
+            return connection.Execute(sql, new { entity.ImgKey,   entity.ImgName, entity.Src, entity.Height, entity.Width });
+
+        }
+
+
+
+        public string ReplaceImagesPlaceholder(string text,string ArticleKey)
+        {
+
+            //获取当前文章下的所有图片
+           var allimages= GetAllPri_ArticleImage(ArticleKey); 
+
+            foreach(var img in allimages)
+            {
+                string k= "[*" + img.ImgKey + "*]";
+                string h = img.Height > 0 ? $"max-height:{img.Height}px;" : "";
+                string w = img.Width > 0 ? $"max-width:{img.Width}px;" : "";
+
+                string v = $"<img src=\"{img.Src }\" alt=\"{ img.ImgName}\" style=\"{h+w}\"/>";
+                text= text.Replace(k, v);
+            }
+            return text;
         }
     }
 }
