@@ -63,6 +63,7 @@ namespace OctOcean.WebSite
             });
 
 
+
         }
 
         private void InitLoad()
@@ -71,8 +72,8 @@ namespace OctOcean.WebSite
             //获取连接字符串
             OctOceanGlobal.SetConfig(
                defaultConnectionString: Configuration.GetConnectionString("defaultConnStr")
-               , fileRoot: Configuration.GetValue<string>("OctOcean:FileRoot")
-               , urlRoot: Configuration.GetValue<string>("OctOcean:UrlRoot")
+               , fileRoot: ""// Configuration.GetValue<string>("OctOcean:FileRoot")
+               , urlRoot: ""// Configuration.GetValue<string>("OctOcean:UrlRoot")
                 );
 
 

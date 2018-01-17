@@ -49,6 +49,16 @@ END": "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //å¦‚æ
             return null;
         }
 
+        public List<Pub_Article_Entity> GetAllPub_Article_Entity(string orderby= "UpdateTime DESC")
+        {
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pub_Article ORDER BY "+orderby;
+
+            return connection.Query<Pub_Article_Entity>(sql).AsList();
+         
+        }
+
+
+
 
         public int DeletePub_ArticleWithHard(string ArticleKey)
         {

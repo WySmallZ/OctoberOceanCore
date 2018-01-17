@@ -1,0 +1,17 @@
+﻿@model OctOcean.WebSite.Models.ArticleDetail_M
+@{
+    ViewData["Title"] = "Detail";
+
+}
+<div class="site-content">
+    <div class="site-container">
+        <div class="detail-content">
+            <h1 class="detail-title">@Model.Title</h1>
+            <p class="detail-attach">Last Update:@Model.LastUpdate</p>
+            <div class="detail-m">
+                
+                @Html.Raw(Model.ContentText)
+            </div>
+        </div>
+    </div>
+</div>

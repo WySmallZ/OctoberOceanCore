@@ -9,7 +9,7 @@ using OctOcean.Entity;
 using OctOcean.DataService;
 namespace OctOcean.Management.WebSite.Pages.Article
 {
-    public class ArticleEditModel : PageModel
+    public class ArticleEditModel : Models.PageModelBase
     {
         [BindProperty]
         public Pri_ArticleDraft_Entity ArticleDraftEntity { get; set; }
@@ -34,6 +34,12 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public async Task<IActionResult> OnGetAsync(string ArticleKey)
         {
+            if(!base.CheckLogin())
+            {
+                return Redirect("/login/index");
+            }
+
+
             //如果没有key，生成key
             if (string.IsNullOrEmpty(ArticleKey))
             {
@@ -45,10 +51,21 @@ namespace OctOcean.Management.WebSite.Pages.Article
             else
             {
                 this.ArticleGuidKey = ArticleKey;
+
+                //获取信息
+                this.ArticleDraftEntity = dal.GetPri_ArticleDraft(ArticleKey);
+
+
+                if (ArticleDraftEntity == null)
+                {
+                    return RedirectToPage("ArticleManagement");
+                }
+
                 await Task.Run(() =>
                 {
-                    //获取信息
-                    this.ArticleDraftEntity = dal.GetPri_ArticleDraft(ArticleKey);
+
+                  
+
                     this.ArticleDraftEntity.ArticleTag = this.ArticleDraftEntity.ArticleTag ?? "";
 
                     //判断是否已经发布
@@ -60,10 +77,6 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
                 });
 
-                if (ArticleDraftEntity == null)
-                {
-                    return RedirectToPage("ArticleManagement");
-                }
             }
             BindControll(ArticleKey);
             return Page();

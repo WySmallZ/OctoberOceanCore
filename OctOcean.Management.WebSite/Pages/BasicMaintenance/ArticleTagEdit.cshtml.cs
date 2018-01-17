@@ -8,7 +8,7 @@ using OctOcean.DataService;
 using OctOcean.Entity;
 namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 {
-    public class ArticleTagEditModel : PageModel
+    public class ArticleTagEditModel : Models.PageModelBase
     {
         Base_ArticleTag_Dal dal = new Base_ArticleTag_Dal();
 
@@ -22,7 +22,12 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            if (!base.CheckLogin())
+            {
+                return Redirect("/login/index");
+            }
 
+            
             if (id > 0)
             {
                 await Task.Run(() =>

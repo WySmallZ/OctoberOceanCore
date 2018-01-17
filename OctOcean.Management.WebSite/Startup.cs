@@ -27,7 +27,10 @@ namespace OctOcean.Management.WebSite
             InitLoad();
 
             services.AddMvc();
-
+            services.AddSession(options=> {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                //options.Cookie.HttpOnly = true;
+            });
             //services.AddSingleton(Configuration);
 
             //.AddRazorPagesOptions(options=> { options.RootDirectory = "/wy"; });配置其他文件夹作为根目录
@@ -56,15 +59,15 @@ namespace OctOcean.Management.WebSite
             }
 
             app.UseStaticFiles();//不可去掉，否则会出现css、js无法加载的情况
-            //app.UseMvc();
-
+                                 //app.UseMvc();
+            app.UseSession();
 
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    template: "{controller=Login}/{action=Index}/{id?}");
             });
         }
 

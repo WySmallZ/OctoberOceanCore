@@ -17,8 +17,9 @@ li {
 
 a {
     text-decoration: none;
-    color: #2b49fb;
+    color: #05a6ee;
 }
+
 h1 {
     color: #35446c;
     font-weight: normal;
@@ -30,7 +31,7 @@ h1 {
 
 .site-header {
     height: 150px;
-    background-color: #393D49 !important;
+    background-color: #025f8a !important;
 }
 
 .site-title {
@@ -71,22 +72,22 @@ h1 {
     border: 1px solid #1e2d87;
     border-radius: 5px;
 }
+
 .blog-block {
     /*background-color: #b9b9b9;*/
     margin: 0 0 10px 0;
-    padding:20px;
+    padding: 20px;
     background-color: #fff;
 }
 
     .blog-block:hover {
-        
         box-shadow: 3px 3px 5px rgba(128,128,128,0.5);
     }
-    
-    .blog-title h1 {
-        font-weight: normal;
-        font-size: 22px;
-    }
+
+.blog-title h1 {
+    font-weight: normal;
+    font-size: 22px;
+}
 
 
 .blog-attach .blog-label {
@@ -101,21 +102,41 @@ h1 {
 
 .blog-recommend {
     background-color: #fff;
-    padding:20px;
+    padding-bottom:10px;
 }
 
- .blog-recommend h1 {
-        font-weight: normal;
-        font-size: 22px;
-        margin-bottom:10px;
-        
- }
+.oct-panel-title {
+    font-weight: normal;
+    font-size: 20px;
+    background-color: #025f8a;
+    color: #fff;
+    padding: 8px 20px;
+    margin-bottom: 5px;
+}
 
-.blog-recommend li{ padding:5px 0; }
+
+    .blog-recommend li {
+        padding: 5px 20px;
+    }
 
 
 
-.detail-content{background-color:#fff; padding:20px;}
-.detail-title{color:#35446c; font-size:28px; text-align:center; margin:20px 0;}
-.detail-attach{text-align:right;}
-.detail-m{ line-height:2em;}
+.detail-content {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.detail-title {
+    color: #35446c;
+    font-size: 28px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.detail-attach {
+    text-align: right;
+}
+
+.detail-m {
+    line-height: 2em;
+}

@@ -11,7 +11,7 @@ using OctOcean.Entity;
 
 namespace OctOcean.Management.WebSite.Pages.Article
 {
-    public class ArticleManagementModel : PageModel
+    public class ArticleManagementModel : Models.PageModelBase
     {
         //Pri_ArticleDraft_Dal dal = new Pri_ArticleDraft_Dal();
 
@@ -22,26 +22,33 @@ namespace OctOcean.Management.WebSite.Pages.Article
         public SelectList Base_ArticleTagddl { get; set; }
 
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            //此处模拟获取数据
-            await Task.Run(() =>
+            
+            if (base.CheckLogin())
+            {//此处模拟获取数据
+                await Task.Run(() =>
+                {
+                    //获取文章分类
+                    Base_ArticleCategory_Dal bacdal = new Base_ArticleCategory_Dal();
+                    this.Base_ArticleCategoryddl = new SelectList(bacdal.GetAllArticleCategory(), "ArticleCategoryCode", "ArticleCategoryName", ""); //默认选择空值
+
+                    Base_ArticleTag_Dal tagdal = new Base_ArticleTag_Dal();
+                    var tagsource = tagdal.GetAllArticleTag();
+                    this.Base_ArticleTagddl = new SelectList(tagsource, "ArticleTagCode", "ArticleTagName", "");
+                    var obj = tagsource.ToDictionary(a => a.ArticleTagCode, b => b.ArticleTagName);
+                    ViewData["TagJson"] = JsonConvert.SerializeObject(obj);
+
+
+
+                });
+                return Page();
+
+            }
+            else
             {
-                //获取文章分类
-                Base_ArticleCategory_Dal bacdal = new Base_ArticleCategory_Dal();
-                this.Base_ArticleCategoryddl = new SelectList(bacdal.GetAllArticleCategory(), "ArticleCategoryCode", "ArticleCategoryName", ""); //默认选择空值
-
-                Base_ArticleTag_Dal tagdal = new Base_ArticleTag_Dal();
-                var tagsource = tagdal.GetAllArticleTag();
-                this.Base_ArticleTagddl = new SelectList(tagsource, "ArticleTagCode", "ArticleTagName", "");
-                var obj = tagsource.ToDictionary(a => a.ArticleTagCode, b => b.ArticleTagName);
-                ViewData["TagJson"]= JsonConvert.SerializeObject(obj);
-
-               
-
-            });
-
-
+                return Redirect("/login/index");
+            }
         }
     }
 }

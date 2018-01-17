@@ -15,7 +15,7 @@ namespace OctOcean.WebSite
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            BuildWebHost(args).Run();
             //using (var scope = host.Services.CreateScope())
             //{
             //    var services = scope.ServiceProvider;
@@ -35,7 +35,7 @@ namespace OctOcean.WebSite
             //}
 
 
-            host.Run();
+            
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

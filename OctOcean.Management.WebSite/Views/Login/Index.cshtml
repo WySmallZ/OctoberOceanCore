@@ -1,0 +1,46 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model OctOcean.Management.WebSite.Models.LoginUser_M
+@{
+    ViewData["Title"] = "OctOcean登录入口";
+    Layout = "~/_SimLayout.cshtml";
+}
+@section CustomStyleTitle{
+    <style>
+        .login-panel {
+            width: 300px;
+            margin: auto;
+            margin-top: 100px;
+        }
+    </style>
+}
+
+
+<div class="login-panel">
+    <form method="post" class="layui-form layui-form-pane" asp-action="Active">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名:</label>
+            <div class="layui-input-block">
+                <input type="text" maxlength="10" asp-for="UserName" required lay-verify="required" placeholder="" class="layui-input">
+
+                @*<input asp-for="ArticleCategoryEntity.ArticleCategoryCode"/>*@
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码:</label>
+            <div class="layui-input-block">
+                <input type="password" maxlength="10"  asp-for="PassWord" required lay-verify="required" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-green" type="submit">登录</button>
+                <input type="reset" class="layui-btn layui-btn-primary" value="重置" />
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
