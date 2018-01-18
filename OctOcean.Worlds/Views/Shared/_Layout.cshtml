@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
-
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OctOcean.Worlds</title>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link href="~/css/syhy.base.css" rel="stylesheet" />
 
-    @RenderSection("CustomStyleTitle", required: false)
-    @RenderSection("CustomScriptTitle", required: false)
+    @RenderSection("CustomHeadStyles", required: false)
+    @RenderSection("CustomHeadScripts", required: false)
 
 </head>
 <body>
@@ -31,6 +31,6 @@
 
     <footer class="site-footer"></footer>
 
-    @RenderSection("CustomScriptFoot", required: false)
+    @RenderSection("CustomFootScripts", required: false)
 </body>
 </html>

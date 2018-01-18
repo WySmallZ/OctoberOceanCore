@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OctOcean.WebSite.Models
+namespace OctOcean.Worlds.Models
 {
-    public class ArticleDetail_M
+    public class ArticleDetail_VM
     {
         public string Title { get; set; }
         public string LastUpdate { get; set; }

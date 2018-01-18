@@ -1,4 +1,4 @@
-﻿@model OctOcean.WebSite.Models.ArticleDetail_M
+﻿@model OctOcean.Worlds.Models.ArticleDetail_VM
 @{
     ViewData["Title"] = "Detail";
 
@@ -9,7 +9,7 @@
             <h1 class="detail-title">@Model.Title</h1>
             <p class="detail-attach">Last Update:@Model.LastUpdate</p>
             <div class="detail-m">
-                
+
                 @Html.Raw(Model.ContentText)
             </div>
         </div>
