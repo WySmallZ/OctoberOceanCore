@@ -80,6 +80,8 @@ namespace OctOcean.Management.WebSite
                defaultConnectionString: Configuration.GetConnectionString("defaultConnStr")
                , fileRoot: Configuration.GetValue<string>("OctOcean:FileRoot")
                , urlRoot: Configuration.GetValue<string>("OctOcean:UrlRoot")
+               , articlePreviewUrl: Configuration.GetValue<string>("OctOcean:ArticlePreviewUrl")
+               
                 );
 
 

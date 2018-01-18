@@ -24,7 +24,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
 
         public async Task<IActionResult> OnGetAsync()
         {
-            
+            ViewData["ArticlePreviewUrl"] = OctOcean.Utils.OctOceanGlobal.Config.ArticlePreviewUrl;
             if (base.CheckLogin())
             {//此处模拟获取数据
                 await Task.Run(() =>

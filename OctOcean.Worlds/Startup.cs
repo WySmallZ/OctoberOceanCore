@@ -60,8 +60,9 @@ namespace OctOcean.Worlds
             //获取连接字符串
             Utils.OctOceanGlobal.SetConfig(
                defaultConnectionString: Configuration.GetConnectionString("defaultConnStr")
-               , fileRoot:  Configuration.GetValue<string>("OctOcean:FileRoot")
-               , urlRoot:  Configuration.GetValue<string>("OctOcean:UrlRoot")
+               , fileRoot: Configuration.GetValue<string>("OctOcean:FileRoot")
+               , urlRoot: Configuration.GetValue<string>("OctOcean:UrlRoot")
+                , articlePreviewUrl: Configuration.GetValue<string>("OctOcean:ArticlePreviewUrl")
                 );
 
 

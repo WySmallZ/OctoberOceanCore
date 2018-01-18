@@ -7,16 +7,17 @@ namespace OctOcean.Utils
 {
     public class OctOceanConfig
     {
-        public OctOceanConfig(string defaultConnectionString, string fileRoot, string urlRoot)
+        public OctOceanConfig(string defaultConnectionString, string fileRoot, string urlRoot,string articlePreviewUrl)
         {
             this.DefaultConnectionString = defaultConnectionString;
             this.FileRoot = fileRoot;
             this.UrlRoot = urlRoot;
+            this.ArticlePreviewUrl = articlePreviewUrl;
         }
         public readonly string DefaultConnectionString = string.Empty;
         public readonly string FileRoot = string.Empty;
         public readonly string UrlRoot = string.Empty;
-
+        public readonly string ArticlePreviewUrl = string.Empty;
 
 
         private string _fileRoot_cache_image;

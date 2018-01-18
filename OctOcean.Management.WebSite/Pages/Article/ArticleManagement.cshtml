@@ -102,30 +102,38 @@
 
 
     @*自定义列工具条*@
-<script type="text/html" id="articletoolbar">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail" href="{{d.delStatus}}"><i class="layui-icon">&#xe63c;</i>预览</a>
+    <script type="text/html" id="articletoolbar">
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail"><i class="layui-icon">&#xe63c;</i>预览</a>
 
-    {{# if(d.delStatus==1){ }}
+        {{# if(d.delStatus==1){ }}
 
-    <a class="layui-btn layui-btn-xs layui-btn-green" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}"><i class="layui-icon">&#x1005;</i>还原</a>
+        <a class="layui-btn layui-btn-xs layui-btn-green" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}"><i class="layui-icon">&#x1005;</i>还原</a>
 
-    <a class="layui-btn layui-btn-del layui-btn-xs article-cd-del" lay-event="cddel"><i class="layui-icon">&#x1006;</i>擦除</a>
+        <a class="layui-btn layui-btn-del layui-btn-xs article-cd-del" lay-event="cddel"><i class="layui-icon">&#x1006;</i>擦除</a>
 
-    {{# } else{ }}
+        {{# } else{ }}
+        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="pub"><i class="layui-icon">&#xe609;</i>发布</a>
+        <a class="layui-btn layui-btn-xs layui-btn-edit" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}"><i class="layui-icon">&#xe642;</i>编辑</a>
+        <a class="layui-btn layui-btn-xs layui-btn-del" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 
-    <a class="layui-btn layui-btn-xs layui-btn-edit" lay-event="edit" target="_blank" href="/Article/ArticleEdit/{{d.articleKey}}"><i class="layui-icon">&#xe642;</i>编辑</a>
-    <a class="layui-btn layui-btn-xs layui-btn-del" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 
-    {{# }}}
-</script>
+        {{# }}}
+    </script>
 
     @*自定义列模板*@
     <script type="text/html" id="publishstatusTpl">
-        {{# if(d.pubArticleKey){}}
-        <span class="article-publish-yes"><i class="layui-icon">&#xe618;</i></span>
-        {{# }else{}}
+        {{# if(d.pubDelStatus==0 && d.pubArticleKey)   {       if(d.needPublish){    }}
+        @*需要重新发布*@
+        <span title="等待重新发布" class="article-publish-cx"><i class="layui-icon">&#xe65f;</i><i class="layui-icon">&#xe609;</i></span>
+        {{# }else{  }}
+        <span title="已发布" class="article-publish-yes"><i class="layui-icon">&#xe618;</i></span>
+        {{# }  }  else {  }}
         <span class="article-publish-no">未发布</span>
-        {{# }}}
+        {{# } }}
+
+
+
+
 
 
         @*可以在模板中使用 d.LAY_INDEX 获取序号：{ { d.LAY_INDEX } }*@
@@ -155,7 +163,7 @@
     <script>
         //获取TagName的值
         var tagjsondata =@Html.Raw(ViewData["TagJson"]);
-        
+
         //使用方法渲染绑定table的数据
         var table = layui.table;
 
@@ -187,9 +195,9 @@
                 , { field: 'articleCategoryName', title: '文章分类', width: 95, sort: true }
                 , { field: 'articleTitle', title: '文章标题', sort: true }
                 , { field: 'articleTag', title: '文章标签', width: 278, templet: '#articleTagTpl'}
-                , { field: 'updateTime', title: '更新时间', width: 155, sort: true }
+                , { field: 'updateTimeF', title: '更新时间', width: 142, sort: true }
                 , { field: 'pubArticleKey', title: '发布状态', width: 86, templet: '#publishstatusTpl' }
-                , { title: '操作', width: 210, align: 'center', toolbar: '#articletoolbar' }
+                , { title: '操作', width: 280, align: 'center', toolbar: '#articletoolbar' }
                 //{ field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left' }
                 //, { field: 'username', title: '用户名', width: 80 }
                 //, { field: 'sex', title: '性别', width: 80, sort: true }
@@ -225,10 +233,14 @@
             //console.log(layEvent); //如果单击了序号那一列，将会显示smallzclick
             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-
-
-            if (layEvent === 'detail') { //查看
-
+            if (layEvent === 'detail') { //预览
+                var href = '@ViewData["ArticlePreviewUrl"]/' + data.articleKey + "?t=p";
+                layer.open({
+                    type: 2
+                    , title: false
+                    , content: href
+                    , area: ['1200px', "600px"]
+                });
 
                 //do somehing
             } else if (layEvent === 'del' || layEvent == "cddel") { //删除
@@ -268,6 +280,43 @@
                 //obj.update({
                 //    articleTitle: 'wwwww' //使用这种方法可以直接更新表格中的值
                 //});
+            }
+            else if (layEvent == 'pub') { //发布操作
+                var href = '@ViewData["ArticlePreviewUrl"]/' + data.articleKey + "?t=p";
+                layer.open({
+                    type: 2
+                    , title: false
+                    , content: href
+                    , area: ['1200px', "600px"]
+                    , btn: ['发布']
+                    , btnAlign: 'c' //居中
+                    , yes: function (index, layero) {
+                        $.post('/ArticleDraft/Publish', {
+                            ArticleKey: data.articleKey,
+                            IsPublish: true
+                        }, function (rd) {
+                            if (rd.status == 2) {
+                                //未提交数据
+                                layer.alert('请先保存数据，才能够执行发布操作！', { icon: 5 });
+                                return false;
+                            }
+                            else if (rd.status == 1) {
+                                layer.alert('操作完成！', { icon: 1 });
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                                //自动重新加载数据
+                                $('#btnreload').click();
+
+                            }
+                            else {
+                                layer.alert('数据异常：' + rd.msg, { icon: 5 });
+                                return false;
+                            }
+
+
+                        }, "json");
+                    }
+                });
+
             }
         });
 

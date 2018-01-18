@@ -160,7 +160,7 @@ with wt as
     FROM Pri_ArticleDraft d LEFT JOIN Base_ArticleCategory c ON d.ArticleCategory = c.ArticleCategoryCode
     WHERE {0}
 )
-select wt.SNumber,wt.ArticleKey,d.ArticleTitle,wt.ArticleCategoryName,d.ArticleTag,d.UpdateTime,u.ArticleKey as PubArticleKey,d.DelStatus
+select wt.SNumber,wt.ArticleKey,d.ArticleTitle,wt.ArticleCategoryName,d.ArticleTag,d.UpdateTime,u.ArticleKey as PubArticleKey,d.DelStatus,u.UpdateTime as PubUpdateTime,u.DelStatus as PubDelStatus
 from wt left join Pri_ArticleDraft d on wt.ArticleKey = d.ArticleKey
 LEFT JOIN Pub_Article AS u ON u.ArticleKey=wt.ArticleKey
 where wt.SNumber BETWEEN {1} AND {2} order by {4} {5}; ", where, start, end, snorderby,rsorderby, OrderType);

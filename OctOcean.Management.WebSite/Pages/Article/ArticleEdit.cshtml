@@ -155,7 +155,7 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button type="submit" class="layui-btn layui-btn-green" lay-submit lay-filter="lf_articleSubmit"><i class="layui-icon">&#xe6b2;</i>保存</button>
-                                <a href="" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe63c;</i>预览</a>
+                                <a href="@ViewData["ArticlePreviewUrl"]" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe63c;</i>预览</a>
                                 <button id="btnuploadImg" type="button" class="layui-btn  @(Model.CanUploadOrPublish?"layui-btn-warm":"layui-btn-disabled")" @(Model.CanUploadOrPublish ? "" : "disabled=\"disabled\"")><i class="layui-icon">&#xe6b2;</i>上传图片</button>
                             </div>
                         </div>
@@ -491,7 +491,7 @@
                 }
 
 
-            });
+            },"json");
 
 
 

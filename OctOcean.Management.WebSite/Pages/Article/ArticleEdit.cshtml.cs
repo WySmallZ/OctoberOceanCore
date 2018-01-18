@@ -38,7 +38,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
             {
                 return Redirect("/login/index");
             }
-
+            ViewData["ArticlePreviewUrl"] = OctOcean.Utils.OctOceanGlobal.Config.ArticlePreviewUrl+"/"+ArticleKey+"?t=p";
 
             //如果没有key，生成key
             if (string.IsNullOrEmpty(ArticleKey))

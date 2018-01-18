@@ -18,21 +18,22 @@ namespace OctOcean.DataService
         }
 
         /// <summary>
-        /// 根据Pri_ArticleDraft的数据，插入到Pub_Article中，注意：ArticleKey必须在Pri_ArticleDraft中存在
+        /// 根据Pri_ArticleDraft的数据，插入到Pub_Article中，注意：ArticleKey必须在Pri_ArticleDraft中存在，注意发布后的文章的修改时间一定要和draft下的相同，这样才能区分哪些是新编辑的内容
         /// </summary>
         /// <param name="ArticleKey"></param>
         /// <returns></returns>
         public int InsertPub_ArticleWithPri_ArticleDraft(string ArticleKey,bool IsPublish)
         {
+            //注意发布后的文章的修改时间一定要和draft下的相同，这样才能区分哪些是新编辑的内容
             string sql =IsPublish? @"
 --如果已经发布过了
 IF EXISTS (SELECT ArticleKey FROM Pub_Article WHERE ArticleKey=@ArticleKey)
 BEGIN
-    UPDATE Pub_Article SET ArticleTitle=d.ArticleTitle,ArticleCategory=d.ArticleCategory,ContentText=d.ContentText,ArticleTag=d.ArticleTag,AidStyle=d.AidStyle,UpdateTime=GETDATE(),DelStatus=0 FROM Pub_Article a INNER JOIN Pri_ArticleDraft d ON a.ArticleKey=d.ArticleKey WHERE a.ArticleKey=@ArticleKey;
+    UPDATE Pub_Article SET ArticleTitle=d.ArticleTitle,ArticleCategory=d.ArticleCategory,ContentText=d.ContentText,ArticleTag=d.ArticleTag,AidStyle=d.AidStyle,UpdateTime=d.UpdateTime,DelStatus=0 FROM Pub_Article a INNER JOIN Pri_ArticleDraft d ON a.ArticleKey=d.ArticleKey WHERE a.ArticleKey=@ArticleKey;
 END ELSE BEGIN
     INSERT INTO Pub_Article( ArticleKey ,ArticleTitle ,ArticleCategory ,ContentText ,ArticleTag ,AidStyle ,UpdateTime ,DelStatus)
-    SELECT TOP 1 ArticleKey ,ArticleTitle ,ArticleCategory ,ContentText ,ArticleTag ,AidStyle ,GETDATE() ,0 FROM Pri_ArticleDraft WHERE ArticleKey=@ArticleKey;
-END": "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如果取消发布，直接逻辑删除该发布的记录
+    SELECT TOP 1 ArticleKey ,ArticleTitle ,ArticleCategory ,ContentText ,ArticleTag ,AidStyle ,UpdateTime ,0 FROM Pri_ArticleDraft WHERE ArticleKey=@ArticleKey;
+END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如果取消发布，直接逻辑删除该发布的记录
             return connection.Execute(sql, new { ArticleKey });
         }
 

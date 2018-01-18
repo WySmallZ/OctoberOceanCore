@@ -15,12 +15,20 @@
     border: 1px solid #c8c5c5;
 }
 
-.article-publish-yes {
+.article-publish-yes .layui-icon {
     color: #41a841;
+    font-size: 20px;
 }
 
+.article-publish-cx .layui-icon {
+    color: #ffb800;
+    
+    font-size: 20px;
+}
+
+
 .article-publish-no {
-    color: #f86161
+    color: #fb0404;
 }
 .layui-btn-green {
     background-color: #3db15d;
