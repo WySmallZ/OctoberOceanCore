@@ -43,3 +43,12 @@
 .layui-btn-del {
     background-color:#fc4f18;
 }
+
+.aic-list li {
+    float: left;
+    border: 1px dashed #ffb800;
+    padding:5px 10px;
+    width:30%;
+    margin-right:10px;
+}
+.aic-list li a{color:#0babe8;}

@@ -1,0 +1,79 @@
+﻿@page
+@model OctOcean.Management.WebSite.Pages.ImageMaintenance.ImageClearUpModel
+@{
+    ViewData["Title"] = "ImageClearUp";
+    Layout = "~/_Layout.cshtml";
+}
+
+<div style="margin-bottom:20px;">
+   
+    <button type="button" id="btnclear" class="layui-btn layui-btn-green @(Model.BtnDisabled?"layui-disabled":"")" @(Model.BtnDisabled?"disabled":"")><i class="layui-icon">&#xe640;</i>清理不再使用的和缓存的图片</button>
+</div>
+
+<div class="layui-collapse">
+    @foreach (string articlekey in Model.dicClearImages.Keys)
+    {
+        if (Model.dicClearImages[articlekey].Length == 0)
+        {
+            continue;
+        }
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">
+                <span style="padding-right:20px;">@articlekey</span>
+                【共有 <span style="color:red;">@Model.dicClearImages[articlekey].Length</span> 条需要清理】
+            </h2>
+            <div class="layui-colla-content  layui-show">
+                <ul class="aic-list">
+                    @foreach (string name in Model.dicClearImages[articlekey])
+                    {
+                        <li><a href="@($"{Model.UrlRoot_Cache_Image}/{articlekey}/{name}")" target="_blank">@name</a></li>
+
+                    }
+
+                </ul>
+                <div class="float-clear"></div>
+            </div>
+        </div>
+
+    }
+
+</div>
+
+@section bottomscripts{ 
+    <script>
+        $('#btnclear').click(function () { 
+            layer.confirm("清除之后不可恢复，是否确定清除图片？", { icon: 3, title: '提示' }, function (index) {
+
+                layer.load(2);
+
+                //向服务端发送删除指令
+                $.post('/ArticleImage/Clear', {
+                   
+
+                }, function (rd) {
+                    layer.closeAll();
+
+                    if (rd.status == 1) {
+                        layer.alert("操作完成！");
+
+
+                    }
+                    else {
+                        layer.alert('操作失败，：' + rd.msg, { icon: 5 });
+
+                    }
+
+                }, "json");
+
+
+
+
+
+            });
+
+
+        });
+    </script>
+
+
+}
