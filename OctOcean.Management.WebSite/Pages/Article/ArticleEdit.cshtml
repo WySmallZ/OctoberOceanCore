@@ -155,8 +155,9 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button type="submit" class="layui-btn layui-btn-green" lay-submit lay-filter="lf_articleSubmit"><i class="layui-icon">&#xe6b2;</i>保存</button>
-                                <a href="@ViewData["ArticlePreviewUrl"]" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe63c;</i>预览</a>
-                                <button id="btnuploadImg" type="button" class="layui-btn  @(Model.CanUploadOrPublish?"layui-btn-warm":"layui-btn-disabled")" @(Model.CanUploadOrPublish ? "" : "disabled=\"disabled\"")><i class="layui-icon">&#xe6b2;</i>上传图片</button>
+                                <a target="_blank" href="@ViewData["ArticlePreviewUrl"]" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe63c;</i>预览</a>
+                                <button id="btnuploadImg" type="button" class="layui-btn  @(Model.CanUploadOrPublish?"layui-btn-warm":"layui-btn-disabled")" @(Model.CanUploadOrPublish ? "" : "disabled=\"disabled\"")><i class="layui-icon">&#xe681;</i>上传图片</button>
+                                <button id="btnEditArticleHtmlSource" type="button" class="layui-btn  @(Model.CanUploadOrPublish?"layui-btn-edit":"layui-btn-disabled")" @(Model.CanUploadOrPublish ? "" : "disabled=\"disabled\"")><i class="layui-icon">&#xe635;</i>编辑源码</button>
                             </div>
                         </div>
                     </div>
@@ -221,6 +222,8 @@
     <script src="~/lib/layui/layui.all.js"></script>
     <script src="~/lib/clipboard/clipboard.min.js"></script>
     <script>
+        var AutoSaveArticleDraftStatus = true;
+
         var clipboard=  new Clipboard('.article-img-edit-copy');
 
         //放在最外面
@@ -278,6 +281,7 @@
 
         function autoSubmitData() {
 
+
             checkForm();
 
             $.post("/ArticleDraft/Save", {
@@ -319,7 +323,7 @@
 
         }
         //每隔30秒触发一次
-        var autoTimer = window.setInterval(autoSubmitData, 1000 * 30);
+        var autoTimer = window.setInterval(function () { if (AutoSaveArticleDraftStatus) autoSubmitData(); }, 1000 * 30);
 
         var layer = layui.layer;
         $(function () {
@@ -331,7 +335,7 @@
 
             //绑定上传图片事件
             $('#btnuploadImg').click(function () {
-                
+
                  layer.open({
                     type: 2 //你可以title: ['文本', 'font-size:18px;']，数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
                     ,title: '图片上传'
@@ -380,7 +384,39 @@
              });
             // 或者 var editor = new E( document.getElementById('editor') )
 
+            //编辑源码
+            $('#btnEditArticleHtmlSource').click(function () {
+                //暂停自动提交，否则数据会有冲突
+                AutoSaveArticleDraftStatus = false;
 
+
+                layer.open({
+                    type: 2,
+                    title: '文章HTML源码'
+                    , content: '../ArticleHtmlEdit/@Model.ArticleGuidKey'
+                    , area: ['1000px', '600px']
+                    , resize: false//是否可以拉伸
+                    , cancel: function (index, layero) {
+                        if (layer.getChildFrame('#hfIsSave', index).val()) {
+                            window.location = "/Article/ArticleEdit/@Model.ArticleGuidKey";
+
+                        }
+                        //alert(layer.getChildFrame('title', index).text());// - 获取iframe页的DOM
+                        //如果有值才会提示
+                        //if (layer.getChildFrame('#NewImgSrc', index).val()) {
+                        //    if (confirm('您确定取消上传？')) {//只有当点击confirm框的确定时，该层才会关闭
+                        //        layer.close(index)
+                        //    }
+                        //    return false; //不关闭
+                        //}
+
+                    }
+                    , end: function () { AutoSaveArticleDraftStatus = true; autoSubmitData(); }
+                     
+                });
+
+
+             });
 
             //绑定图片编辑操作
             $('#article_img_list .article-img-edit').click(function () {
@@ -398,7 +434,7 @@
                 //} else
 
                     if (edittype == "update") {
-                  
+
                     layer.open({
                         type: 2 //你可以title: ['文本', 'font-size:18px;']，数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
                         , title: '图片上传'
@@ -454,7 +490,7 @@
 
                             }
 
-                           
+
                             }, "json");
                     });
                 }

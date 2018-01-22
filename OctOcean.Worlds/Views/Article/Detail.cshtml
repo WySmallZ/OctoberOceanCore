@@ -3,6 +3,9 @@
     ViewData["Title"] = "Detail";
 
 }
+@section CustomHeadStyles{ 
+    @Html.Raw(Model.AidStyle)
+}
 <div class="site-content">
     <div class="site-container">
         <div class="detail-content">

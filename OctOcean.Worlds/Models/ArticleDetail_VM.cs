@@ -10,6 +10,8 @@ namespace OctOcean.Worlds.Models
         public string Title { get; set; }
         public string LastUpdate { get; set; }
         public string ContentText { get; set; }
+
+        public string AidStyle { get; set; }
         /// <summary>
         /// 浏览量
         /// </summary>

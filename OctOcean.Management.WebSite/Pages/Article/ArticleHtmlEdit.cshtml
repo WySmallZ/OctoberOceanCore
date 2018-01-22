@@ -1,0 +1,30 @@
+﻿@page "{ArticleKey?}"
+@model OctOcean.Management.WebSite.Pages.Article.ArticleHtmlEditModel
+@{
+    ViewData["Title"] = "ArticleHtmlEdit";
+    Layout = "~/_SimLayout.cshtml";
+}
+@section CustomStyleTitle{
+
+}
+<div style="padding:5px;">
+    <form method="post">
+        <textarea asp-for="ContentText" required lay-verify="required" id="txt_articleContentTextHtml" style="width:100%; height:480px;" class="layui-textarea"></textarea>
+        <input type="hidden" asp-for="ArticleKey"  />
+        <input type="hidden" asp-for="IsSave" id="hfIsSave"/>
+        <div style="text-align:center; margin-top:10px;"><button class="layui-btn layui-btn-green" type="submit"><i class="layui-icon">&#xe605;</i>提交</button></div>
+    
+    
+    </form>
+    
+</div>
+@section CustomScriptFoot{ 
+<script>
+    if ($('#hfIsSave').val()) {
+        layer.alert('操作完成！');
+    }
+    
+</script>
+    }
+
+

@@ -83,6 +83,12 @@ END";
             return connection.Execute(sql, new { entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag, entity.AidStyle, entity.DelStatus, entity.UpdateTime, entity.ArticleKey });
         }
 
+        public int UpdatePri_ArticleDraftContentText(string ArticleKey,string ContentText)
+        {
+            string sql = "UPDATE Pri_ArticleDraft SET ContentText=@ContentText,UpdateTime=GETDATE() WHERE ArticleKey=@ArticleKey; ";
+            return connection.Execute(sql, new { ContentText, ArticleKey });
+        }
+
 
 
         public IList<Pri_ArticleDraft_Entity> GetAllPri_ArticleDraft(string where, object obj)
