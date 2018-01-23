@@ -29,10 +29,10 @@ namespace OctOcean.DataService
 --如果已经发布过了
 IF EXISTS (SELECT ArticleKey FROM Pub_Article WHERE ArticleKey=@ArticleKey)
 BEGIN
-    UPDATE Pub_Article SET ArticleTitle=d.ArticleTitle,ArticleCategory=d.ArticleCategory,ContentText=d.ContentText,ArticleTag=d.ArticleTag,AidStyle=d.AidStyle,UpdateTime=d.UpdateTime,DelStatus=0 FROM Pub_Article a INNER JOIN Pri_ArticleDraft d ON a.ArticleKey=d.ArticleKey WHERE a.ArticleKey=@ArticleKey;
+    UPDATE Pub_Article SET ArticleTitle=d.ArticleTitle,ArticleCategory=d.ArticleCategory,ContentText=d.ContentText,ArticleTag=d.ArticleTag,ArticleDesc=d.ArticleDesc,AidStyle=d.AidStyle,UpdateTime=d.UpdateTime,DelStatus=0 FROM Pub_Article a INNER JOIN Pri_ArticleDraft d ON a.ArticleKey=d.ArticleKey WHERE a.ArticleKey=@ArticleKey;
 END ELSE BEGIN
-    INSERT INTO Pub_Article( ArticleKey ,ArticleTitle ,ArticleCategory ,ContentText ,ArticleTag ,AidStyle ,UpdateTime ,DelStatus)
-    SELECT TOP 1 ArticleKey ,ArticleTitle ,ArticleCategory ,ContentText ,ArticleTag ,AidStyle ,UpdateTime ,0 FROM Pri_ArticleDraft WHERE ArticleKey=@ArticleKey;
+    INSERT INTO Pub_Article( ArticleKey ,ArticleTitle ,ArticleCategory ,ContentText ,ArticleTag ,ArticleDesc,AidStyle ,UpdateTime ,DelStatus)
+    SELECT TOP 1 ArticleKey ,ArticleTitle ,ArticleCategory ,ContentText ,ArticleTag ,ArticleDesc,AidStyle ,UpdateTime ,0 FROM Pri_ArticleDraft WHERE ArticleKey=@ArticleKey;
 END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如果取消发布，直接逻辑删除该发布的记录
             return connection.Execute(sql, new { ArticleKey });
         }
@@ -42,7 +42,7 @@ END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如
 
         public Pub_Article_Entity GetPub_Article_Entity(string ArticleKey)
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pub_Article where ArticleKey=@ArticleKey";
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article where ArticleKey=@ArticleKey";
 
             var query = connection.Query<Pub_Article_Entity>(sql, new { ArticleKey = ArticleKey }).AsList();
             if (query != null && query.Count > 0)
@@ -52,7 +52,7 @@ END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如
 
         public List<Pub_Article_Entity> GetAllPub_Article_Entity(string orderby= "UpdateTime DESC")
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pub_Article ORDER BY "+orderby;
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article ORDER BY " + orderby;
 
             return connection.Query<Pub_Article_Entity>(sql).AsList();
          

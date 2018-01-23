@@ -36,9 +36,10 @@ namespace OctOcean.Management.WebSite.Controllers
         /// <param name="ArticleCategory"></param>
         /// <param name="ContentText"></param>
         /// <param name="ArticleTag"></param>
+        /// <param name="ArticleDesc"></param>
         /// <param name="AidStyle"></param>
         /// <returns></returns>
-        public object Save(string ArticleKey, string ArticleTitle, string ArticleCategory, string ContentText, string ArticleTag, string AidStyle)
+        public object Save(string ArticleKey, string ArticleTitle, string ArticleCategory, string ContentText, string ArticleTag,string ArticleDesc, string AidStyle)
         {
             int _status = 0;
             string _msg = string.Empty;
@@ -55,7 +56,7 @@ namespace OctOcean.Management.WebSite.Controllers
             }
 
 
-            if (string.IsNullOrWhiteSpace(ArticleTitle) && string.IsNullOrWhiteSpace(ContentText) && string.IsNullOrWhiteSpace(AidStyle))
+            if (string.IsNullOrWhiteSpace(ArticleTitle) && string.IsNullOrWhiteSpace(ContentText)&&string.IsNullOrWhiteSpace(ArticleDesc) && string.IsNullOrWhiteSpace(AidStyle))
             {
                 _status = 3;
                 _msg = "未提交数据";
@@ -72,6 +73,7 @@ namespace OctOcean.Management.WebSite.Controllers
                     {
                         ArticleKey = ArticleKey,
                         ArticleTag = ArticleTag ?? "",
+                         ArticleDesc= ArticleDesc??"",
                         AidStyle = AidStyle ?? "",
                         ArticleCategory = ArticleCategory ?? "",
                         ArticleTitle = ArticleTitle ?? "",
@@ -93,6 +95,7 @@ namespace OctOcean.Management.WebSite.Controllers
                             {
                                 ArticleKey = ArticleKey,
                                 ArticleTag = ArticleTag ?? "",
+                                ArticleDesc= ArticleDesc??"",
                                 AidStyle = AidStyle ?? "",
                                 ArticleCategory = ArticleCategory ?? "",
                                 ArticleTitle = ArticleTitle ?? "",

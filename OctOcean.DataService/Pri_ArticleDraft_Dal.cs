@@ -20,8 +20,8 @@ namespace OctOcean.DataService
 
         public int InsertPri_ArticleDraft(Pri_ArticleDraft_Entity entity)
         {
-            string sql = "INSERT INTO Pri_ArticleDraft(ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,DelStatus,UpdateTime ) VALUES(@ArticleKey,@ArticleTitle,@ArticleCategory,@ContentText,@ArticleTag,@AidStyle,@DelStatus,GETDATE())";
-            return connection.Execute(sql, new { entity.ArticleKey, entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag, entity.AidStyle, entity.DelStatus });
+            string sql = "INSERT INTO Pri_ArticleDraft(ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,DelStatus,UpdateTime ) VALUES(@ArticleKey,@ArticleTitle,@ArticleCategory,@ContentText,@ArticleTag,@ArticleDesc,@AidStyle,@DelStatus,GETDATE())";
+            return connection.Execute(sql, new { entity.ArticleKey, entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag,entity.ArticleDesc, entity.AidStyle, entity.DelStatus });
 
         }
 
@@ -79,8 +79,8 @@ END";
 
         public int UpdatePri_ArticleDraft(Pri_ArticleDraft_Entity entity)
         {
-            string sql = "UPDATE Pri_ArticleDraft SET ArticleTitle=@ArticleTitle, ArticleCategory=@ArticleCategory,ContentText=@ContentText,ArticleTag=@ArticleTag,AidStyle=@AidStyle, DelStatus=@DelStatus,UpdateTime=@UpdateTime WHERE ArticleKey=@ArticleKey;";
-            return connection.Execute(sql, new { entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag, entity.AidStyle, entity.DelStatus, entity.UpdateTime, entity.ArticleKey });
+            string sql = "UPDATE Pri_ArticleDraft SET ArticleTitle=@ArticleTitle, ArticleCategory=@ArticleCategory,ContentText=@ContentText,ArticleTag=@ArticleTag,ArticleDesc=@ArticleDesc,AidStyle=@AidStyle, DelStatus=@DelStatus,UpdateTime=@UpdateTime WHERE ArticleKey=@ArticleKey;";
+            return connection.Execute(sql, new { entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag,entity.ArticleDesc, entity.AidStyle, entity.DelStatus, entity.UpdateTime, entity.ArticleKey });
         }
 
         public int UpdatePri_ArticleDraftContentText(string ArticleKey,string ContentText)
@@ -93,7 +93,7 @@ END";
 
         public IList<Pri_ArticleDraft_Entity> GetAllPri_ArticleDraft(string where, object obj)
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft ";
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft ";
             if (where != null && where.Trim().Length > 0)
             {
                 sql += where;
@@ -104,7 +104,7 @@ END";
 
         public IList<Pri_ArticleDraft_Entity> GetAllPri_ArticleDraft()
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft ";
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft ";
 
             var query = connection.Query<Pri_ArticleDraft_Entity>(sql).AsList();
             return query;
@@ -113,7 +113,7 @@ END";
 
         public Pri_ArticleDraft_Entity GetPri_ArticleDraft(int Id)
         {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft where Id=@Id";
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft where Id=@Id";
 
             var query = connection.Query<Pri_ArticleDraft_Entity>(sql, new { Id = Id }).AsList();
             if (query != null && query.Count > 0)
@@ -124,7 +124,7 @@ END";
 
         public Pri_ArticleDraft_Entity GetPri_ArticleDraft(string ArticleKey)
         {
-            string sql = "select top 1  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft where  ArticleKey=@ArticleKey";
+            string sql = "select top 1  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pri_ArticleDraft where  ArticleKey=@ArticleKey";
 
             var query = connection.Query<Pri_ArticleDraft_Entity>(sql, new { ArticleKey = ArticleKey }).AsList();
             if (query != null && query.Count > 0)

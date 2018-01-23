@@ -27,6 +27,7 @@ namespace OctOcean.Worlds.Controllers
             string _LastUpdate = string.Empty;
             string _Title = string.Empty;
             string _AidStyle = string.Empty;
+            string _ArticleDesc = string.Empty;
 
             if ("p".Equals(t, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -36,6 +37,7 @@ namespace OctOcean.Worlds.Controllers
                 _LastUpdate = draftentity.UpdateTime.ToShortDateString();
                 _Title = draftentity.ArticleTitle;
                 _AidStyle= draftentity.AidStyle;
+                _ArticleDesc = draftentity.ArticleDesc;
 
             }
             else
@@ -53,6 +55,7 @@ namespace OctOcean.Worlds.Controllers
                 _LastUpdate = entity.UpdateTime.ToShortDateString();
                 _Title = entity.ArticleTitle;
                 _AidStyle = entity.AidStyle;
+                _ArticleDesc = entity.ArticleDesc;
 
             }
 
@@ -64,7 +67,9 @@ namespace OctOcean.Worlds.Controllers
                 BrowseCount = 100,
                 LastUpdate = _LastUpdate,
                 Title = _Title,
-                AidStyle=_AidStyle
+                AidStyle=_AidStyle,
+                ArticleDesc= _ArticleDesc
+
 
 
 

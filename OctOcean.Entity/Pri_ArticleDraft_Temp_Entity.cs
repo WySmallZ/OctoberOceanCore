@@ -28,6 +28,10 @@ namespace OctOcean.Entity
         /// </summary>
         public string ArticleTag { get; set; }
         /// <summary>
+        /// 文章描述
+        /// </summary>
+        public string ArticleDesc { get; set; }
+        /// <summary>
         /// 辅助样式脚本
         /// </summary>
         public string AidStyle { get; set; }

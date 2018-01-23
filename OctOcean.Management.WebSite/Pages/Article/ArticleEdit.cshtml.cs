@@ -97,6 +97,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
             this.ArticleDraftEntity.ArticleKey = this.ArticleGuidKey; 
             this.ArticleDraftEntity.ArticleTag = this.ArticleDraftEntity.ArticleTag ?? "";
             this.ArticleDraftEntity.ArticleCategory = this.ArticleDraftEntity.ArticleCategory ?? "";
+            this.ArticleDraftEntity.ArticleDesc = this.ArticleDraftEntity.ArticleDesc ?? "";
             this.ArticleDraftEntity.AidStyle = this.ArticleDraftEntity.AidStyle ?? "";
             this.ArticleDraftEntity.DelStatus = 0;//通过保存提交之后，状态就更新为未删除，该功能可以对删除过的数据进行还原。
             this.ArticleDraftEntity.ContentText = new DataService.Pri_ArticleImage_Dal().ReplaceImagesPlaceholder(ArticleDraftEntity.ContentText, ArticleGuidKey);

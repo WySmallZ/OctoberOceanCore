@@ -12,6 +12,7 @@ namespace OctOcean.Worlds.Models
         public string ContentText { get; set; }
 
         public string AidStyle { get; set; }
+        public string ArticleDesc { get; set; }
         /// <summary>
         /// 浏览量
         /// </summary>

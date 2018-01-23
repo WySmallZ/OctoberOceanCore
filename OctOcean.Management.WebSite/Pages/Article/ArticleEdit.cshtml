@@ -73,7 +73,7 @@
                                 <select lay-filter="ArticleCategory" asp-for="ArticleDraftEntity.ArticleCategory" asp-items="Model.Base_ArticleCategoryddl" id="ddlArticleCategory">
                                     <option value="">请选择分类</option>
                                     @*<option value="0">Java</option>
-                                        <option value="1">NET</option>*@
+                            <option value="1">NET</option>*@
                                 </select>
                             </div>
                         </div>
@@ -87,22 +87,31 @@
                             <label class="layui-form-label">标签设置：</label>
                             <div class="layui-input-block" id="chkTagList">
                                 @foreach (var at in Model.Base_ArticleTagList)
-                                {
+                    {
 
-                                    bool chked = (Model.ArticleDraftEntity != null) && Model.ArticleDraftEntity.ArticleTag.Contains(':' + at.ArticleTagCode.Trim() + ':');
-
-
+                        bool chked = (Model.ArticleDraftEntity != null) && Model.ArticleDraftEntity.ArticleTag.Contains(':' + at.ArticleTagCode.Trim() + ':');
 
 
-                                    <input type="checkbox" @( chked ? "checked=\"checked\"" : "") lay-filter="checkwy" name="like[@at.ArticleTagCode]" value="@at.ArticleTagCode.Trim()" title="@at.ArticleTagName">
-                                }
+
+
+                        <input type="checkbox" @( chked ? "checked=\"checked\"" : "") lay-filter="checkwy" name="like[@at.ArticleTagCode]" value="@at.ArticleTagCode.Trim()" title="@at.ArticleTagName">
+        }
 
                                 <input type="hidden" asp-for="ArticleDraftEntity.ArticleTag" id="hfArticleTag" />
                             </div>
                         </div>
                     </div>
                 </div>
-
+                <div class="layui-row">
+                    <div class="layui-col-md12">
+                        <div class="layui-form-item layui-form-text pane">
+                            <label class="layui-form-label">文章描述：</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="请输入内容" asp-for="ArticleDraftEntity.ArticleDesc" id="txtArticleDesc" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="layui-row">
                     <div class="layui-col-md12">
                         <div class="layui-form-item layui-form-text pane">
@@ -120,33 +129,33 @@
                             <div class="layui-input-block">
                                 <ul class="article-img-list" id="article_img_list">
                                     @foreach (var Img in Model.Pri_ArticleImageList)
-                                    {
-                                        <li id="@("li_"+Img.ImgKey)">
-                                            <a href="@Img.Src" target="_blank">
-                                                @Img.ImgName
-                                            </a>
-                                            <p data-imgkey="@Img.ImgKey">
-                                                <label>宽度:</label><span id="@("w_"+Img.ImgKey)">@Img.Width</span>
-                                                <label>高度:</label><span id="@("h_"+Img.ImgKey)">@Img.Height</span>
-                                                <button data-clipboard-text="@("[*"+Img.ImgKey+"*]")" class="article-img-edit-copy layui-btn layui-btn-edit layui-btn-radius  layui-btn-xs" type="button">
-                                                    <i class="layui-icon">&#xe64c;</i>
-                                                    复制该图片Key
-                                                </button>
-                                                &nbsp;
-                                                <i class="layui-icon article-img-edit" data-edit="update">&#xe642;</i>
-                                                &nbsp;
-                                                <i class="layui-icon article-img-edit" data-edit="delete">&#xe640;</i>
-                                            </p>
+                        {
+                            <li id="@("li_"+Img.ImgKey)">
+                                <a href="@Img.Src" target="_blank">
+                                    @Img.ImgName
+                                </a>
+                                <p data-imgkey="@Img.ImgKey">
+                                    <label>宽度:</label><span id="@("w_"+Img.ImgKey)">@Img.Width</span>
+                                    <label>高度:</label><span id="@("h_"+Img.ImgKey)">@Img.Height</span>
+                                    <button data-clipboard-text="@("[*"+Img.ImgKey+"*]")" class="article-img-edit-copy layui-btn layui-btn-edit layui-btn-radius  layui-btn-xs" type="button">
+                                        <i class="layui-icon">&#xe64c;</i>
+                                        复制该图片Key
+                                    </button>
+                                    &nbsp;
+                                    <i class="layui-icon article-img-edit" data-edit="update">&#xe642;</i>
+                                    &nbsp;
+                                    <i class="layui-icon article-img-edit" data-edit="delete">&#xe640;</i>
+                                </p>
 
-                                        </li>}
-                                    
+                            </li>}
+
                                 </ul>
 
                             </div>
                         </div>
                     </div>
                 </div>
-               
+
                 <input type="hidden" asp-for="ArticleGuidKey" id="hfArticleKey" />
                 <input type="hidden" asp-for="ArticleDraftEntity.Id" />
 
@@ -290,6 +299,7 @@
                 "ArticleCategory": $('#ddlArticleCategory').val(),
                 "ContentText": $('#hfContentText').val(),
                 "ArticleTag": $('#hfArticleTag').val(),
+                "ArticleDesc": $('#txtArticleDesc').val(),
                 "AidStyle": $('#txtAidStyle').val()
             }, function (data) {
                // console.log(data);

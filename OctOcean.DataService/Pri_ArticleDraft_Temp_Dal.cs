@@ -20,11 +20,11 @@ namespace OctOcean.DataService
         public int InsertPri_ArticleDraft_Temp(Pri_ArticleDraft_Temp_Entity entity)
         {
             string sql = @"
-IF NOT EXISTS(SELECT ArticleKey FROM Pri_ArticleDraft_Temp WHERE ArticleKey=@ArticleKey AND ISNULL(ArticleTitle,'')=@ArticleTitle AND ISNULL(ArticleCategory,'')=@ArticleCategory AND ISNULL(ContentText,'')=@ContentText AND ISNULL(ArticleTag,'')=@ArticleTag AND ISNULL(AidStyle,'')=@AidStyle )
+IF NOT EXISTS(SELECT ArticleKey FROM Pri_ArticleDraft_Temp WHERE ArticleKey=@ArticleKey AND ISNULL(ArticleTitle,'')=@ArticleTitle AND ISNULL(ArticleCategory,'')=@ArticleCategory AND ISNULL(ContentText,'')=@ContentText AND ISNULL(ArticleTag,'')=@ArticleTag AND ISNULL(ArticleDesc,'')=@ArticleDesc AND ISNULL(AidStyle,'')=@AidStyle )
 BEGIN
-	INSERT INTO Pri_ArticleDraft_Temp(ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,AidStyle,UpdateTime ) VALUES(@ArticleKey,@ArticleTitle,@ArticleCategory,@ContentText,@ArticleTag,@AidStyle,GETDATE())
+	INSERT INTO Pri_ArticleDraft_Temp(ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime ) VALUES(@ArticleKey,@ArticleTitle,@ArticleCategory,@ContentText,@ArticleTag,@ArticleDesc,@AidStyle,GETDATE())
 END";
-            return connection.Execute(sql, new { entity.ArticleKey, entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag, entity.AidStyle });
+            return connection.Execute(sql, new { entity.ArticleKey, entity.ArticleTitle, entity.ArticleCategory, entity.ContentText, entity.ArticleTag,entity.ArticleDesc, entity.AidStyle });
 
         }
 
