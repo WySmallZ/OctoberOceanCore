@@ -1,0 +1,37 @@
+﻿.article-detail-main code {
+    font-family: 'Courier New';
+    background-color: #eef7fb;
+    border: 1px solid #cac7c7;
+    border-radius: 3px;
+    padding: 2px 5px;
+    white-space: nowrap;
+}
+.article-detail-main table {
+    width: 100%;
+    border-collapse:collapse;
+}
+
+.article-detail-main th, .article-detail-main td {
+    border: 1px solid #b3b1b1;
+    padding: 0 10px;
+}
+.article-detail-main h3 {
+    font-weight: 500;
+    color: #025f8a;
+    font-size: 20px;
+}
+
+.article-detail-main section {
+    padding: 20px 0;
+}
+
+.article-detail-main ul {
+    list-style-type: initial;
+}
+
+.article-detail-main h4 {
+    font-weight: normal;
+    font-style: italic;
+    color: #c2390c;
+    font-size: 16px;
+}

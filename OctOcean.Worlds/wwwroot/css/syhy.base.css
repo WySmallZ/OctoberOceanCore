@@ -102,7 +102,7 @@ h1 {
 
 .blog-recommend {
     background-color: #fff;
-    padding-bottom:10px;
+    padding-bottom: 10px;
 }
 
 .oct-panel-title {
@@ -115,36 +115,30 @@ h1 {
 }
 
 
-    .blog-recommend li {
-        padding: 5px 20px;
-    }
+.blog-recommend li {
+    padding: 5px 20px;
+}
 
 
 
-.detail-content {
+.article-detail-content {
     background-color: #fff;
     padding: 20px;
 }
 
-.detail-title {
+.article-detail-title {
     color: #35446c;
     font-size: 28px;
     text-align: center;
     margin: 20px 0;
 }
 
-.detail-attach {
+.article-detail-attach {
     text-align: right;
 }
 
-.detail-m {
+.article-detail-main {
     line-height: 2em;
 }
-code {
-    font-family: 'Courier New';
-    background-color: #eef7fb;
-    border: 1px solid #cac7c7;
-    border-radius: 3px;
-    padding: 2px 5px;
-    white-space: nowrap;
-}
+
+

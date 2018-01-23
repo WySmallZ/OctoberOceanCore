@@ -1,17 +1,19 @@
 ﻿@model OctOcean.Worlds.Models.ArticleDetail_VM
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = Model.Title;
 
 }
-@section CustomHeadStyles{ 
+@section CustomHeadStyles{
+    
+    <link href="~/css/article.detail.css" rel="stylesheet" />
     @Html.Raw(Model.AidStyle)
 }
 <div class="site-content">
     <div class="site-container">
-        <div class="detail-content">
-            <h1 class="detail-title">@Model.Title</h1>
-            <p class="detail-attach">Last Update:@Model.LastUpdate</p>
-            <div class="detail-m">
+        <div class="article-detail-content">
+            <h1 class="article-detail-title">@Model.Title</h1>
+            <p class="article-detail-attach">Last Update:@Model.LastUpdate</p>
+            <div class="article-detail-main">
 
                 @Html.Raw(Model.ContentText)
             </div>

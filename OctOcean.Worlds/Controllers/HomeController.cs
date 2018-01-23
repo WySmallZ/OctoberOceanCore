@@ -17,7 +17,7 @@ namespace OctOcean.Worlds.Controllers
         //} 
         public IActionResult Index()
         { 
-            return View(dal.GetAllPub_Article_Entity());
+            return View(dal.GetAllNotDel_Pub_Article_Entity());
         }
 
         
