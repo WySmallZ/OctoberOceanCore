@@ -5,6 +5,7 @@
     border-radius: 3px;
     padding: 2px 5px;
     white-space: nowrap;
+    color:#1e1c1c;
 }
 .article-detail-main table {
     width: 100%;
@@ -34,4 +35,11 @@
     font-style: italic;
     color: #c2390c;
     font-size: 16px;
+}
+
+.article-detail-main .code-zs{
+    color:#a09696;
+}
+.article-detail-main .nr-zy {
+    background-color: #fbacac;
 }

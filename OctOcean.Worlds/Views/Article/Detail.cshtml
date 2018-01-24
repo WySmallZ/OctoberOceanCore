@@ -3,11 +3,20 @@
     ViewData["Title"] = Model.Title;
 
 }
+
 @section CustomHeadStyles{
-    
+
+    <link href="~/lib/sh/css/shCore.css" rel="stylesheet" />
+    <link href="~/lib/sh/css/shCoreRDark.css" rel="stylesheet" />
     <link href="~/css/article.detail.css" rel="stylesheet" />
     @Html.Raw(Model.AidStyle)
 }
+
+@section CustomHeadScripts{
+    <script src="~/lib/sh/js/shCore.js"></script>
+    <script src="~/lib/sh/js/shAutoloader.js"></script>
+}
+
 <div class="site-content">
     <div class="site-container">
         <div class="article-detail-content">
@@ -18,5 +27,39 @@
                 @Html.Raw(Model.ContentText)
             </div>
         </div>
+
+        @*<pre class="brush:java;">
+int a=0;
+int b=10;
+int c=100;
+if(a &lt; b)
+        return "";
+</pre>*@
     </div>
 </div>
+
+@section CustomFootScripts{
+    <script>
+
+        $(document).ready(function () {
+            SyntaxHighlighter.autoloader(
+                ['csharp', '~/lib/sh/js/shBrushCSharp.js'],
+                ['java', '/lib/sh/js/shBrushJava.js'],
+                ['python', '~/lib/sh/js/shBrushPython.js'],
+                ['js', 'jscript', 'javascript', '~/lib/sh/js/shBrushJScript.js'],
+                ['bash', 'shell', '~/lib/sh/js/shBrushBash.js'],
+                ['css', '~/lib/sh/js/shBrushCss.js'],
+                ['xml', 'html', '~/lib/sh/js/shBrushXml.js'],
+                ['sql', '~/lib/sh/js/shBrushSql.js']
+
+
+            );
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.all();
+        })
+
+
+
+
+    </script>
+}

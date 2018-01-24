@@ -296,6 +296,16 @@ namespace OctOcean.Management.WebSite.Controllers
                     {
                         System.IO.File.Delete(f2);
                     }
+
+                    //判断目录中是否还有文件，如果没有，就删除目录
+                    if(Directory.GetFiles(Path.GetDirectoryName(f1)).Length==0)
+                    {
+                        Directory.Delete(Path.GetDirectoryName(f1), true);
+                    }
+                    if (Directory.GetFiles(Path.GetDirectoryName(f2)).Length == 0)
+                    {
+                        Directory.Delete(Path.GetDirectoryName(f2), true);
+                    }
                 }
                 catch (Exception)
                 {
