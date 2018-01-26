@@ -10,6 +10,7 @@
 .article-detail-main table {
     width: 100%;
     border-collapse:collapse;
+    margin:10px 0;
 }
 
 .article-detail-main th, .article-detail-main td {
@@ -20,10 +21,15 @@
     font-weight: 500;
     color: #025f8a;
     font-size: 20px;
+    border-left: 5px solid #025f8a;
+    padding-left: 10px;
+    background: linear-gradient(to right,#dbf1fc, #025f8a); /* 标准的语法 */
+    margin-bottom:5px;
 }
 
 .article-detail-main section {
-    padding: 20px 0;
+    margin-bottom: 60px;
+     
 }
 
 .article-detail-main ul {
