@@ -19,7 +19,7 @@ namespace OctOcean.DataService
 
         public int InsertArticleCategory(Base_ArticleCategory_Entity entity)
         {   
-            string sql = "INSERT INTO Base_ArticleCategory(ArticleCategoryName, ArticleCategoryCode,DelStatus ) VALUES(@ArticleCategoryName,@ArticleCategoryCode,@DelStatus)";
+            string sql = "INSERT INTO Base_ArticleCategory(ArticleCategoryName, ArticleCategoryCode,DelStatus,UpdateTime ) VALUES(@ArticleCategoryName,@ArticleCategoryCode,@DelStatus,GETDATE())";
             return connection.Execute(sql, new { ArticleCategoryName = entity.ArticleCategoryName, ArticleCategoryCode = entity.ArticleCategoryCode, DelStatus = entity.DelStatus });
 
         }
@@ -36,19 +36,19 @@ namespace OctOcean.DataService
 
         public int DeleteArticleCategory(int Id)
         {
-            return connection.Execute("UPDATE Base_ArticleCategory SET DelStatus=1  WHERE Id=@Id", new { Id = Id });
+            return connection.Execute("UPDATE Base_ArticleCategory SET DelStatus=1,UpdateTime=GETDATE()  WHERE Id=@Id", new { Id = Id });
         }
 
 
         public int UpdateArticleCategory(Base_ArticleCategory_Entity entity)
         {
-            string sql = "UPDATE Base_ArticleCategory SET ArticleCategoryCode=@ArticleCategoryCode, ArticleCategoryName=@ArticleCategoryName, DelStatus=@DelStatus WHERE Id=@Id;";
+            string sql = "UPDATE Base_ArticleCategory SET ArticleCategoryCode=@ArticleCategoryCode, ArticleCategoryName=@ArticleCategoryName, DelStatus=@DelStatus,UpdateTime=GETDATE() WHERE Id=@Id;";
             return connection.Execute(sql, new { ArticleCategoryName = entity.ArticleCategoryName, ArticleCategoryCode = entity.ArticleCategoryCode, DelStatus = entity.DelStatus, Id = entity.Id });
         }
 
         public IList<Base_ArticleCategory_Entity> GetAllArticleCategory(string where ,object obj)
         {
-            string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus from Base_ArticleCategory where DelStatus=0 ";
+            string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus,UpdateTime from Base_ArticleCategory where DelStatus=0 ";
             if (where != null && where.Trim().Length > 0)
             {
                 sql += where;
@@ -59,7 +59,7 @@ namespace OctOcean.DataService
 
         public IList<Base_ArticleCategory_Entity> GetAllArticleCategory()
         {
-            string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus from Base_ArticleCategory where DelStatus=0 ";
+            string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus,UpdateTime from Base_ArticleCategory where DelStatus=0 order by UpdateTime desc ";
              
             var query = connection.Query<Base_ArticleCategory_Entity>(sql).AsList();
             return query;
@@ -68,7 +68,7 @@ namespace OctOcean.DataService
 
         public Base_ArticleCategory_Entity GetArticleCategory(int Id)
         {
-            string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus from Base_ArticleCategory where DelStatus=0 and Id=@Id";
+            string sql = "select  Id , ArticleCategoryName, ArticleCategoryCode, DelStatus,UpdateTime from Base_ArticleCategory where DelStatus=0 and Id=@Id";
 
             var query = connection.Query<Base_ArticleCategory_Entity>(sql, new { Id = Id }).AsList();
             if (query != null && query.Count > 0)

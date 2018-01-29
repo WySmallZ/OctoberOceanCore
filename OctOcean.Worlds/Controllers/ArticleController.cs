@@ -34,7 +34,7 @@ namespace OctOcean.Worlds.Controllers
                 //执行预览
                 var draftentity = new OctOcean.DataService.Pri_ArticleDraft_Dal().GetPri_ArticleDraft(ArticleKey);
                 _ContentText = draftentity.ContentText;
-                _LastUpdate = draftentity.UpdateTime.ToShortDateString();
+                _LastUpdate = draftentity.UpdateTime.ToString("yyyy-MM-dd");
                 _Title = draftentity.ArticleTitle;
                 _AidStyle= draftentity.AidStyle;
                 _ArticleDesc = draftentity.ArticleDesc;
@@ -52,7 +52,7 @@ namespace OctOcean.Worlds.Controllers
 
 
                 _ContentText = entity.ContentText;
-                _LastUpdate = entity.UpdateTime.ToShortDateString();
+                _LastUpdate = entity.UpdateTime.ToString("yyyy-MM-dd");
                 _Title = entity.ArticleTitle;
                 _AidStyle = entity.AidStyle;
                 _ArticleDesc = entity.ArticleDesc;

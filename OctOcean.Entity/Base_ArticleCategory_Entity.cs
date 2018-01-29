@@ -22,5 +22,7 @@ namespace OctOcean.Entity
         /// </summary>
         public byte DelStatus { get; set; }
 
+        public DateTime UpdateTime { get; set; }
+
     }
 }

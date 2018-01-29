@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #eef0fe; /*#f5f5f5;*/
+    background-color: rgba(225,225,225,0.8); /*#f5f5f5;*/
     font-size: 15px;
     line-height: 1.6em;
     font-family: Segoe UI,Lucida Grande,Helvetica,Arial,Microsoft YaHei,FreeSans,Arimo,Droid Sans,wenquanyi micro hei,Hiragino Sans GB,Hiragino Sans GB W3,FontAwesome,sans-serif;
@@ -27,16 +27,17 @@ h1 {
 }
 
 .clear {
-    clear: none;
+    clear: both;
 }
 
 .site-header {
-    height: 150px;
+    height: 135px;
     background-color: #025f8a !important;
+    /*border-bottom: 8px solid #05a6ee;*/
 }
 
 .site-title {
-    margin-top: 50px;
+    margin-top: 35px;
     color: #fff;
     font-size: 2.25rem;
     font-weight: normal;
@@ -51,6 +52,44 @@ h1 {
     max-width: 1200px;
     margin: 0 auto;
 }
+
+.site-header-menu {
+    margin-top: 23px;
+    /*border:1px solid red;*/
+}
+
+    .site-header-menu ul li {
+        float: left;
+        font-size: 20px;
+        padding: 10px 20px;
+        list-style: none;
+    }
+
+        .site-header-menu ul li a {
+            color: #c3e4f3;
+        }
+
+            .site-header-menu ul li a:hover {
+                color: #fff;
+            }
+
+    .site-header-menu .site-header-menu-active a {
+        color: #025f8a;
+    }
+        .site-header-menu .site-header-menu-active a:hover {
+            color: #025f8a;
+        }
+
+    .site-header-menu .site-header-menu-active {
+        background: #e7e7e7;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        font-weight: 600;
+        /*border-bottom: 8px solid #eef0fe;*/
+        /*border-left: 8px solid #05a6ee;
+        border-right: 8px solid #05a6ee;
+        border-top: 8px solid #05a6ee;*/
+    }
 
 .site-content {
     margin-top: 20px;
@@ -75,20 +114,31 @@ h1 {
 
 .blog-block {
     /*background-color: #b9b9b9;*/
-    margin: 0 0 10px 0;
-    padding: 20px;
+    margin: 0 0 30px 0;
+    padding: 20px 20px 10px 20px;
     background-color: #fff;
 }
 
     .blog-block:hover {
-        box-shadow: 3px 3px 5px rgba(128,128,128,0.5);
+        box-shadow: 5px 5px 8px rgba(128,128,128,0.8);
+        border: 1px solid rgba(128,128,128,0.5);
+    }
+.blog-title {
+    margin-bottom: 10px;
+   
+}
+    .blog-title h1 {
+        font-weight: normal;
+        font-size: 22px;
+        padding-bottom: 10px;
+      
+        /*border-bottom: 1px dashed #bebcbc;*/
     }
 
-.blog-title h1 {
-    font-weight: normal;
-    font-size: 22px;
+.blog-title-hr {
+    height: 1px;
+    background: linear-gradient(to right,#ade4fc, #025f8a); /* 标准的语法 */
 }
-
 
 .blog-attach .blog-label {
     text-align: right;
@@ -97,7 +147,14 @@ h1 {
 .blog-rough {
     font-size: 16px;
     line-height: 1.6em;
-    margin-top: 10px;
+    text-indent: 30px;
+ 
+   
+    margin-bottom:20px;
+}
+
+.blog-attach {
+    font-size: 14px;
 }
 
 .blog-recommend {
@@ -119,6 +176,9 @@ h1 {
     padding: 5px 20px;
 }
 
+.blog-label span {
+    margin-left: 20px;
+}
 
 
 .article-detail-content {
@@ -134,11 +194,13 @@ h1 {
 }
 
 .article-detail-attach {
-    text-align: right;
+    margin-bottom: 20px;
 }
+
+    .article-detail-attach .blog-label {
+        text-align: center;
+    }
 
 .article-detail-main {
     line-height: 2em;
 }
-
-

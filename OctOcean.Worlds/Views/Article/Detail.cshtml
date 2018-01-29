@@ -21,7 +21,14 @@
     <div class="site-container">
         <div class="article-detail-content">
             <h1 class="article-detail-title">@Model.Title</h1>
-            <p class="article-detail-attach">Last Update:@Model.LastUpdate</p>
+            <div class="article-detail-attach">
+                <p class="blog-label">
+                    <span><i class="fa fa-eye"></i>&nbsp;999</span>
+                    <span><i class="fa fa-calendar"></i>&nbsp;@Model.LastUpdate</span>
+                </p>
+
+            </div>
+
             <div class="article-detail-main">
 
                 @Html.Raw(Model.ContentText)
@@ -29,12 +36,12 @@
         </div>
 
         @*<pre class="brush:java;">
-int a=0;
-int b=10;
-int c=100;
-if(a &lt; b)
-        return "";
-</pre>*@
+            int a=0;
+            int b=10;
+            int c=100;
+            if(a &lt; b)
+                    return "";
+            </pre>*@
     </div>
 </div>
 
