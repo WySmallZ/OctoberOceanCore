@@ -121,7 +121,7 @@ h1 {
 
     .blog-block:hover {
         box-shadow: 5px 5px 8px rgba(128,128,128,0.8);
-        border: 1px solid rgba(128,128,128,0.5);
+        /*border: 1px solid rgba(128,128,128,0.5);*/
     }
 .blog-title {
     margin-bottom: 10px;
