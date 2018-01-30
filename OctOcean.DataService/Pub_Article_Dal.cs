@@ -50,6 +50,16 @@ END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如
             return null;
         }
 
+        public Pub_Article_Entity Get_NotDel_Pub_Article_Entity(string ArticleKey)
+        {
+            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article where ArticleKey=@ArticleKey AND DelStatus=0";
+
+            var query = connection.Query<Pub_Article_Entity>(sql, new { ArticleKey = ArticleKey }).AsList();
+            if (query != null && query.Count > 0)
+                return query[0];
+            return null;
+        }
+
         public List<Pub_Article_Entity> GetAllPub_Article_Entity(string orderby= "UpdateTime DESC")
         {
             string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article ORDER BY " + orderby;

@@ -12,7 +12,11 @@
         <textarea asp-for="ContentText" required lay-verify="required" id="txt_articleContentTextHtml" style="width:100%; height:480px;" class="layui-textarea"></textarea>
         <input type="hidden" asp-for="ArticleKey"  />
         <input type="hidden" asp-for="IsSave" id="hfIsSave"/>
-        <div style="text-align:center; margin-top:10px;"><button class="layui-btn layui-btn-green" type="submit"><i class="layui-icon">&#xe605;</i>提交</button></div>
+        <div style="text-align:center; margin-top:10px;">
+            <a class="layui-btn layui-btn-normal" href="/Article/ArticleFormatCode" target="_blank">格式化代码工具</a>
+            <button class="layui-btn layui-btn-green" type="submit"><i class="layui-icon">&#xe605;</i>提交</button>
+
+        </div>
     
     
     </form>

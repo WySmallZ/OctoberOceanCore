@@ -42,7 +42,7 @@ namespace OctOcean.Worlds.Controllers
             }
             else
             {
-                var entity= dal.GetPub_Article_Entity(ArticleKey);
+                var entity= dal.Get_NotDel_Pub_Article_Entity(ArticleKey);
 
                 if (entity == null)
                 {

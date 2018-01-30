@@ -103,7 +103,7 @@
 
     @*自定义列工具条*@
     <script type="text/html" id="articletoolbar">
-        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail"><i class="layui-icon">&#xe63c;</i>预览</a>
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail" target="_blank" href="@ViewData["ArticlePreviewUrl"]/{{d.articleKey}}?t=p"><i class="layui-icon">&#xe63c;</i>查看</a>
 
         {{# if(d.delStatus==1){ }}
 
@@ -233,8 +233,8 @@
             //console.log(layEvent); //如果单击了序号那一列，将会显示smallzclick
             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-            if (layEvent === 'detail') { //预览
-                var href = '@ViewData["ArticlePreviewUrl"]/' + data.articleKey + "?t=p";
+            @*if (layEvent === 'detail') { //预览
+                var href = '@ ViewData["ArticlePreviewUrl"]/' + data.articleKey + "?t=p";
                 layer.open({
                     type: 2
                     , title: false
@@ -243,7 +243,9 @@
                 });
 
                 //do somehing
-            } else if (layEvent === 'del' || layEvent == "cddel") { //删除
+            } else*@
+
+                if (layEvent === 'del' || layEvent == "cddel") { //删除
                 var cfmsg = layEvent === 'del' ? "系统将会更新该条记录的删除状态,可进行还原，您确定要继续操作吗？" : "系统将会彻底删除该条记录有关的所有信息，不可恢复，您确定要继续操作吗？";
 
                 layer.confirm(cfmsg, { icon: 3, title: '提示' }, function (index) {
