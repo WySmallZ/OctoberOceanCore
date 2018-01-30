@@ -29,6 +29,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
         public void OnPost()
         {
             string ct = this.ContentText;
+
             dal.UpdatePri_ArticleDraftContentText(ArticleKey, ct);
             IsSave = "true";
             

@@ -1,0 +1,46 @@
+﻿@page
+@model OctOcean.Management.WebSite.Pages.Article.ArticleFormatCodeModel
+@{
+    ViewData["Title"] = "代码格式化工具--字符串快速替换";
+    Layout = "~/_SimLayout.cshtml";
+}
+
+<div style="padding:20px;">
+    <form method="post">
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-xs5">
+                    <div class="layui-form-item pane">
+                        <label class="layui-form-label">原字符：</label>
+                        <div class="layui-input-block">
+                            <input type="text" asp-for="OldString" required lay-verify="required" placeholder="请输入原字符" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs5">
+                    <div class="layui-form-item pane">
+                        <label class="layui-form-label">新字符：</label>
+                        <div class="layui-input-block">
+                            <input type="text" asp-for="NewString" required lay-verify="required" placeholder="请输入新的字符" autocomplete="off" class="layui-input">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs2">
+                    &nbsp;&nbsp;
+                    <button class="layui-btn layui-btn-green" type="submit"><i class="layui-icon">&#xe605;</i>快速替换</button>
+                </div>
+            </div>
+        </div>
+
+
+        <textarea asp-for="ContentText" required lay-verify="required" id="txt_articleContentTextHtml" style="width:100%; height:480px;" class="layui-textarea"></textarea>
+        <div style="text-align:center; margin-top:10px;"></div>
+
+
+    </form>
+    <script>
+        $('#txt_articleContentTextHtml').html('@ViewData["ContentText"]');
+    </script>
+</div>
+

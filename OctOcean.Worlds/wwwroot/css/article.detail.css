@@ -1,11 +1,23 @@
-﻿.article-detail-main code {
+﻿.article-detail-main .syntaxhighlighter a,
+.article-detail-main .syntaxhighlighter div,
+.article-detail-main .syntaxhighlighter code,
+.article-detail-main .syntaxhighlighter table,
+.article-detail-main .syntaxhighlighter table td,
+.article-detail-main .syntaxhighlighter table tr,
+.article-detail-main .syntaxhighlighter table tbody,
+.article-detail-main .syntaxhighlighter table thead,
+.article-detail-main .syntaxhighlighter table caption,
+.article-detail-main .syntaxhighlighter textarea {
+    line-height: 22px !important;
+}
+.article-detail-main code {
     font-family: 'Courier New';
     background-color: #eef7fb;
     border: 1px solid #cac7c7;
     border-radius: 3px;
     padding: 2px 5px;
     white-space: nowrap;
-    color:#1e1c1c;
+    color: #1e1c1c;
 }
 .article-detail-main table {
     width: 100%;
