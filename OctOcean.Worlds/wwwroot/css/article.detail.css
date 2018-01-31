@@ -11,8 +11,12 @@
     line-height: 22px !important;
 }
 .article-detail-main {
-     letter-spacing:1px;
+    letter-spacing: 2px;
 }
+    .article-detail-main pre,
+    .article-detail-main code {
+        letter-spacing: 0.7px;
+    }
 .article-detail-main code {
     font-family: 'Courier New';
     background-color: #eef7fb;
