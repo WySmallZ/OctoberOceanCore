@@ -373,8 +373,10 @@
                                  CacheFileNames: submitimgName
                              }, function (data) {
                                  if (data.status == 1) {
-                                     layer.alert("操作成功！请点击“保存”刷新页面显示最新图片");
+                                     layer.alert("操作成功！");
                                      layer.close(index); //如果设定了yes回调，需进行手工关闭
+                                     $('form').submit(); // 重新提交表单信息
+
                                  }
                                  else {
                                      layer.alert('操作异常：' + data.msg, { icon: 5 });
@@ -485,7 +487,7 @@
 
                 } else if (edittype == "delete") {
 
-                    layer.confirm('系统将会彻底删除该图片的所有数据，您确定要删除该图片吗？', { icon: 3, title: '警告' }, function (index) {
+                    layer.confirm('系统将会彻底删除该图片的所有数据包括文件，您确定要删除该图片吗？', { icon: 3, title: '警告' }, function (index) {
                         //do something
                         $.post("/ArticleImage/Remove/" + imgkey, {
 

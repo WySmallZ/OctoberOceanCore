@@ -10,6 +10,9 @@
 .article-detail-main .syntaxhighlighter textarea {
     line-height: 22px !important;
 }
+.article-detail-main {
+     letter-spacing:1px;
+}
 .article-detail-main code {
     font-family: 'Courier New';
     background-color: #eef7fb;
@@ -57,4 +60,8 @@
 }
 .article-detail-main .nr-zy {
     background-color: #fbacac;
+}
+.article-detail-main pre {
+    line-height: 21px !important;
+    padding:5px 10px;
 }
