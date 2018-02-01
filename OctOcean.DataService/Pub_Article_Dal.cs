@@ -68,22 +68,51 @@ END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如
          
         }
 
-        public List<Pub_Article_Entity> GetAllNotDel_Pub_Article_Entity(string orderby = "UpdateTime DESC")
-        {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article WHERE DelStatus=0 ORDER BY " + orderby;
 
-            return connection.Query<Pub_Article_Entity>(sql).AsList();
+        public List<Aux_HomeArticlePager_Entity> GetAllNotDel_Pub_Article_Entity(string ArticleCategory, out int SumCount,int PageIndex=1,int PageSize=10)
+        {
+            int start = (PageIndex - 1) * PageSize + 1;
+            int end = PageIndex * PageSize;
+            string wheresql = " DelStatus=0  ";
+            if(!string.IsNullOrWhiteSpace(ArticleCategory))
+            {
+                wheresql += " and ArticleCategory=@ArticleCategory ";
+            }
+
+            string sqlcount = string.Format("SELECT count(1) FROM Pub_Article  WHERE {0};", wheresql);
+            SumCount = ConvertHelper.ToInt32(connection.ExecuteScalar(sqlcount, new { ArticleCategory }));
+
+            string sql = string.Format(@"
+with wt as 
+(
+    select ROW_NUMBER() OVER(ORDER BY UpdateTime DESC ) AS SNumber,p.Id,p.ArticleKey FROM Pub_Article p WHERE {0}
+)
+select wt.SNumber,wt.ArticleKey,wt.Id,ArticleTitle,ArticleDesc,UpdateTime
+from wt left join Pub_Article d on wt.ArticleKey = d.ArticleKey
+where wt.SNumber BETWEEN {1} AND {2} order by d.UpdateTime DESC;", wheresql, start, end);
+            var query = connection.Query<Aux_HomeArticlePager_Entity>(sql, new { ArticleCategory }).AsList();
+            return query;
 
         }
 
 
-        public List<Pub_Article_Entity> GetAllNotDel_Pub_Article_EntityByArticleCategory(string ArticleCategory,string orderby = "UpdateTime DESC")
-        {
-            string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article WHERE DelStatus=0 and ArticleCategory=@ArticleCategory ORDER BY " + orderby;
 
-            return connection.Query<Pub_Article_Entity>(sql,new { ArticleCategory }).AsList();
+        //public List<Pub_Article_Entity> GetAllNotDel_Pub_Article_Entity(string orderby = "UpdateTime DESC")
+        //{
+        //    string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article WHERE DelStatus=0 ORDER BY " + orderby;
 
-        }
+        //    return connection.Query<Pub_Article_Entity>(sql).AsList();
+
+        //}
+
+
+        //public List<Pub_Article_Entity> GetAllNotDel_Pub_Article_EntityByArticleCategory(string ArticleCategory,string orderby = "UpdateTime DESC")
+        //{
+        //    string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article WHERE DelStatus=0 and ArticleCategory=@ArticleCategory ORDER BY " + orderby;
+
+        //    return connection.Query<Pub_Article_Entity>(sql,new { ArticleCategory }).AsList();
+
+        //}
 
 
 

@@ -15,22 +15,16 @@ namespace OctOcean.Worlds.Controllers
         //public HomeController(OctOceanContext context)
         //{
         //} 
-        [Route("")]
-        [Route("Home/{ArticleCategory?}")]
-        public IActionResult Index(string ArticleCategory)
+        [Route("{PageIndex:int?}")]
+        [Route("Home/{ArticleCategory?}/{PageIndex:int?}")]
+        public IActionResult Index(string ArticleCategory,int PageIndex=1)
         {
-            //查询出菜单项
-            Models.ArticleList_VM vm = new ArticleList_VM();
-
-            List<Entity.Pub_Article_Entity> data = null;
-            //如果文章类别不为空
-            if (!string.IsNullOrWhiteSpace(ArticleCategory))
-            {
-                data = dal.GetAllNotDel_Pub_Article_EntityByArticleCategory(ArticleCategory);
-            }
+            int sumcount = 0;
+            List<Entity.Aux_HomeArticlePager_Entity> data = dal.GetAllNotDel_Pub_Article_Entity(ArticleCategory, out sumcount, PageIndex, PageSize: 10);
             if (data == null)
             {
-                data = dal.GetAllNotDel_Pub_Article_Entity();
+                //如果没没有数据重新从第一页加载
+                data = dal.GetAllNotDel_Pub_Article_Entity("", out sumcount, PageIndex:1, PageSize: 10);
                 ViewBag.CurrentArticleCategory = "Home";
             }
             else
@@ -38,7 +32,13 @@ namespace OctOcean.Worlds.Controllers
                 ViewBag.CurrentArticleCategory = ArticleCategory;
             }
 
+
+
+            //查询出菜单项
+            Models.ArticleList_VM vm = new ArticleList_VM();
             vm.Article_EntityArray = data.ToArray();
+            vm.ArticleSumCount = sumcount;
+            vm.CurrentPageIdex = PageIndex;
 
 
             return View(vm);

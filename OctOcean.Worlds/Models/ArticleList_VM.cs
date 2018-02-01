@@ -7,7 +7,9 @@ namespace OctOcean.Worlds.Models
 {
     public class ArticleList_VM
     {
-        public Pub_Article_Entity [] Article_EntityArray { get; set; }
+        public Aux_HomeArticlePager_Entity [] Article_EntityArray { get; set; }
+        public int ArticleSumCount { get; set; }
+        public int CurrentPageIdex { get; set; }
 
 
     }
