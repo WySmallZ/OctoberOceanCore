@@ -29,7 +29,7 @@ namespace OctOcean.Worlds.Controllers
             }
             else
             {
-                ViewBag.CurrentArticleCategory = ArticleCategory;
+                ViewBag.CurrentArticleCategory = string.IsNullOrWhiteSpace(ArticleCategory) ? "Home" : ArticleCategory;
             }
 
 
