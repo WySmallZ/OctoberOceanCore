@@ -201,6 +201,7 @@ namespace OctOcean.Management.WebSite.Controllers
         [Route("ArticleDraft/Pagination")] //Post和GET都可以访问
         public object Pager(string orderColumn = "UpdateTime", string orderType = "desc", int PageIndex = 1, int PageSize = 10, string ArticleCategoryCode = "", int DelStatus = 0,string ArticleTag="")
         {
+            if ("UpdateTimeF".Equals(orderColumn,StringComparison.InvariantCultureIgnoreCase)) orderColumn = "UpdateTime";
             int sumcount = 0;
             //int PageIndex = page;
             //int PageSize = limit;

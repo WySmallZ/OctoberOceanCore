@@ -26,6 +26,13 @@ namespace OctOcean.Worlds
             //       services.AddDbContext<DataService.OctOceanContext>(options =>
             //options.UseSqlServer(Configuration.GetConnectionString("defaultConnStr")));
 
+         
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                
+                //options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc();
         }
 
@@ -45,6 +52,7 @@ namespace OctOcean.Worlds
             //}
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

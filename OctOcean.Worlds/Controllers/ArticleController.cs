@@ -36,13 +36,13 @@ namespace OctOcean.Worlds.Controllers
                 _ContentText = draftentity.ContentText;
                 _LastUpdate = draftentity.UpdateTime.ToString("yyyy-MM-dd");
                 _Title = draftentity.ArticleTitle;
-                _AidStyle= draftentity.AidStyle;
+                _AidStyle = draftentity.AidStyle;
                 _ArticleDesc = draftentity.ArticleDesc;
 
             }
             else
             {
-                var entity= dal.Get_NotDel_Pub_Article_Entity(ArticleKey);
+                var entity = dal.Get_NotDel_Pub_Article_Entity(ArticleKey);
 
                 if (entity == null)
                 {
@@ -67,13 +67,30 @@ namespace OctOcean.Worlds.Controllers
                 BrowseCount = 100,
                 LastUpdate = _LastUpdate,
                 Title = _Title,
-                AidStyle=_AidStyle,
-                ArticleDesc= _ArticleDesc
+                AidStyle = _AidStyle,
+                ArticleDesc = _ArticleDesc
 
 
 
 
             };
+
+            //插入浏览日志
+            new DataService.Pub_AccessRecord_Dal().InsertAccessRecord(new Entity.Pub_AccessRecord_Entity()
+            {
+                AccessUrl = Helper.PageControllerHelper.GetAbsoluteUri(Request),
+                IP = Helper.PageControllerHelper.GetClientUserIp(HttpContext),
+                PageTag = "ArticleDetail",
+                SessionID = HttpContext.Session.Id
+            }, new Entity.Pub_ArticleBrowseLog_Entity()
+            {
+                AccessUrl = Helper.PageControllerHelper.GetAbsoluteUri(Request),
+                IP = Helper.PageControllerHelper.GetClientUserIp(HttpContext),
+                ArticleKey = ArticleKey,
+                SessionID = HttpContext.Session.Id
+            });
+
+
 
 
             ViewData["Title"] = _Title;
