@@ -22,6 +22,7 @@ namespace OctOcean.Management.WebSite.Pages.ImageMaintenance
 
         public IActionResult OnGet()
         {
+            ViewData["CurrentPage"] = "ICU";
 
             if (!base.CheckLogin())
             {

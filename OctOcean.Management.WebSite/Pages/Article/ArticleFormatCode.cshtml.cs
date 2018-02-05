@@ -18,6 +18,7 @@ namespace OctOcean.Management.WebSite.Pages.Article
         public string NewString { get; set; } = "&lt;";
         public void OnGet()
         {
+            ViewData["CurrentPage"] = "AFC";
             var s = ContentText;
         }
 

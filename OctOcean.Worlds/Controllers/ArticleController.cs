@@ -29,6 +29,8 @@ namespace OctOcean.Worlds.Controllers
             string _AidStyle = string.Empty;
             string _ArticleDesc = string.Empty;
 
+            int _BrowseCount = dal.GetPub_Article_BrowseCount(ArticleKey);
+
             if ("p".Equals(t, StringComparison.InvariantCultureIgnoreCase))
             {
                 //执行预览
@@ -64,12 +66,11 @@ namespace OctOcean.Worlds.Controllers
             ArticleDetail_VM detail_M = new ArticleDetail_VM()
             {
                 ContentText = _ContentText,
-                BrowseCount = 100,
+                BrowseCount = _BrowseCount,
                 LastUpdate = _LastUpdate,
                 Title = _Title,
                 AidStyle = _AidStyle,
                 ArticleDesc = _ArticleDesc
-
 
 
 

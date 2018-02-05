@@ -22,6 +22,7 @@ namespace OctOcean.Management.WebSite.Pages.BasicMaintenance
         //初次加载所有的数据，注意：Async 命名后缀为可选，但不可更改，但是按照惯例通常会将它用于异步函数
         public async Task OnGetAsync()
         {
+            ViewData["CurrentPage"] = "ACM";
             //此处模拟获取数据
             await Task.Run(() =>
             {

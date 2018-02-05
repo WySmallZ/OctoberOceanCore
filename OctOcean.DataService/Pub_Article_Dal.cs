@@ -60,6 +60,8 @@ END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如
             return null;
         }
 
+        
+
         public List<Pub_Article_Entity> GetAllPub_Article_Entity(string orderby= "UpdateTime DESC")
         {
             string sql = "select  Id , ArticleKey,ArticleTitle,ArticleCategory,ContentText,ArticleTag,ArticleDesc,AidStyle,UpdateTime,DelStatus from Pub_Article ORDER BY " + orderby;
@@ -86,13 +88,23 @@ END" : "UPDATE Pub_Article SET DelStatus=1 WHERE ArticleKey=@ArticleKey "; //如
 with wt as 
 (
     select ROW_NUMBER() OVER(ORDER BY UpdateTime DESC ) AS SNumber,p.Id,p.ArticleKey FROM Pub_Article p WHERE {0}
+),acnt as(
+    SELECT ArticleKey,COUNT(1) BrowseCount FROM  Pub_ArticleBrowseLog GROUP BY ArticleKey
 )
-select wt.SNumber,wt.ArticleKey,wt.Id,ArticleTitle,ArticleDesc,UpdateTime
+select wt.SNumber,wt.ArticleKey,wt.Id,ArticleTitle,ArticleDesc,UpdateTime,acnt.BrowseCount
 from wt left join Pub_Article d on wt.ArticleKey = d.ArticleKey
+left join acnt on wt.ArticleKey=acnt.ArticleKey
 where wt.SNumber BETWEEN {1} AND {2} order by d.UpdateTime DESC;", wheresql, start, end);
             var query = connection.Query<Aux_HomeArticlePager_Entity>(sql, new { ArticleCategory }).AsList();
             return query;
 
+        }
+
+        public int GetPub_Article_BrowseCount(string ArticleKey)
+        {
+            string sql = "SELECT COUNT(1)  cnt FROM  Pub_ArticleBrowseLog WHERE ArticleKey=@ArticleKey;";
+            var sumcount = connection.ExecuteScalar(sql, new { ArticleKey });
+            return ConvertHelper.ToInt32(sumcount);
         }
 
 

@@ -14,5 +14,7 @@ namespace OctOcean.Entity
         public string ArticleDesc { get; set; }
 
         public DateTime UpdateTime { get; set; }
+
+        public int BrowseCount { get; set; } = 0;
     }
 }

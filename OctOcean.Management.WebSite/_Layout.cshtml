@@ -55,16 +55,16 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="javascript:;">博客管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="/Article/ArticleManagement">文章管理</a></dd>
-                            <dd><a href="/ImageMaintenance/ImageClearUp">图片清理</a></dd>
-                            <dd><a href="/Article/ArticleFormatCode" target="_blank">格式化代码工具</a></dd>
+                            <dd class="@(ViewData["CurrentPage"]=="AM"?"layui-this":"")"><a href="/Article/ArticleManagement">文章管理</a></dd>
+                            <dd class="@(ViewData["CurrentPage"]=="ICU"?"layui-this":"")"><a href="/ImageMaintenance/ImageClearUp">图片清理</a></dd>
+                            <dd class="@(ViewData["CurrentPage"]=="AFC"?"layui-this":"")"><a  href="/Article/ArticleFormatCode" target="_blank">格式化代码工具</a></ddclass="@(ViewData["CurrentPage"]=="AFC"?"layui-this":"")">
                         </dl>
                     </li>
                     <li class="layui-nav-item  layui-nav-itemed">
                         <a href="javascript:;">基础数据维护</a>
                         <dl class="layui-nav-child">
-                            <dd><a asp-page="/BasicMaintenance/ArticleCategoryManagement">文章分类</a></dd>
-                            <dd><a href="/BasicMaintenance/ArticleTagManagement">文章标签</a></dd>
+                            <dd class="@(ViewData["CurrentPage"]=="ACM"?"layui-this":"")"><a  asp-page="/BasicMaintenance/ArticleCategoryManagement">文章分类</a></ddclass="@(ViewData["CurrentPage"]=="ACM"?"layui-this":"")">
+                            <dd class="@(ViewData["CurrentPage"]=="ATM"?"layui-this":"")"><a  href="/BasicMaintenance/ArticleTagManagement">文章标签</a></dd>
 
                         </dl>
                     </li>
