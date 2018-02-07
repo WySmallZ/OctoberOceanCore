@@ -193,11 +193,13 @@
             , cols: [[ //表头
                 { field: 'sNumber', title: '序号', width: 60, align: 'center', event: 'smallzclick' } //event:自定义单元格点击事件名，以便在 tool 事件中完成对该单元格的业务处理
                 , { field: 'articleCategoryName', title: '分类', width: 70, sort: true }
-                , { field: 'articleTitle', title: '文章标题',  sort: true }
-                , { field: 'articleTag', title: '文章标签', width: 120,  templet: '#articleTagTpl'}
-                , { field: 'updateTimeF', title: '更新时间', width: 142, sort: true }
+                , { field: 'articleTitle', title: '文章标题', sort: true }
                 , { field: 'pubArticleKey', title: '发布状态', width: 86, templet: '#publishstatusTpl' }
                 , { title: '操作', width: 280, align: 'center', toolbar: '#articletoolbar' }
+                , { field: 'articleTag', title: '文章标签', width: 150,  templet: '#articleTagTpl'}
+                , { field: 'updateTimeF', title: '更新时间', width: 142, sort: true }
+                
+                
                 //{ field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left' }
                 //, { field: 'username', title: '用户名', width: 80 }
                 //, { field: 'sex', title: '性别', width: 80, sort: true }
