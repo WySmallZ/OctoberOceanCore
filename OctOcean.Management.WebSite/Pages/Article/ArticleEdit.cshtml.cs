@@ -143,7 +143,11 @@ namespace OctOcean.Management.WebSite.Pages.Article
             Base_ArticleTagList = batdal.GetAllArticleTag();
 
             Pri_ArticleImage_Dal imgdal = new Pri_ArticleImage_Dal();
-            Pri_ArticleImageList = imgdal.GetAllPri_ArticleImage(ArticleKey);
+            var allimagelist = imgdal.GetAllPri_ArticleImage(ArticleKey);
+            if (allimagelist != null)
+            {
+                Pri_ArticleImageList = allimagelist.OrderBy(a => a.UpdateTime).ToList();
+            }
             
         }
     }
